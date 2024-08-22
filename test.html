@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Sphere Animation with Interaction</title>
+    <title>A-Frame Sphere Animation with Interaction Fix</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
         AFRAME.registerComponent('move-sphere', {
@@ -62,6 +62,7 @@
             let sphere = document.createElement('a-entity');
             sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}; textEntity: #${textEntity.getAttribute('id')}`);
             sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
+            sphere.setAttribute('class', 'interactive');  // Add a class for easy debugging
             sceneEl.appendChild(sphere);
         }
 
@@ -84,8 +85,13 @@
 </head>
 <body>
     <a-scene>
-        <a-sky color="#33ECEC"></a-sky>
-        <a-camera position="0 1.6 0"></a-camera>
+        <a-sky color="#ECECEC"></a-sky>
+        
+        <!-- Camera with cursor component for interaction -->
+        <a-camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-camera>
+        
     </a-scene>
 </body>
 </html>
