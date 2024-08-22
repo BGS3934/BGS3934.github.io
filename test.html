@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Sphere Animation</title>
+    <title>A-Frame Sphere Animation with Debugging</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
-        // Custom component for moving spheres
+        // Custom component for moving spheres with position tracking
         AFRAME.registerComponent('move-sphere', {
             schema: {
                 speed: {type: 'number', default: 0.02},
+                textEntity: {type: 'selector'}  // Reference to the text entity
             },
             init: function () {
                 // Define the sphere geometry
@@ -31,6 +32,18 @@
                 });
             },
             tick: function (time, timeDelta) {
+                // Update position
+                let position = this.el.getAttribute('position');
+                position.z += this.data.speed;  // Move towards the camera
+                this.el.setAttribute('position', position);
+
+                // Update the on-screen text with the current position
+                if (this.data.textEntity) {
+                    this.data.textEntity.setAttribute('value', 
+                        `Sphere Position: x=${position.x.toFixed(2)}, y=${position.y.toFixed(2)}, z=${position.z.toFixed(2)}`);
+                }
+
+                // Handle shrinking and disappearance
                 if (this.shrinking) {
                     let scale = this.el.getAttribute('scale');
                     if (scale.x > 0) {
@@ -42,37 +55,38 @@
                     } else {
                         this.el.parentNode.removeChild(this.el);  // Remove sphere when fully shrunk
                     }
-                } else {
-                    let position = this.el.getAttribute('position');
-                    this.el.setAttribute('position', {
-                        x: position.x,
-                        y: position.y,
-                        z: position.z + this.data.speed  // Move towards the camera
-                    });
                 }
             }
         });
 
-        // Function to generate random spheres in a stream
-        function createSphereStream(sceneEl, xPos) {
-            for (let i = 0; i < 20; i++) {
-                let sphere = document.createElement('a-entity');
-                sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}`);
-                sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
-                sceneEl.appendChild(sphere);
-            }
+        // Function to create a new sphere
+        function createSphere(sceneEl, xPos, textEntity) {
+            let sphere = document.createElement('a-entity');
+            sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}; textEntity: #${textEntity.getAttribute('id')}`);
+            sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
+            sceneEl.appendChild(sphere);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const sceneEl = document.querySelector('a-scene');
-            createSphereStream(sceneEl, -0.5);   // Left stream
-            createSphereStream(sceneEl, 0.5);    // Right stream
+            const textEntity = document.createElement('a-text');
+            textEntity.setAttribute('value', 'Sphere Position: N/A');
+            textEntity.setAttribute('position', '-1 2 -3');
+            textEntity.setAttribute('id', 'positionText');
+            sceneEl.appendChild(textEntity);
+
+            createSphere(sceneEl, -0.5, textEntity);   // Initial sphere
+
+            // Generate a new sphere every 5 seconds
+            setInterval(() => {
+                createSphere(sceneEl, -0.5, textEntity);
+            }, 5000);
         });
     </script>
 </head>
 <body>
     <a-scene>
-        <a-sky color="#33ECEC"></a-sky>
+        <a-sky color="#ECECEC"></a-sky>
         <a-camera position="0 1.6 0"></a-camera>
     </a-scene>
 </body>
