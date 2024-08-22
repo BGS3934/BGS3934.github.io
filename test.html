@@ -40,6 +40,13 @@
                         this.playSound('destroyedSound');  // Play destroyed sound when shrinking starts
                     }
                 });
+
+                this.el.addEventListener('mouseleave', () => {
+                    if (this.shrinking) {
+                        this.shrinking = false;
+                        this.stopSound('destroyedSound');  // Stop the destroyed sound when shrinking stops
+                    }
+                });
             },
             tick: function (time, timeDelta) {
                 if (gameOver) return;
@@ -148,7 +155,7 @@
 </head>
 <body>
     <a-scene>
-        <a-sky color="#ECECEC"></a-sky>
+        <a-sky color="#EC33EC"></a-sky>
         
         <!-- Camera with cursor component for interaction -->
         <a-camera position="0 1.6 0">
