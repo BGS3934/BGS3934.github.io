@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Sphere Animation with Debugging</title>
+    <title>A-Frame Sphere Animation with Interaction</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
-        // Custom component for moving spheres with position tracking
         AFRAME.registerComponent('move-sphere', {
             schema: {
                 speed: {type: 'number', default: 0.02},
                 textEntity: {type: 'selector'}  // Reference to the text entity
             },
             init: function () {
-                // Define the sphere geometry
                 this.el.setAttribute('geometry', {
                     primitive: 'sphere',
                     radius: 0.2
@@ -29,12 +27,14 @@
 
                 this.el.addEventListener('mouseenter', () => {
                     this.shrinking = true;
+                    this.el.setAttribute('material', 'color', '#0000FF');  // Change color to blue when shrinking starts
                 });
             },
             tick: function (time, timeDelta) {
-                // Update position
                 let position = this.el.getAttribute('position');
-                position.z += this.data.speed;  // Move towards the camera
+
+                // Move towards the camera
+                position.z += this.data.speed;
                 this.el.setAttribute('position', position);
 
                 // Update the on-screen text with the current position
@@ -43,7 +43,6 @@
                         `Sphere Position: x=${position.x.toFixed(2)}, y=${position.y.toFixed(2)}, z=${position.z.toFixed(2)}`);
                 }
 
-                // Handle shrinking and disappearance
                 if (this.shrinking) {
                     let scale = this.el.getAttribute('scale');
                     if (scale.x > 0) {
@@ -59,7 +58,6 @@
             }
         });
 
-        // Function to create a new sphere
         function createSphere(sceneEl, xPos, textEntity) {
             let sphere = document.createElement('a-entity');
             sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}; textEntity: #${textEntity.getAttribute('id')}`);
@@ -75,11 +73,11 @@
             textEntity.setAttribute('id', 'positionText');
             sceneEl.appendChild(textEntity);
 
-            createSphere(sceneEl, -0.5, textEntity);   // Initial sphere
+            createSphere(sceneEl, 0, textEntity);  // Start the first sphere near the center
 
             // Generate a new sphere every 5 seconds
             setInterval(() => {
-                createSphere(sceneEl, -0.5, textEntity);
+                createSphere(sceneEl, 0, textEntity);
             }, 5000);
         });
     </script>
