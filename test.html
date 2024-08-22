@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Sphere Animation with Interaction Fix</title>
+    <title>A-Frame Sphere Animation with Scoring</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
+        let score = {
+            destroyed: 0,
+            missed: 0
+        };
+        let intervalTime = 5000;  // Start with 5 seconds
+
         AFRAME.registerComponent('move-sphere', {
             schema: {
                 speed: {type: 'number', default: 0.02},
@@ -14,7 +20,7 @@
             init: function () {
                 this.el.setAttribute('geometry', {
                     primitive: 'sphere',
-                    radius: 0.2
+                    radius: 0.4  // Twice as big
                 });
 
                 this.el.setAttribute('material', {
@@ -37,10 +43,12 @@
                 position.z += this.data.speed;
                 this.el.setAttribute('position', position);
 
-                // Update the on-screen text with the current position
-                if (this.data.textEntity) {
-                    this.data.textEntity.setAttribute('value', 
-                        `Sphere Position: x=${position.x.toFixed(2)}, y=${position.y.toFixed(2)}, z=${position.z.toFixed(2)}`);
+                // Check if the sphere is behind the camera
+                if (position.z >= 0) {
+                    this.el.parentNode.removeChild(this.el);  // Remove the sphere
+                    score.missed++;
+                    this.data.textEntity.setAttribute('value', `Destroyed: ${score.destroyed} | Missed: ${score.missed}`);
+                    return;
                 }
 
                 if (this.shrinking) {
@@ -53,6 +61,8 @@
                         });
                     } else {
                         this.el.parentNode.removeChild(this.el);  // Remove sphere when fully shrunk
+                        score.destroyed++;
+                        this.data.textEntity.setAttribute('value', `Destroyed: ${score.destroyed} | Missed: ${score.missed}`);
                     }
                 }
             }
@@ -61,31 +71,40 @@
         function createSphere(sceneEl, xPos, textEntity) {
             let sphere = document.createElement('a-entity');
             sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}; textEntity: #${textEntity.getAttribute('id')}`);
-            sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
-            sphere.setAttribute('class', 'interactive');  // Add a class for easy debugging
+            sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -40}`);  // Start twice as far away
+            sphere.setAttribute('class', 'interactive');
             sceneEl.appendChild(sphere);
+        }
+
+        function startSphereCreation(sceneEl, textEntity) {
+            createSphere(sceneEl, 0, textEntity);  // Start the first sphere near the center
+
+            // Recursively decrease interval time and create spheres
+            function sphereInterval() {
+                createSphere(sceneEl, 0, textEntity);
+                intervalTime = Math.max(1000, intervalTime - 100);  // Decrease time, but not less than 1 second
+                setTimeout(sphereInterval, intervalTime);
+            }
+
+            setTimeout(sphereInterval, intervalTime);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const sceneEl = document.querySelector('a-scene');
             const textEntity = document.createElement('a-text');
-            textEntity.setAttribute('value', 'Sphere Position: N/A');
-            textEntity.setAttribute('position', '-1 2 -3');
-            textEntity.setAttribute('id', 'positionText');
+            textEntity.setAttribute('value', 'Destroyed: 0 | Missed: 0');
+            textEntity.setAttribute('position', '-1.5 2 -3');
+            textEntity.setAttribute('color', 'black');
+            textEntity.setAttribute('id', 'scoreText');
             sceneEl.appendChild(textEntity);
 
-            createSphere(sceneEl, 0, textEntity);  // Start the first sphere near the center
-
-            // Generate a new sphere every 5 seconds
-            setInterval(() => {
-                createSphere(sceneEl, 0, textEntity);
-            }, 5000);
+            startSphereCreation(sceneEl, textEntity);
         });
     </script>
 </head>
 <body>
     <a-scene>
-        <a-sky color="#ECECEC"></a-sky>
+        <a-sky color="#33ECEC"></a-sky>
         
         <!-- Camera with cursor component for interaction -->
         <a-camera position="0 1.6 0">
