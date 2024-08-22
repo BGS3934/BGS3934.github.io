@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Sphere Animation with Scoring</title>
+    <title>A-Frame Sphere Animation with Scoring and Sounds</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
         let score = {
@@ -11,10 +11,12 @@
             missed: 0
         };
         let intervalTime = 5000;  // Start with 5 seconds
+        let initialSpeed = 0.02;  // Initial speed of the spheres
+        let gameOver = false;
 
         AFRAME.registerComponent('move-sphere', {
             schema: {
-                speed: {type: 'number', default: 0.02},
+                speed: {type: 'number', default: initialSpeed},
                 textEntity: {type: 'selector'}  // Reference to the text entity
             },
             init: function () {
@@ -28,15 +30,19 @@
                     side: 'double'
                 });
 
-                this.originalScale = {x: 1, y: 1, z: 1};
                 this.shrinking = false;
 
                 this.el.addEventListener('mouseenter', () => {
-                    this.shrinking = true;
-                    this.el.setAttribute('material', 'color', '#0000FF');  // Change color to blue when shrinking starts
+                    if (!gameOver) {
+                        this.shrinking = true;
+                        this.el.setAttribute('material', 'color', '#0000FF');  // Change color to blue when shrinking starts
+                        this.playSound('destroyedSound');
+                    }
                 });
             },
             tick: function (time, timeDelta) {
+                if (gameOver) return;
+
                 let position = this.el.getAttribute('position');
 
                 // Move towards the camera
@@ -47,7 +53,9 @@
                 if (position.z >= 0) {
                     this.el.parentNode.removeChild(this.el);  // Remove the sphere
                     score.missed++;
-                    this.data.textEntity.setAttribute('value', `Destroyed: ${score.destroyed} | Missed: ${score.missed}`);
+                    this.updateScore();
+                    this.playSound('missedSound');
+                    this.checkGameOver();
                     return;
                 }
 
@@ -62,26 +70,51 @@
                     } else {
                         this.el.parentNode.removeChild(this.el);  // Remove sphere when fully shrunk
                         score.destroyed++;
-                        this.data.textEntity.setAttribute('value', `Destroyed: ${score.destroyed} | Missed: ${score.missed}`);
+                        this.updateScore();
                     }
+                }
+            },
+            updateScore: function () {
+                if (this.data.textEntity) {
+                    this.data.textEntity.setAttribute('value', `Destroyed: ${score.destroyed} | Missed: ${score.missed}`);
+                }
+            },
+            playSound: function (soundId) {
+                const soundEntity = document.querySelector(`#${soundId}`);
+                if (soundEntity) {
+                    soundEntity.components.sound.playSound();
+                }
+            },
+            checkGameOver: function () {
+                if (score.missed >= 10) {
+                    gameOver = true;
+                    const textEntity = this.data.textEntity;
+                    textEntity.setAttribute('value', `GAME OVER - SCORE: ${score.destroyed}`);
                 }
             }
         });
 
-        function createSphere(sceneEl, xPos, textEntity) {
+        function createSphere(sceneEl, textEntity) {
             let sphere = document.createElement('a-entity');
-            sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}; textEntity: #${textEntity.getAttribute('id')}`);
-            sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -40}`);  // Start twice as far away
+            let speed = initialSpeed + Math.random() * 0.05;  // Speed increases slightly for each sphere
+
+            let xPos = Math.random() * 4 - 2;  // Random x position between -2 and 2
+            let yPos = Math.random() * 4 - 2;  // Random y position between -2 and 2
+
+            sphere.setAttribute('move-sphere', `speed: ${speed}; textEntity: #${textEntity.getAttribute('id')}`);
+            sphere.setAttribute('position', `${xPos} ${yPos} ${Math.random() * -40}`);  // Start twice as far away
             sphere.setAttribute('class', 'interactive');
             sceneEl.appendChild(sphere);
         }
 
         function startSphereCreation(sceneEl, textEntity) {
-            createSphere(sceneEl, 0, textEntity);  // Start the first sphere near the center
+            createSphere(sceneEl, textEntity);  // Start the first sphere near the center
 
             // Recursively decrease interval time and create spheres
             function sphereInterval() {
-                createSphere(sceneEl, 0, textEntity);
+                if (gameOver) return;
+                
+                createSphere(sceneEl, textEntity);
                 intervalTime = Math.max(1000, intervalTime - 100);  // Decrease time, but not less than 1 second
                 setTimeout(sphereInterval, intervalTime);
             }
@@ -104,12 +137,16 @@
 </head>
 <body>
     <a-scene>
-        <a-sky color="#33ECEC"></a-sky>
+        <a-sky color="#ECECEC"></a-sky>
         
         <!-- Camera with cursor component for interaction -->
         <a-camera position="0 1.6 0">
             <a-cursor></a-cursor>
         </a-camera>
+
+        <!-- Sound effects -->
+        <a-entity id="destroyedSound" sound="src: url(destroyed-sound.mp3);"></a-entity>
+        <a-entity id="missedSound" sound="src: url(missed-sound.mp3);"></a-entity>
         
     </a-scene>
 </body>
