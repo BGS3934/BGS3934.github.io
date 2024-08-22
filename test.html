@@ -31,6 +31,7 @@
                 });
 
                 this.shrinking = false;
+                this.soundPlaying = false;
 
                 this.el.addEventListener('mouseenter', () => {
                     if (!gameOver && !this.shrinking) {
@@ -51,6 +52,7 @@
 
                 // Check if the sphere is behind the camera
                 if (position.z >= 0) {
+                    this.stopSound('destroyedSound');  // Stop the destroyed sound if it is playing
                     this.el.parentNode.removeChild(this.el);  // Remove the sphere
                     score.missed++;
                     this.updateScore();
@@ -68,6 +70,7 @@
                             z: scale.z - 0.02
                         });
                     } else {
+                        this.stopSound('destroyedSound');  // Stop the destroyed sound when sphere is fully shrunk
                         this.el.parentNode.removeChild(this.el);  // Remove sphere when fully shrunk
                         score.destroyed++;
                         this.updateScore();
@@ -81,8 +84,16 @@
             },
             playSound: function (soundId) {
                 const soundEntity = document.querySelector(`#${soundId}`);
-                if (soundEntity) {
+                if (soundEntity && !this.soundPlaying) {
                     soundEntity.components.sound.playSound();
+                    this.soundPlaying = true;
+                }
+            },
+            stopSound: function (soundId) {
+                const soundEntity = document.querySelector(`#${soundId}`);
+                if (soundEntity && this.soundPlaying) {
+                    soundEntity.components.sound.stopSound();
+                    this.soundPlaying = false;
                 }
             },
             checkGameOver: function () {
