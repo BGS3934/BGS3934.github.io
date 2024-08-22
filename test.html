@@ -3,43 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Triangle Animation</title>
+    <title>A-Frame Sphere Animation</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script>
-        // Custom component for moving triangles
-        AFRAME.registerComponent('move-triangle', {
+        // Custom component for moving spheres
+        AFRAME.registerComponent('move-sphere', {
             schema: {
                 speed: {type: 'number', default: 0.02},
             },
             init: function () {
-                // Define the triangle geometry manually
+                // Define the sphere geometry
                 this.el.setAttribute('geometry', {
-                    primitive: 'plane',
-                    width: 0.5,
-                    height: 1
+                    primitive: 'sphere',
+                    radius: 0.2
                 });
 
                 this.el.setAttribute('material', {
                     color: '#FF0000',
                     side: 'double'
                 });
-
-                // Position the triangle to point in the specified direction
-                let direction = this.el.getAttribute('move-triangle').direction;
-                switch (direction) {
-                    case 'up':
-                        this.el.setAttribute('rotation', '0 0 0');
-                        break;
-                    case 'down':
-                        this.el.setAttribute('rotation', '0 0 180');
-                        break;
-                    case 'left':
-                        this.el.setAttribute('rotation', '0 0 90');
-                        break;
-                    case 'right':
-                        this.el.setAttribute('rotation', '0 0 -90');
-                        break;
-                }
 
                 this.originalScale = {x: 1, y: 1, z: 1};
                 this.shrinking = false;
@@ -58,7 +40,7 @@
                             z: scale.z - 0.02
                         });
                     } else {
-                        this.el.parentNode.removeChild(this.el);  // Remove triangle when fully shrunk
+                        this.el.parentNode.removeChild(this.el);  // Remove sphere when fully shrunk
                     }
                 } else {
                     let position = this.el.getAttribute('position');
@@ -71,26 +53,26 @@
             }
         });
 
-        // Function to generate random triangles in a stream
-        function createTriangleStream(sceneEl, xPos, direction) {
+        // Function to generate random spheres in a stream
+        function createSphereStream(sceneEl, xPos) {
             for (let i = 0; i < 20; i++) {
-                let triangle = document.createElement('a-entity');
-                triangle.setAttribute('move-triangle', `speed: ${0.02 + Math.random() * 0.03}; direction: ${direction}`);
-                triangle.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
-                sceneEl.appendChild(triangle);
+                let sphere = document.createElement('a-entity');
+                sphere.setAttribute('move-sphere', `speed: ${0.02 + Math.random() * 0.03}`);
+                sphere.setAttribute('position', `${xPos} ${Math.random() * 4 - 2} ${Math.random() * -20}`);
+                sceneEl.appendChild(sphere);
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const sceneEl = document.querySelector('a-scene');
-            createTriangleStream(sceneEl, -0.5, 'up');   // Left stream
-            createTriangleStream(sceneEl, 0.5, 'down');  // Right stream
+            createSphereStream(sceneEl, -0.5);   // Left stream
+            createSphereStream(sceneEl, 0.5);    // Right stream
         });
     </script>
 </head>
 <body>
     <a-scene>
-        <a-sky color="#ECECEC"></a-sky>
+        <a-sky color="#33ECEC"></a-sky>
         <a-camera position="0 1.6 0"></a-camera>
     </a-scene>
 </body>
