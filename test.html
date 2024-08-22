@@ -33,10 +33,10 @@
                 this.shrinking = false;
 
                 this.el.addEventListener('mouseenter', () => {
-                    if (!gameOver) {
+                    if (!gameOver && !this.shrinking) {
                         this.shrinking = true;
                         this.el.setAttribute('material', 'color', '#0000FF');  // Change color to blue when shrinking starts
-                        this.playSound('destroyedSound');
+                        this.playSound('destroyedSound');  // Play destroyed sound when shrinking starts
                     }
                 });
             },
