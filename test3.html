@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Simple OBJ Models</title>
+    <title>A-Frame Simple OBJ Models with VR Controller Binding</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body>
     <!-- A-Frame Scene -->
-    <a-scene>
+    <a-scene vr-mode-ui="enabled: true">
         <a-assets id="assets-container"></a-assets>
 
         <a-entity id="model-container"></a-entity>
@@ -20,6 +20,11 @@
         <!-- Sky and Camera -->
         <a-sky color="#ECECEC"></a-sky>
         <a-camera position="0 1.6 0"></a-camera>
+
+        <!-- Right Motion Controller with Cylinder -->
+        <a-entity id="right-hand" laser-controls="hand: right">
+            <a-cylinder height="1" radius="0.05" color="blue" position="0 0 -0.5"></a-cylinder>
+        </a-entity>
     </a-scene>
 
     <!-- JavaScript to Load Models -->
