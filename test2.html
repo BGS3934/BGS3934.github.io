@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-Frame with 3D Model</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-assets>
+            <!-- Preload the .obj and .mtl files -->
+            <a-asset-item id="my-obj" src="models/myModel.obj"></a-asset-item>
+            <a-asset-item id="my-mtl" src="models/myModel.mtl"></a-asset-item>
+        </a-assets>
+
+        <!-- Add the static object in front of the camera -->
+        <a-entity 
+            obj-model="obj: #my-obj; mtl: #my-mtl"
+            position="0 1.6 -2"  <!-- Adjust position in front of the camera -->
+            scale="1 1 1"         <!-- Adjust scale as needed -->
+            rotation="0 180 0"    <!-- Adjust rotation as needed -->
+        ></a-entity>
+
+        <!-- Your existing camera, spheres, and scene setup -->
+        <a-sky color="#ECECEC"></a-sky>
+        <a-camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-camera>
+
+        <!-- Sound effects, sphere generation, etc. -->
+    </a-scene>
+</body>
+</html>
