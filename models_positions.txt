@@ -1,0 +1,3 @@
+models/myModel.obj, 0, 1.6, -3, 0
+models/myModel2.obj, 2, 1.6, -4, 90
+models/myModel3.obj, -2, 1.6, -4, 45
