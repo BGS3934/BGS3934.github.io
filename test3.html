@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame Simple OBJ Models with VR Controller Binding</title>
+    <title>1.0.1 A-Frame Simple OBJ Models with VR Controller Binding</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <!-- Optional: Include WebXR Polyfill -->
+    <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
 </head>
 <body>
     <!-- Header for Revision Number -->
     <header>
-        <h1>Project Revision: 1.0.0</h1>
+        <h1>Project Revision: 1.0.1</h1>
     </header>
 
-    <!-- A-Frame Scene -->
+    <!-- A-Frame Scene with VR Mode -->
     <a-scene vr-mode-ui="enabled: true">
         <a-assets id="assets-container"></a-assets>
 
