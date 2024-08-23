@@ -7,6 +7,11 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body>
+    <!-- Header for Revision Number -->
+    <header>
+        <h1>Project Revision: 1.0.0</h1>
+    </header>
+
     <!-- A-Frame Scene -->
     <a-scene vr-mode-ui="enabled: true">
         <a-assets id="assets-container"></a-assets>
@@ -23,7 +28,7 @@
 
         <!-- Right Motion Controller with Cylinder -->
         <a-entity id="right-hand" laser-controls="hand: right">
-            <a-cylinder height="1" radius="0.05" color="blue" position="0 0 -0.5"></a-cylinder>
+            <a-cylinder height="1" radius="0.05" color="blue" position="0 0 -0.5" rotation="90 0 0"></a-cylinder>
         </a-entity>
     </a-scene>
 
