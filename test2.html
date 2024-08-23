@@ -3,57 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame with Dynamic Models and Menu</title>
+    <title>A-Frame Dynamic OBJ Models with Popup</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+        /* Popup Styles */
+        #popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #popup h2 {
+            margin-top: 0;
+        }
+        #popup button {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #popup button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div id="menu" style="position: absolute; top: 10px; left: 10px; background: white; padding: 10px;">
-        <label for="xPos">X Position:</label>
-        <input type="range" id="xPos" min="-10" max="10" step="0.1" value="0">
-        <br>
-        <label for="yPos">Y Position:</label>
-        <input type="range" id="yPos" min="0" max="10" step="0.1" value="1.6">
-        <br>
-        <label for="zPos">Z Position:</label>
-        <input type="range" id="zPos" min="-10" max="0" step="0.1" value="-3">
-        <br>
-        <label for="yRot">Y Rotation:</label>
-        <input type="range" id="yRot" min="0" max="360" step="1" value="0">
+    <!-- Popup Box -->
+    <div id="popup">
+        <h2 id="popup-title">Model Title</h2>
+        <p id="popup-description">Model Description</p>
+        <button id="popup-close">Close</button>
     </div>
 
+    <!-- A-Frame Scene -->
     <a-scene>
         <a-assets id="assets-container"></a-assets>
 
         <a-entity id="model-container"></a-entity>
 
-        <a-light type="directional" position="1 1 0" intensity="1"></a-light>
+        <!-- Lighting -->
+        <a-light type="directional" position="1 2 1" intensity="1"></a-light>
         <a-light type="ambient" color="#FFFFFF" intensity="0.5"></a-light>
 
+        <!-- Sky and Camera -->
         <a-sky color="#ECECEC"></a-sky>
         <a-camera position="0 1.6 0">
-            <a-cursor></a-cursor>
+            <a-cursor color="#FF0000"></a-cursor>
         </a-camera>
     </a-scene>
 
+    <!-- JavaScript to Load Models and Handle Interactions -->
     <script>
-        // Initialize with the first model's settings
-        let currentModelIndex = 0;
-        const models = [];
+        // Path to the text file containing model data
         const modelDataFile = 'models_positions.txt';
 
+        // Fetch and process the model data
         fetch(modelDataFile)
             .then(response => response.text())
             .then(text => {
                 const modelContainer = document.getElementById('model-container');
                 const assetsContainer = document.getElementById('assets-container');
 
+                // Split the text file into lines
                 const lines = text.trim().split('\n');
 
+                // Process each line
                 lines.forEach((line, index) => {
-                    const [modelPath, x, y, z, yRotation] = line.split(',').map(item => item.trim());
-                    const mtlPath = modelPath.replace('.obj', '.mtl');
+                    const [modelPath, x, y, z, yRotation, description] = line.split(',').map(item => item.trim());
+                    const mtlPath = modelPath.replace('.obj', '.mtl'); // Assuming .mtl file has the same name
 
-                    // Preload the OBJ and MTL files
+                    // Preload the OBJ and MTL files in the assets container
                     const objAsset = document.createElement('a-asset-item');
                     objAsset.setAttribute('id', `model-obj-${index}`);
                     objAsset.setAttribute('src', modelPath);
@@ -69,41 +99,47 @@
                     entity.setAttribute('obj-model', `obj: #model-obj-${index}; mtl: #model-mtl-${index}`);
                     entity.setAttribute('position', `${x} ${y} ${z}`);
                     entity.setAttribute('rotation', `0 ${yRotation} 0`);
+                    entity.setAttribute('class', 'clickable'); // Add a class for identification
 
-                    // Store model data for dynamic updates
-                    models.push({ entity, position: { x, y, z }, rotation: yRotation });
+                    // Store description data
+                    entity.setAttribute('data-description', description);
+                    entity.setAttribute('data-title', `Model ${index + 1}`);
 
+                    // Add event listener for click
+                    entity.addEventListener('click', function (evt) {
+                        showPopup(this.getAttribute('data-title'), this.getAttribute('data-description'));
+                    });
+
+                    // Append the entity to the scene
                     modelContainer.appendChild(entity);
                 });
-
-                // Set up event listeners for the sliders
-                document.getElementById('xPos').addEventListener('input', updateModelPosition);
-                document.getElementById('yPos').addEventListener('input', updateModelPosition);
-                document.getElementById('zPos').addEventListener('input', updateModelPosition);
-                document.getElementById('yRot').addEventListener('input', updateModelRotation);
+            })
+            .catch(error => {
+                console.error('Error loading model data:', error);
             });
 
-        function updateModelPosition() {
-            const xPos = document.getElementById('xPos').value;
-            const yPos = document.getElementById('yPos').value;
-            const zPos = document.getElementById('zPos').value;
+        // Popup handling functions
+        const popup = document.getElementById('popup');
+        const popupTitle = document.getElementById('popup-title');
+        const popupDescription = document.getElementById('popup-description');
+        const popupClose = document.getElementById('popup-close');
 
-            const model = models[currentModelIndex];
-            model.position.x = xPos;
-            model.position.y = yPos;
-            model.position.z = zPos;
-
-            model.entity.setAttribute('position', `${xPos} ${yPos} ${zPos}`);
+        function showPopup(title, description) {
+            popupTitle.textContent = title;
+            popupDescription.textContent = description;
+            popup.style.display = 'block';
         }
 
-        function updateModelRotation() {
-            const yRot = document.getElementById('yRot').value;
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
 
-            const model = models[currentModelIndex];
-            model.rotation = yRot;
-
-            model.entity.setAttribute('rotation', `0 ${yRot} 0`);
-        }
+        // Hide popup when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target == popup) {
+                popup.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
