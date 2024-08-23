@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame with 3D Model</title>
+    <title>A-Frame with 3D Model and Lighting</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body>
     <a-scene>
         <a-assets>
             <!-- Preload the .obj and .mtl files -->
-            <a-asset-item id="my-obj" src="models/curved_leg_stool.obj"></a-asset-item>
-            <a-asset-item id="my-mtl" src="models/curved_leg_stool.mtl"></a-asset-item>
+            <a-asset-item id="my-obj" src="models/myModel.obj"></a-asset-item>
+            <a-asset-item id="my-mtl" src="models/myModel.mtl"></a-asset-item>
         </a-assets>
+
+        <!-- Adding a directional light -->
+        <a-light type="directional" position="1 1 0" intensity="1"></a-light>
+
+        <!-- Adding an ambient light to soften shadows -->
+        <a-light type="ambient" color="#FFFFFF" intensity="0.5"></a-light>
 
         <!-- Add the static object in front of the camera -->
         <a-entity 
             obj-model="obj: #my-obj; mtl: #my-mtl"
-            position="0 1.6 -2"  <!-- Adjust position in front of the camera -->
-            scale="1 1 1"         <!-- Adjust scale as needed -->
-            rotation="0 180 0"    <!-- Adjust rotation as needed -->
+            position="0 1.6 -2"
+            scale="1 1 1"
+            rotation="0 180 0"
         ></a-entity>
 
         <!-- Your existing camera, spheres, and scene setup -->
-        <a-sky color="#ECECEC"></a-sky>
-        <a-camera position="0 1.6 0">
+        <a-sky color="#33ECEC"></a-sky>
+        <a-camera position="0 2.6 0">
             <a-cursor></a-cursor>
         </a-camera>
 
