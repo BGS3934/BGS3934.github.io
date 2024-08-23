@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame with Dynamic OBJ Models</title>
+    <title>A-Frame with Dynamic Models and Menu</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body>
+    <div id="menu" style="position: absolute; top: 10px; left: 10px; background: white; padding: 10px;">
+        <label for="xPos">X Position:</label>
+        <input type="range" id="xPos" min="-10" max="10" step="0.1" value="0">
+        <br>
+        <label for="yPos">Y Position:</label>
+        <input type="range" id="yPos" min="0" max="10" step="0.1" value="1.6">
+        <br>
+        <label for="zPos">Z Position:</label>
+        <input type="range" id="zPos" min="-10" max="0" step="0.1" value="-3">
+        <br>
+        <label for="yRot">Y Rotation:</label>
+        <input type="range" id="yRot" min="0" max="360" step="1" value="0">
+    </div>
+
     <a-scene>
         <a-assets id="assets-container"></a-assets>
 
@@ -22,7 +36,9 @@
     </a-scene>
 
     <script>
-        // Path to the text file containing model data
+        // Initialize with the first model's settings
+        let currentModelIndex = 0;
+        const models = [];
         const modelDataFile = 'models_positions.txt';
 
         fetch(modelDataFile)
@@ -31,15 +47,13 @@
                 const modelContainer = document.getElementById('model-container');
                 const assetsContainer = document.getElementById('assets-container');
 
-                // Split the text file into lines
                 const lines = text.trim().split('\n');
 
-                // Process each line
                 lines.forEach((line, index) => {
                     const [modelPath, x, y, z, yRotation] = line.split(',').map(item => item.trim());
-                    const mtlPath = modelPath.replace('.obj', '.mtl'); // Assuming .mtl file has the same name
+                    const mtlPath = modelPath.replace('.obj', '.mtl');
 
-                    // Preload the OBJ and MTL files in the assets container
+                    // Preload the OBJ and MTL files
                     const objAsset = document.createElement('a-asset-item');
                     objAsset.setAttribute('id', `model-obj-${index}`);
                     objAsset.setAttribute('src', modelPath);
@@ -56,10 +70,40 @@
                     entity.setAttribute('position', `${x} ${y} ${z}`);
                     entity.setAttribute('rotation', `0 ${yRotation} 0`);
 
-                    // Append the entity to the scene
+                    // Store model data for dynamic updates
+                    models.push({ entity, position: { x, y, z }, rotation: yRotation });
+
                     modelContainer.appendChild(entity);
                 });
+
+                // Set up event listeners for the sliders
+                document.getElementById('xPos').addEventListener('input', updateModelPosition);
+                document.getElementById('yPos').addEventListener('input', updateModelPosition);
+                document.getElementById('zPos').addEventListener('input', updateModelPosition);
+                document.getElementById('yRot').addEventListener('input', updateModelRotation);
             });
+
+        function updateModelPosition() {
+            const xPos = document.getElementById('xPos').value;
+            const yPos = document.getElementById('yPos').value;
+            const zPos = document.getElementById('zPos').value;
+
+            const model = models[currentModelIndex];
+            model.position.x = xPos;
+            model.position.y = yPos;
+            model.position.z = zPos;
+
+            model.entity.setAttribute('position', `${xPos} ${yPos} ${zPos}`);
+        }
+
+        function updateModelRotation() {
+            const yRot = document.getElementById('yRot').value;
+
+            const model = models[currentModelIndex];
+            model.rotation = yRot;
+
+            model.entity.setAttribute('rotation', `0 ${yRot} 0`);
+        }
     </script>
 </body>
 </html>
