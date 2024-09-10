@@ -1,0 +1,29 @@
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://mixedreality.mozilla.org/webxr-polyfill/build/webxr-polyfill.js"></script>
+</head>
+<body>
+  <a-scene xrweb="arMode: true">
+    <a-text value="test" color="black" position="0 1.5 -2" background-color="white"></a-text>
+    <a-camera></a-camera>
+    <script>
+      // Get the XR system
+      const xr = navigator.xr;
+      // Check if the device supports immersive-ar mode
+      xr.isSessionSupported('immersive-ar').then((supported) => {
+        if (supported) {
+          // Request a session with local-floor and depth-sensing features
+          xr.requestSession('immersive-ar', {
+            requiredFeatures: ['local-floor', 'depth-sensing']
+          }).then((session) => {
+            // Start rendering the scene
+            const renderer = document.querySelector('a-scene').renderer;
+            renderer.xr.setSession(session);
+          });
+        }
+      });
+    </script>
+  </a-scene>
+</body>
+</html>
