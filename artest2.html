@@ -5,7 +5,7 @@
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <!-- Load the WebXR polyfill to support AR features in browsers that may not have full WebXR support -->
   <script src="https://mixedreality.mozilla.org/webxr-polyfill/build/webxr-polyfill.js"></script>
-  <title>AR with Model at Floor Level</title>
+  <title>AR with Multiple Models at Floor Level</title>
 </head>
 <body>
   <!-- A-Frame Scene: The main container for our AR experience -->
@@ -13,24 +13,43 @@
     
     <!-- Load and define assets (like 3D models) here -->
     <a-assets>
-      <!-- Preload the 3D model (OBJ file) and material (MTL file) -->
+      <!-- Preload the OBJ model and MTL material -->
       <a-asset-item id="my-model-obj" src="models/myModel.obj"></a-asset-item>
       <a-asset-item id="my-model-mtl" src="models/myModel.mtl"></a-asset-item>
+
+      <!-- Preload two GLTF models (chair1 and chair2) -->
+      <a-asset-item id="chair1-gltf" src="models/chair1.gltf"></a-asset-item>
+      <a-asset-item id="chair2-gltf" src="models/chair2.gltf"></a-asset-item>
     </a-assets>
     
-    <!-- 3D Model Entity: Place the model at floor level in the AR space -->
+    <!-- 3D Model Entity: Place the OBJ model at floor level in the AR space -->
     <a-entity 
       obj-model="obj: #my-model-obj; mtl: #my-model-mtl" 
       position="0 0 0" 
       rotation="0 0 0">
     </a-entity>
 
+    <!-- 3D GLTF Model 1: First chair model -->
+    <a-entity 
+      gltf-model="#chair1-gltf"
+      position="1 0 0" <!-- First model is positioned at (1, 0, 0) -->
+      scale="0.5 0.5 0.5">
+    </a-entity>
+
+    <!-- 3D GLTF Model 2: Second chair model -->
+    <a-entity 
+      gltf-model="#chair2-gltf"
+      position="1.5 0 0" <!-- Second model offset by 0.5 units from the first -->
+      scale="0.5 0.5 0.5">
+    </a-entity>
+
+    <!-- Lighting to make the models visible -->
     <a-light type="ambient" color="#FFFFFF" intensity="1"></a-light>
     <a-light type="directional" position="1 1 1" intensity="1"></a-light>
 
+    <!-- Example basic geometry (blue box) to test positioning -->
     <a-box position="1 0 1" scale="1 1 1" color="blue"></a-box>
 
-    
     <!-- The user's viewpoint (camera) in the AR scene -->
     <a-camera></a-camera>
     
