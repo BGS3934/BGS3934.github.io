@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>v3 Mixed Reality Tetris</title>
+  <title>Mixed Reality Tetris</title>
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <!-- Load aframe-extras for physics support -->
-  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v3.3.0/dist/aframe-physics-system.min.js"></script>
+  <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v3.3.0/dist/aframe-physics-system.min.js"></script>
 </head>
 <body>
-  <a-scene xrweb="arMode: true" physics="gravity: -9.8; debug: false">
+  <a-scene xrweb="arMode: true" physics="gravity: -9.8; debug: true" vr-mode-ui="enabled: false">
 
     <!-- Camera and lighting -->
     <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
@@ -17,25 +16,33 @@
     <a-camera position="0 1.6 0"></a-camera>
 
     <!-- Debug text for controller inputs -->
-    <a-text value="Controller Input: " position="-0.5 2 -3" id="debug-text" color="black"></a-text>
+    <a-text value="Controller Input: " position="0 2 -4" id="debug-text" color="black"></a-text>
 
-    <!-- Container for blocks -->
+    <!-- Ground for blocks to land on -->
+    <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#7BC8A4" static-body></a-plane>
+
+    <!-- Entity for block creation -->
     <a-entity id="block-container"></a-entity>
 
+    <!-- Right-hand Quest Controller -->
+    <a-entity id="right-hand" laser-controls="hand: right" oculus-touch-controls="hand: right" raycaster="objects: .clickable">
+    </a-entity>
+
+    <!-- Left-hand Quest Controller -->
+    <a-entity id="left-hand" laser-controls="hand: left" oculus-touch-controls="hand: left" raycaster="objects: .clickable">
+    </a-entity>
+
     <script>
-      // Controller Variables
+      let activeBlock;
+      const blockSize = 0.5;
       let rotation = 0;
       let positionX = 0;
-      let dropSpeed = 1;
-      let activeBlock;
+      let dropSpeed = 5;
       let blockDropping = false;
-      const blockSize = 0.5;
-      const blockDropHeight = 5;
 
       // Create a new block
       function createBlock() {
         activeBlock = document.createElement('a-entity');
-        activeBlock.setAttribute('position', `${positionX} ${blockDropHeight} -3`);
         activeBlock.setAttribute('geometry', {
           primitive: 'box',
           width: blockSize,
@@ -45,57 +52,49 @@
         activeBlock.setAttribute('material', {
           color: getRandomColor()
         });
-        activeBlock.setAttribute('dynamic-body', 'shape: box; mass: 1');  // Physics applied
+        activeBlock.setAttribute('position', `${positionX} 5 -3`);
         activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+        activeBlock.setAttribute('dynamic-body', 'shape: box; mass: 1');
         document.getElementById('block-container').appendChild(activeBlock);
         blockDropping = true;
       }
 
-      // Function to get a random color
+      // Get random color
       function getRandomColor() {
         const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
         return colors[Math.floor(Math.random() * colors.length)];
       }
 
-      // Function to rotate and move blocks
+      // Controller Inputs
       function handleControllerInput(evt) {
         const debugText = document.getElementById('debug-text');
-        const gamepad = evt.target.components['tracked-controls'].controller;
-        
-        // Update debug text
-        debugText.setAttribute('value', `Controller Input: ${gamepad.buttons[0].pressed ? 'Trigger pressed' : ''}`);
+        const controllerID = evt.target.id;
 
-        // Check for button presses and modify the block accordingly
-        if (gamepad.buttons[0].pressed) {  // Trigger button (drops faster)
-          dropSpeed = 5;
-        } else {
-          dropSpeed = 1;
-        }
-
-        // Move left (X button)
-        if (gamepad.buttons[1].pressed) {
-          positionX -= 0.1;
-          activeBlock.setAttribute('position', `${positionX} ${blockDropHeight} -3`);
-        }
-        
-        // Move right (Y button)
-        if (gamepad.buttons[2].pressed) {
-          positionX += 0.1;
-          activeBlock.setAttribute('position', `${positionX} ${blockDropHeight} -3`);
-        }
-
-        // Rotate left (A button)
-        if (gamepad.buttons[3].pressed) {
-          rotation -= 15;
-          activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
-        }
-
-        // Rotate right (B button)
-        if (gamepad.buttons[4].pressed) {
-          rotation += 15;
-          activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+        if (controllerID === 'right-hand') {
+          if (evt.detail.buttonName === 'bbutton') {
+            rotation += 90;
+            activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+            debugText.setAttribute('value', 'Right Controller: Rotating Block');
+          } else if (evt.detail.buttonName === 'trigger') {
+            dropSpeed = 25;
+            debugText.setAttribute('value', 'Right Controller: Dropping Faster');
+          }
+        } else if (controllerID === 'left-hand') {
+          if (evt.detail.buttonName === 'xbutton') {
+            positionX -= 1;
+            activeBlock.setAttribute('position', `${positionX} 5 -3`);
+            debugText.setAttribute('value', 'Left Controller: Moving Left');
+          } else if (evt.detail.buttonName === 'ybutton') {
+            positionX += 1;
+            activeBlock.setAttribute('position', `${positionX} 5 -3`);
+            debugText.setAttribute('value', 'Left Controller: Moving Right');
+          }
         }
       }
+
+      // Add event listeners for controllers
+      document.getElementById('right-hand').addEventListener('buttondown', handleControllerInput);
+      document.getElementById('left-hand').addEventListener('buttondown', handleControllerInput);
 
       // Continuously drop the block
       setInterval(() => {
@@ -105,16 +104,11 @@
             activeBlock.setAttribute('position', `${currentPosition.x} ${currentPosition.y - dropSpeed * 0.01} ${currentPosition.z}`);
           } else {
             blockDropping = false;
-            dropSpeed = 1;
-            createBlock();  // Start the next block after it lands
+            dropSpeed = 5;
+            createBlock();  // Start the next block after the current one lands
           }
         }
       }, 100);
-
-      // Listen for controller events
-      document.querySelector('a-scene').addEventListener('controllerconnected', (evt) => {
-        evt.target.addEventListener('axismove', handleControllerInput);
-      });
 
       // Start the first block
       createBlock();
