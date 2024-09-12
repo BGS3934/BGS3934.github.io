@@ -18,8 +18,7 @@
       <a-asset-item id="my-model-mtl" src="models/myModel.mtl"></a-asset-item>
 
       <!-- Preload two GLTF models (chair1 and chair2) -->
-      <a-asset-item id="chair1-gltf" src="models/chair1.gltf"></a-asset-item>
-      <a-asset-item id="chair2-gltf" src="models/chair2.gltf"></a-asset-item>
+      <a-asset-item id="chair1-gltf" src="models/chair1.glb"></a-asset-item>
     </a-assets>
     
     <!-- 3D Model Entity: Place the OBJ model at floor level in the AR space -->
@@ -33,13 +32,6 @@
     <a-entity 
       gltf-model="#chair1-gltf"
       position="1 0 0" <!-- First model is positioned at (1, 0, 0) -->
-      scale="0.5 0.5 0.5">
-    </a-entity>
-
-    <!-- 3D GLTF Model 2: Second chair model -->
-    <a-entity 
-      gltf-model="#chair2-gltf"
-      position="1.5 0 0" <!-- Second model offset by 0.5 units from the first -->
       scale="0.5 0.5 0.5">
     </a-entity>
 
