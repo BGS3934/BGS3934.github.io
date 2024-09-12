@@ -2,132 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AR Tetris</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v2 Mixed Reality Tetris</title>
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <script src="https://mixedreality.mozilla.org/webxr-polyfill/build/webxr-polyfill.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
 </head>
 <body>
-  <a-scene xrweb="arMode: true">
-    
-    <!-- Random Colors for Cubes -->
-    <a-assets>
-      <template id="cube-template">
-        <a-box position="0 0 0" scale="0.5 0.5 0.5"></a-box>
-      </template>
-    </a-assets>
+  <a-scene xrweb="arMode: true" physics="debug: true">
 
-    <!-- Player's Viewpoint and Controllers -->
+    <!-- Camera and lighting -->
+    <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
+    <a-light type="directional" position="1 2 0" intensity="1"></a-light>
     <a-camera position="0 1.6 0"></a-camera>
-    <a-entity id="right-hand" laser-controls="hand: right" rotation-listener></a-entity>
-    <a-entity id="left-hand" laser-controls="hand: left"></a-entity>
 
-    <a-light type="ambient" color="#ffffff" intensity="1"></a-light>
+    <!-- Debug text for controller inputs -->
+    <a-text value="Controller Input: " position="-0.5 2 -3" id="debug-text" color="black"></a-text>
 
-    <!-- Script to manage dropping blocks and controller input -->
+    <a-entity id="block-container"></a-entity>
+
     <script>
-      // Function to generate a random color
-      function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
+      // Controller Variables
+      let rotation = 0;
+      let positionX = 0;
+      let dropSpeed = 1;
+      let activeBlock;
+      const blockSize = 0.5;
+      let blockDropping = false;
 
-      // Generate a random block made of 4 cubes
-      function generateBlock() {
-        const block = document.createElement('a-entity');
-        const positions = [[0, 0, 0], [0.5, 0, 0], [0, 0.5, 0], [-0.5, 0, 0]];  // Sample shape, like Tetris piece
-        positions.forEach(pos => {
-          const cube = document.createElement('a-box');
-          cube.setAttribute('position', pos.join(' '));
-          cube.setAttribute('scale', '0.5 0.5 0.5');
-          cube.setAttribute('color', getRandomColor());
-          block.appendChild(cube);
+      // Create a new block
+      function createBlock() {
+        activeBlock = document.createElement('a-entity');
+        activeBlock.setAttribute('position', `${positionX} 5 -3`);
+        activeBlock.setAttribute('geometry', {
+          primitive: 'box',
+          width: blockSize,
+          height: blockSize,
+          depth: blockSize
         });
-        return block;
+        activeBlock.setAttribute('material', {
+          color: getRandomColor()
+        });
+        activeBlock.setAttribute('dynamic-body', 'shape: box; mass: 1');
+        activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+        document.getElementById('block-container').appendChild(activeBlock);
+        blockDropping = true;
       }
 
-      // Initialize a new block at a given position
-      function spawnBlock() {
-        const block = generateBlock();
-        block.setAttribute('position', `0 5 3`);
-        document.querySelector('a-scene').appendChild(block);
-        return block;
+      // Function to get a random color
+      function getRandomColor() {
+        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+        return colors[Math.floor(Math.random() * colors.length)];
       }
 
-      // Variables for control and speed
-      let currentBlock = spawnBlock();
-      let dropSpeed = 0.02;
-      let movingLeft = false;
-      let movingRight = false;
-      let rotating = false;
+      // Function to rotate and move blocks
+      function handleControllerInput(evt) {
+        const debugText = document.getElementById('debug-text');
+        if (evt.detail.name === 'bbuttondown') {
+          rotation += 90;
+          activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+          debugText.setAttribute('value', 'Controller Input: Rotating Block');
+        } else if (evt.detail.name === 'abuttondown') {
+          rotation -= 90;
+          activeBlock.setAttribute('rotation', `0 ${rotation} 0`);
+          debugText.setAttribute('value', 'Controller Input: Rotating Block (Reverse)');
+        } else if (evt.detail.name === 'xbuttondown') {
+          positionX -= 1;
+          activeBlock.setAttribute('position', `${positionX} 5 -3`);
+          debugText.setAttribute('value', 'Controller Input: Moving Left');
+        } else if (evt.detail.name === 'ybuttondown') {
+          positionX += 1;
+          activeBlock.setAttribute('position', `${positionX} 5 -3`);
+          debugText.setAttribute('value', 'Controller Input: Moving Right');
+        } else if (evt.detail.name === 'triggerdown') {
+          dropSpeed = 5;
+          debugText.setAttribute('value', 'Controller Input: Dropping Faster');
+        }
+      }
 
-      // Game Loop for movement and dropping
+      // Listen for controller events
+      document.addEventListener('bbuttondown', handleControllerInput);
+      document.addEventListener('abuttondown', handleControllerInput);
+      document.addEventListener('xbuttondown', handleControllerInput);
+      document.addEventListener('ybuttondown', handleControllerInput);
+      document.addEventListener('triggerdown', handleControllerInput);
+
+      // Continuously drop the block
       setInterval(() => {
-        let position = currentBlock.getAttribute('position');
-        
-        // Move left or right based on controller input
-        if (movingLeft) {
-          position.x -= 0.1;
+        if (blockDropping && activeBlock) {
+          let currentPosition = activeBlock.getAttribute('position');
+          if (currentPosition.y > 0) {
+            activeBlock.setAttribute('position', `${currentPosition.x} ${currentPosition.y - dropSpeed * 0.01} ${currentPosition.z}`);
+          } else {
+            blockDropping = false;
+            dropSpeed = 1;
+            createBlock();  // Start the next block after it lands
+          }
         }
-        if (movingRight) {
-          position.x += 0.1;
-        }
+      }, 100);
 
-        // Apply drop speed
-        position.y -= dropSpeed;
-
-        // Update block position
-        currentBlock.setAttribute('position', position);
-
-        // Check if block has reached the ground and spawn a new block
-        if (position.y <= 0.5) {
-          currentBlock = spawnBlock();
-        }
-      }, 50);  // Runs 20 times per second
-
-      // Set up event listeners for controller buttons
-      document.addEventListener('gamepadbuttondown', (event) => {
-        const button = event.detail.index;
-        // A button (rotate left)
-        if (button === 0) {
-          rotating = true;
-          currentBlock.object3D.rotation.y -= Math.PI / 2;
-        }
-        // B button (rotate right)
-        if (button === 1) {
-          rotating = true;
-          currentBlock.object3D.rotation.y += Math.PI / 2;
-        }
-        // X button (move left)
-        if (button === 2) {
-          movingLeft = true;
-        }
-        // Y button (move right)
-        if (button === 3) {
-          movingRight = true;
-        }
-        // Trigger button (drop faster)
-        if (button === 4) {
-          dropSpeed = 0.1;
-        }
-      });
-
-      // Reset controls when buttons are released
-      document.addEventListener('gamepadbuttonup', (event) => {
-        const button = event.detail.index;
-        if (button === 2) {
-          movingLeft = false;
-        }
-        if (button === 3) {
-          movingRight = false;
-        }
-        if (button === 4) {
-          dropSpeed = 0.02;
-        }
-      });
+      // Start the first block
+      createBlock();
     </script>
   </a-scene>
 </body>
