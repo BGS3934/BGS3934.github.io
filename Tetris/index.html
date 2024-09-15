@@ -6,14 +6,22 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: black">
+    <a-scene background="color: black" vr-mode-ui="enabled: true">
       <!-- Camera position -->
-      <a-entity camera position="0 1 3.5"></a-entity>
-
+      <a-entity id="camera" camera look-controls position="0 1.6 4"></a-entity>
+      
+      <!-- VR Controllers -->
+      <a-entity id="left-hand" laser-controls="hand: left"></a-entity>
+      <a-entity id="right-hand" laser-controls="hand: right">
+          <a-cylinder height="1" radius="0.025" color="blue" position="0 0 -0.5" rotation="90 0 0"></a-cylinder>
+      </a-entity>
+   
       <!-- Playfield outline -->
       <a-entity id="tetris-container" position="0 0 -5">
-        <a-box position="1.25 -1 0" width="5" height="10" depth="0.1" color="white" opacity="0.5"></a-box>
+        <a-box position="1.25 5 0" width="5" height="10" depth="0.1" color="white" opacity="0.5"></a-box>
       </a-entity>
+      <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#777" opacity="1"></a-plane>
+
     </a-scene>
 
     <script>
@@ -79,6 +87,9 @@
       // Score variable
       let score = 0;
 
+      // Height offset
+      let heightoffset = 9.75;
+
       // Function to get a random Tetromino
       function getRandomTetromino() {
         const keys = Object.keys(tetrominos);
@@ -91,7 +102,7 @@
 
       // Function to display both the play space and falling block combined
       function displayPlaySpace() {
-        console.log("Play Space:");
+       // console.log("Play Space:");
 
         // Combine the playSpace and fallingBlock grids for display
         for (let y = 0; y < playSpace.length; y++) {
@@ -100,9 +111,62 @@
             const cell = fallingBlock[y][x] === 1 ? 'X' : (playSpace[y][x] === 1 ? 'O' : '.');
             rowString += cell + ' ';
           }
-          console.log(rowString);
+        //  console.log(rowString);
         }
       }
+
+
+// Function to setup controller logging
+
+
+
+      const rightHand = document.querySelector('#right-hand');
+      const leftHand = document.querySelector('#left-hand');
+
+// Listen for trigger press
+rightHand.addEventListener('triggerdown', function (evt) {
+  moveBlock(1);
+});
+
+leftHand.addEventListener('triggerdown', function (evt) {
+  moveBlock(-1);
+});
+
+
+// Listen for grip button press
+rightHand.addEventListener('gripdown', function (evt) {
+  console.log('Grip pressed on right hand');
+});
+
+// Listen for axis move
+rightHand.addEventListener('axismove', function (evt) {
+  const axisData = evt.detail.axis;
+  console.log('Axis moved:', axisData);
+});
+
+// Listen for A button press (button index 4 for Oculus/Meta controllers)
+rightHand.addEventListener('buttondown', function (evt) {
+    if (evt.detail.id === 4) {
+      console.log('A button pressed on right hand');
+      rotateBlock();
+    }
+  });
+
+// Listen for left hand
+leftHand.addEventListener('buttondown', function (evt) {
+  console.log('buttondown',evt.detail.id);  
+  if (evt.detail.id === 4) {
+      console.log('X button pressed on left hand : ',evt.detail.id);
+      dropBlock();
+    }
+  });
+
+
+
+
+
+
+   
 
       // Function to update the falling Tetromino's position in the fallingBlock grid
       function updateFallingBlock(tetromino, positionX, positionY) {
@@ -142,7 +206,7 @@
               block.setAttribute('height', '0.5');
               block.setAttribute('depth', '0.5');
               block.setAttribute('color', fallingBlockColor);
-              block.setAttribute('position', `${x * 0.5 - 1} ${3.5 - y * 0.5} 0`);
+              block.setAttribute('position', `${x * 0.5 - 1} ${heightoffset - y * 0.5} 0`);
               block.classList.add('falling-block'); // Assign a class for easy removal
               container.appendChild(block);
             }
@@ -158,7 +222,7 @@
               block.setAttribute('height', '0.5');
               block.setAttribute('depth', '0.5');
               block.setAttribute('color', playSpace[y][x]); // Set color based on the cell value
-              block.setAttribute('position', `${x * 0.5 - 1} ${3.5 - y * 0.5} 0`);
+              block.setAttribute('position', `${x * 0.5 - 1} ${heightoffset - y * 0.5} 0`);
               block.classList.add('placed-block'); // Assign a class for easy removal
               container.appendChild(block);
             }
