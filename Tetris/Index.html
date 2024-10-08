@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>V3_3D Tetris-like Game with sounds</title>
+    <title>3D Tetris-like Game with Game Over and Retry</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   </head>
   <body>
@@ -28,13 +28,12 @@
       <a-sound id="place-sound" src="url(./sounds/place.mp3)"></a-sound>
       <a-sound src="url(./sounds/music.mp3)" autoplay="true" loop="true" volume="0.5"></a-sound>
 
-      <!-- Score and Game Over Text -->
-      <a-text id="score-text" value="Score: 0" position="-2 3.5 -4" color="white" width="6"></a-text>
-      <a-text id="game-over-text" value="" position="-2 2.5 -4" color="red" width="6"></a-text>
+      <!-- On-screen text for score and game over -->
+      <a-text id="score-text" value="Score: 0" position="-1 3 -5" align="center" color="white"></a-text>
+      <a-text id="gameover-text" value="" position="0 1 -5" align="center" color="red" visible="false"></a-text>
     </a-scene>
 
     <script>
-      // Tetromino shapes, color options, and game variables (similar to your original code)
       // Tetromino shapes in 3D
       const tetrominos = {
         'I': [
@@ -84,73 +83,236 @@
         'J': 'blue',
         'L': 'orange'
       };
-      let playSpace = Array(20).fill(null).map(() => Array(10).fill(0));
+
+      // Create a 20x10 grid for the play space
+      const playSpace = Array(20).fill(null).map(() => Array(10).fill(0));
+
+      // Create a grid for the falling block (reset after each frame)
       let fallingBlock = Array(20).fill(null).map(() => Array(10).fill(0));
+
+      // Drop speed in milliseconds
       let dropSpeed = 1000;
+
+      // Score variable
       let score = 0;
-      let gameOver = false;
-      let randomTetromino = getRandomTetromino();
-      let positionX = 3;
-      let positionY = 0;
 
-      const scoreText = document.querySelector('#score-text');
-      const gameOverText = document.querySelector('#game-over-text');
+      // Height offset
+      let heightoffset = 9.75;
 
-      // Update score display
-      function updateScore() {
-        scoreText.setAttribute('value', 'Score: ' + score);
+      // Game over flag
+      let isGameOver = false;
+
+      // Function to get a random Tetromino
+      function getRandomTetromino() {
+        const keys = Object.keys(tetrominos);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        return {
+          matrix: tetrominos[randomKey],
+          color: colorOptions[randomKey]
+        };
       }
 
-      // Check if the game is over
-      function checkGameOver() {
-        if (checkCollision(randomTetromino, positionX, positionY)) {
-          gameOver = true;
-          gameOverText.setAttribute('value', 'Game Over! Press A to Retry');
+      // Function to display both the play space and falling block combined
+      function displayPlaySpace() {
+        if (isGameOver) return;
+      }
+
+      // Handle VR controllers
+      const rightHand = document.querySelector('#right-hand');
+      const leftHand = document.querySelector('#left-hand');
+
+      rightHand.addEventListener('triggerdown', function () {
+        if (!isGameOver) moveBlock(1);
+      });
+
+      leftHand.addEventListener('triggerdown', function () {
+        if (!isGameOver) moveBlock(-1);
+      });
+
+      rightHand.addEventListener('buttondown', function (evt) {
+        if (isGameOver && evt.detail.id === 4) {
+          resetGame();
+        } else if (!isGameOver && evt.detail.id === 4) {
+          rotateBlock();
+        }
+      });
+
+      leftHand.addEventListener('buttondown', function (evt) {
+        if (!isGameOver && evt.detail.id === 4) {
+          dropBlock();
+        }
+      });
+
+      // Function to update the falling Tetromino's position in the fallingBlock grid
+      function updateFallingBlock(tetromino, positionX, positionY) {
+        if (isGameOver) return;
+
+        // Reset falling block grid
+        fallingBlock = Array(20).fill(null).map(() => Array(10).fill(0));
+        
+        // Place the tetromino at the current position
+        tetromino.matrix.forEach((row, rowIndex) => {
+          row.forEach((cell, colIndex) => {
+            if (cell === 1 && positionY + rowIndex < 20 && positionX + colIndex < 10) {
+              fallingBlock[positionY + rowIndex][positionX + colIndex] = 1;
+            }
+          });
+        });
+
+        // Display the current state of the game
+        displayPlaySpace();
+
+        // Render the blocks in the A-Frame scene
+        renderBlocks(tetromino.color);
+      }
+
+      // Function to render the blocks in the A-Frame scene
+      function renderBlocks(fallingBlockColor) {
+        const container = document.querySelector("#tetris-container");
+
+        // Remove previously rendered falling blocks and placed blocks to avoid duplication
+        const existingBlocks = document.querySelectorAll(".falling-block, .placed-block");
+        existingBlocks.forEach(block => block.remove());
+
+        // Loop through the fallingBlock grid to create and position 3D blocks (falling blocks)
+        for (let y = 0; y < fallingBlock.length; y++) {
+          for (let x = 0; x < fallingBlock[y].length; x++) {
+            if (fallingBlock[y][x] === 1) {
+              const block = document.createElement('a-box');
+              block.setAttribute('width', '0.5');
+              block.setAttribute('height', '0.5');
+              block.setAttribute('depth', '0.5');
+              block.setAttribute('color', fallingBlockColor);
+              block.setAttribute('position', `${x * 0.5 - 1} ${heightoffset - y * 0.5} 0`);
+              block.classList.add('falling-block'); // Assign a class for easy removal
+              container.appendChild(block);
+            }
+          }
+        }
+
+        // Loop through the playSpace grid to create and position 3D blocks (placed blocks)
+        for (let y = 0; y < playSpace.length; y++) {
+          for (let x = 0; x < playSpace[y].length; x++) {
+            if (playSpace[y][x] !== 0) {
+              const block = document.createElement('a-box');
+              block.setAttribute('width', '0.5');
+              block.setAttribute('height', '0.5');
+              block.setAttribute('depth', '0.5');
+              block.setAttribute('color', playSpace[y][x]); // Set color based on the cell value
+              block.setAttribute('position', `${x * 0.5 - 1} ${heightoffset - y * 0.5} 0`);
+              block.classList.add('placed-block'); // Assign a class for easy removal
+              container.appendChild(block);
+            }
+          }
         }
       }
 
-      // Reset game state
-      function resetGame() {
-        playSpace = Array(20).fill(null).map(() => Array(10).fill(0));
-        score = 0;
-        updateScore();
-        randomTetromino = getRandomTetromino();
-        positionX = 3;
-        positionY = 0;
-        gameOver = false;
-        gameOverText.setAttribute('value', '');
+      // Function to check for collisions
+      function checkCollision(tetromino, positionX, positionY) {
+        for (let rowIndex = 0; rowIndex < tetromino.matrix.length; rowIndex++) {
+          for (let colIndex = 0; colIndex < tetromino.matrix[rowIndex].length; colIndex++) {
+            if (
+              tetromino.matrix[rowIndex][colIndex] === 1 &&
+              (playSpace[positionY + rowIndex] && playSpace[positionY + rowIndex][positionX + colIndex]) !== 0
+            ) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
+      // Function to move the block left or right
+      function moveBlock(direction) {
+        const newX = positionX + direction;
+        if (!checkCollision(randomTetromino, newX, positionY)) {
+          positionX = newX;
+        }
         updateFallingBlock(randomTetromino, positionX, positionY);
       }
 
-      // Drop block function modified to check for game over
-      function dropBlock() {
-        if (gameOver) return;
+      // Function to rotate the tetromino
+      function rotateBlock() {
+        const rotatedMatrix = randomTetromino.matrix[0].map((val, index) =>
+          randomTetromino.matrix.map(row => row[index]).reverse()
+        );
+        if (!checkCollision({ ...randomTetromino, matrix: rotatedMatrix }, positionX, positionY)) {
+          randomTetromino.matrix = rotatedMatrix;
+        }
+        updateFallingBlock(randomTetromino, positionX, positionY);
+      }
 
+      // Function to drop the block downwards
+      function dropBlock() {
         if (checkCollision(randomTetromino, positionX, positionY + 1)) {
           placeBlock(randomTetromino, positionX, positionY);
           clearFullRows();
           randomTetromino = getRandomTetromino();
           positionX = 3;
           positionY = 0;
-          checkGameOver();
+          if (checkCollision(randomTetromino, positionX, positionY)) {
+            endGame();
+          }
         } else {
           positionY++;
         }
-
         updateFallingBlock(randomTetromino, positionX, positionY);
       }
 
-      // Button press to reset the game on 'A' button (right hand, button index 4)
-      document.querySelector('#right-hand').addEventListener('buttondown', function (evt) {
-        if (evt.detail.id === 4 && gameOver) {
-          resetGame();
+      // Function to place the block into the playSpace
+      function placeBlock(tetromino, positionX, positionY) {
+        tetromino.matrix.forEach((row, rowIndex) => {
+          row.forEach((cell, colIndex) => {
+            if (cell === 1 && positionY + rowIndex < 20 && positionX + colIndex < 10) {
+              playSpace[positionY + rowIndex][positionX + colIndex] = tetromino.color;
+            }
+          });
+        });
+      }
+
+      // Function to clear full rows
+      function clearFullRows() {
+        let fullRows = 0;
+        for (let y = 0; y < playSpace.length; y++) {
+          if (playSpace[y].every(cell => cell !== 0)) {
+            playSpace.splice(y, 1);
+            playSpace.unshift(Array(10).fill(0));
+            fullRows++;
+          }
         }
-      });
+        score += fullRows * 10; // Add score for each full row cleared
+        document.querySelector('#score-text').setAttribute('value', 'Score: ' + score);
+      }
 
-      // Drop block every `dropSpeed` milliseconds if the game is not over
+      // Function to handle game over
+      function endGame() {
+        isGameOver = true;
+        document.querySelector('#gameover-text').setAttribute('value', 'Game Over! Press A to Retry');
+        document.querySelector('#gameover-text').setAttribute('visible', 'true');
+      }
+
+      // Function to reset the game
+      function resetGame() {
+        playSpace.forEach((row, rowIndex) => {
+          row.fill(0);
+        });
+        score = 0;
+        isGameOver = false;
+        document.querySelector('#score-text').setAttribute('value', 'Score: ' + score);
+        document.querySelector('#gameover-text').setAttribute('visible', 'false');
+        randomTetromino = getRandomTetromino();
+        positionX = 3;
+        positionY = 0;
+        updateFallingBlock(randomTetromino, positionX, positionY);
+      }
+
+      // Initialize random Tetromino and its position
+      let randomTetromino = getRandomTetromino();
+      let positionX = 3;
+      let positionY = 0;
+
+      // Drop block every `dropSpeed` milliseconds
       setInterval(dropBlock, dropSpeed);
-
-      // Other functions for movement, rotation, etc. remain the same...
     </script>
   </body>
 </html>
