@@ -289,7 +289,7 @@ leftHand.addEventListener('buttondown', function (evt) {
       // Function to "drop" the falling block
       function dropBlock() {
         // Check for collision before moving the block down
-        document.querySelector('#drop-sound').components.sound.playSound();
+            // document.querySelector('#drop-sound').components.sound.playSound();
         if (checkCollision(randomTetromino, positionX, positionY + 1)) {
           // Place the block in the playSpace and clear full rows
           placeBlock(randomTetromino, positionX, positionY);
