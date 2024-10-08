@@ -5,7 +5,7 @@
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <!-- Load the WebXR polyfill to support AR features in browsers that may not have full WebXR support -->
   <script src="https://mixedreality.mozilla.org/webxr-polyfill/build/webxr-polyfill.js"></script>
-  <title>v3-AR with Multiple Models at Floor Level</title>
+  <title>v4-AR with Multiple Models at Floor Level</title>
 </head>
 <body>
   <!-- A-Frame Scene: The main container for our AR experience -->
@@ -24,15 +24,15 @@
     <!-- 3D Model Entity: Place the OBJ model at floor level in the AR space -->
     <a-entity 
       obj-model="obj: #my-model-obj; mtl: #my-model-mtl" 
-      position="0 0 0" 
-      rotation="0 0 0">
+      position="0 -0 0" 
+      rotation="0 45 0">
     </a-entity>
 
     <!-- 3D GLTF Model 1: First chair model -->
     <a-entity 
       gltf-model="#chair1-gltf"
-      position="1 0 0"
-      scale="0.001 0.001 0.001"
+      position="1 -2 0"
+      scale="0.0001 0.0001 0.0001"
     </a-entity>
 
     <!-- Lighting to make the models visible -->
