@@ -1,1 +1,185 @@
-"Hello world" 
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" />
+    <title>Tree Planting VR Demo</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body> 
+    <!-- A-Frame Scene -->
+    <a-scene background="color: skyblue" vr-mode-ui="enabled: true">
+        <!-- Camera -->
+        <a-entity id="camera" camera look-controls position="0 1.6 4">
+        <!-- Text Display for Counters -->
+          <a-text id="treeCountText" value="Trees Planted: 0" color="black" position="0 -1.0 -2"></a-text>
+          <a-text id="co2CapturedText" value="CO₂ Capture per year: 0 kg" color="black" position="0 -1.3 -2"></a-text>
+        </a-entity>
+
+        <!-- Ground Plane -->
+        <a-box position="0 0 0" width="100" height="0.1" depth="100" color="green" opacity="0.5"></a-box>
+
+        <!-- Drone Entity -->
+        <a-entity id="drone" position="2 4 -3" rotation="0 -90 0">
+            <a-sphere position="0 0 0" radius="0.3" scale="2 1 1" color="gray"></a-sphere>        
+            <a-cylinder position="0.6 0 0" height="1.5" radius="0.1" color="gray" rotation="90 90 0"></a-cylinder>
+            <a-sphere position="0 0.3 0" radius="0.3" color="black" rotation="90 0 0" scale="3 0.1 0.2"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 500; easing: linear;"></a-sphere>
+            <a-sphere position="1.3 0 0.1" radius="0.3" color="black" rotation="90 0 0" scale="1.5 0.05 0.1"
+                animation="property: rotation; to: 0 0 360; loop: true; dur: 500; easing: linear;"></a-sphere>   
+            <a-cone id="movable-box" position="0 -3.5 0" radius-bottom="0" radius-top="0.25" height="1" color="red" opacity="0.8"
+            animation="property: position; to: 0 -3 0; loop: true; dir: alternate; dur: 500;"></a-cone>   
+        </a-entity>
+        
+        <!-- VR Controllers -->
+        <a-entity id="left-hand" laser-controls="hand: left"></a-entity>
+        <a-entity id="right-hand" laser-controls="hand: right"></a-entity>
+
+    </a-scene>
+
+    <script>
+      // Select the drone entity and the scene
+      const drone = document.querySelector("#drone");
+      const scene = document.querySelector("a-scene");
+
+      // Initial position variables for the drone
+      let position = { x: 2, y: 4, z: -3 };
+
+      // Initialize counters
+  let treeCount = 0;
+  let totalCO2Captured = 0;
+
+  // Function to update A-Frame text elements
+  function update3DCounter() {
+    document.getElementById('treeCountText').setAttribute('value', `Trees Planted: ${treeCount}`);
+    document.getElementById('co2CapturedText').setAttribute('value', `CO₂ Capture per year: ${totalCO2Captured.toFixed(2)} kg`);
+  }
+
+  // Function to plant a new tree and update counters
+  function plantTree() {
+    // Add your tree-creation code here
+
+    treeCount += 1;
+    totalCO2Captured += (Math.random()*4+8); // Example: each tree captures 10 kg CO₂ +- 2kg
+    update3DCounter(); // Update the in-scene display
+  }
+
+  // Trigger tree planting on Space key press
+  document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+      plantTree();
+    }
+  });
+
+      // Function to update the drone's position
+      function updateDronePosition() {
+        drone.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
+      }
+
+      // Function to create a new tree at the drone's current x, z position and y = 0
+      function createTreeAtDronePosition() {
+        const tree = document.createElement('a-entity');
+        tree.setAttribute('position', `${position.x} 0 ${position.z}`);
+        tree.setAttribute('scale', '0.05 0.05 0.05');
+        tree.setAttribute('rotation', '0 33 0');
+
+        // Generate a random green color
+        function getRandomGreenColor() {
+          const green = Math.floor(Math.random() * 206) + 20; // Ensures a moderate green value
+          return `#00${green.toString(16).padStart(2, '0')}00`;
+        }
+
+        // Create tree components
+        const foliage = document.createElement('a-dodecahedron');
+        foliage.setAttribute('position', '0 3 0');
+        foliage.setAttribute('radius', '1.5');
+        foliage.setAttribute('color', getRandomGreenColor()); // Set random green color
+
+
+        const trunk = document.createElement('a-cylinder');
+        trunk.setAttribute('position', '0 1.5 0');
+        trunk.setAttribute('height', '3');
+        trunk.setAttribute('radius', '0.3');
+        trunk.setAttribute('color', '#964B00');
+
+        // Append foliage and trunk to the tree entity
+        tree.appendChild(foliage);
+        tree.appendChild(trunk);
+
+        // Append the new tree entity to the scene
+        scene.appendChild(tree);
+
+        // Animate growth to random size between 0.5 and 1 over 30 seconds
+        const randomScale = (Math.random()/2 + 0.5).toFixed(1);
+        tree.setAttribute('animation', {
+        property: 'scale',
+        to: `${randomScale} ${randomScale} ${randomScale}`,
+        dur: 30000,
+        easing: 'easeOutQuad'
+});
+}
+
+      // Event listener for keydown events
+      document.addEventListener('keydown', function(event) {
+        switch (event.code) {
+          case 'ArrowLeft': position.x -= 0.5; break;
+          case 'ArrowRight': position.x += 0.5; break;
+          case 'ArrowUp': position.z -= 0.5; break;
+          case 'ArrowDown': position.z += 0.5; break;
+          case 'Space': createTreeAtDronePosition(); break;
+        }
+        updateDronePosition(); 
+      });
+
+
+// Function to setup controller logging
+
+const rightHand = document.querySelector('#right-hand');
+const leftHand = document.querySelector('#left-hand');
+
+// Listen for trigger press
+rightHand.addEventListener('triggerdown', function (evt) {
+  position.x -= 0.5;
+  updateDronePosition;
+});
+
+leftHand.addEventListener('triggerdown', function (evt) {
+  position.x += 0.5;
+  updateDronePosition;
+});
+
+
+// Listen for grip button press
+rightHand.addEventListener('gripdown', function (evt) {
+  console.log('Grip pressed on right hand');
+  position.z -= 0.5;
+  updateDronePosition;
+});
+
+// Listen for grip button press
+leftHand.addEventListener('gripdown', function (evt) {
+  console.log('Grip pressed on left hand');
+  position.z += 0.5;
+  updateDronePosition;
+});
+
+
+// Listen for A button press (button index 4 for Oculus/Meta controllers)
+rightHand.addEventListener('buttondown', function (evt) {
+    if (evt.detail.id === 4) {
+      console.log('A button pressed on right hand');
+      createTreeAtDronePosition();
+    }
+  });
+
+// Listen for left hand
+leftHand.addEventListener('buttondown', function (evt) {
+  console.log('buttondown',evt.detail.id);  
+  if (evt.detail.id === 4) {
+      console.log('X button pressed on left hand : ',evt.detail.id);
+    }
+  });
+
+
+    </script>
+  </body>
+</html>
