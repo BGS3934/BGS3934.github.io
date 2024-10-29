@@ -140,26 +140,30 @@ const leftHand = document.querySelector('#left-hand');
 rightHand.addEventListener('triggerdown', function (evt) {
   position.x -= 0.5;
   updateDronePosition;
+  break;
 });
 
 leftHand.addEventListener('triggerdown', function (evt) {
   position.x += 0.5;
   updateDronePosition;
+  break;
 });
 
 
 // Listen for grip button press
 rightHand.addEventListener('gripdown', function (evt) {
   console.log('Grip pressed on right hand');
-  position.z -= 0.5;
+  position.z += 0.5;
   updateDronePosition;
+  break;
 });
 
 // Listen for grip button press
 leftHand.addEventListener('gripdown', function (evt) {
   console.log('Grip pressed on left hand');
-  position.z += 0.5;
+  position.z -= 0.5;
   updateDronePosition;
+  break;
 });
 
 
