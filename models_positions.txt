@@ -1,4 +1,0 @@
-models/myModel.obj, 1, 0.0, -1, 0, stool by Daniel Sprague
-models/myModel2.obj, 2, 0.0, -3, 90, cube thingy by Armin Boehnke
-models/myModel3.obj, -2, 0.0, -3, 45, icosphere by Daniel Sprague
-models/floor.obj, 0, 0.0, 0, 0, floor
