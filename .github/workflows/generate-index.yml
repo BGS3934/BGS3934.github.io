@@ -1,5 +1,6 @@
 name: Generate Index
 
+
 on:
   push:
     branches:
