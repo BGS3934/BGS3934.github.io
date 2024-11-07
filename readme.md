@@ -45,5 +45,4 @@ This repository is managed by Balcombe Grammar School staff, and contributions a
 **License**
 This repository is for educational purposes only and is maintained by Balcombe Grammar School. Project files may not be reused or redistributed without permission.
 
-
 Thank you for exploring our students' projects! We hope you enjoy viewing their work and experiencing the creativity they bring to their interactive and immersive web projects.
