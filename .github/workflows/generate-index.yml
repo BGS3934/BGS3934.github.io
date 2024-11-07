@@ -16,10 +16,10 @@ jobs:
 
       - name: Generate index.html
         run: |
-            echo '<!DOCTYPE html><html lang="en">' > index.html
-            echo '<head><meta charset="UTF-8"><title>Student Projects</title><style>body { font-size: 18px; }</style></head>' >> index.html
-            echo '<body>' >> index.html
-            echo '<h1>Student Projects</h1><ul>' >> index.html
+          echo '<!DOCTYPE html><html lang="en">' > index.html
+          echo '<head><meta charset="UTF-8"><title>Student Projects</title></head>' >> index.html
+          echo '<body><h1>Student Projects</h1><ul>' >> index.html
+        
 
           for dir in $(find . -type d -mindepth 1 -maxdepth 1); do
             student=$(basename "$dir")
