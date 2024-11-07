@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - main  # Adjust to your default branch if needed
-
+permissions:
+  contents: write
 jobs:
   update-index:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Generate index.html
         run: |
