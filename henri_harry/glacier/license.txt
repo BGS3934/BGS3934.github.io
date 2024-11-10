@@ -1,0 +1,11 @@
+Model Information:
+* title:	Glacier
+* source:	https://sketchfab.com/3d-models/glacier-3a99888fea90471ebb9bc2938a66e052
+* author:	orkunsevengil (https://sketchfab.com/orkunsevengil)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Glacier" (https://sketchfab.com/3d-models/glacier-3a99888fea90471ebb9bc2938a66e052) by orkunsevengil (https://sketchfab.com/orkunsevengil) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
