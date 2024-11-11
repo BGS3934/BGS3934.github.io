@@ -14,7 +14,7 @@ Each student’s project is stored in a separate folder within this repository, 
 - Additional resources, such as 3D models, textures, and scripts, are stored in subdirectories within each student’s project folder.
 
 ### Example Structure
-
+'''
 .
 ├── Daniel/
 │   ├── index.html
@@ -29,7 +29,7 @@ Each student’s project is stored in a separate folder within this repository, 
 │   ├── project.html
 │   └── ...
 └── index.html
-
+'''
 **Viewing Projects**
 Each project can be accessed via GitHub Pages at the following URL structure:
 
