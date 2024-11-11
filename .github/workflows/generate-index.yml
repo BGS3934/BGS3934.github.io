@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Delay start by 30 seconds
+        run: sleep 30
+    
       - name: Check out repository
         uses: actions/checkout@v2
 
