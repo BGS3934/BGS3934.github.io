@@ -27,12 +27,13 @@ jobs:
           echo '</style></head><body>' >> index.html
           echo '<h1>Student Projects</h1><div class="project-grid">' >> index.html
 
+          # Loop through each folder to add projects
           for dir in */; do
-            if [[ -f "$dir/index.html" && -f "$dir/screenshot.png" ]]; then
-              project_name=$(basename "$dir")
-              echo "<div class='project'><a href='$dir/index.html'>" >> index.html
-              echo "<img src='$dir/screenshot.png' alt='$project_name screenshot'>" >> index.html
-              echo "<div>$project_name's Project</div></a></div>" >> index.html
+            if [ -f "${dir}screenshot.png" ] && [ -f "${dir}index.html" ]; then
+              echo "<div class='project'>" >> index.html
+              echo "<img src='${dir}screenshot.png' alt='${dir%/} project screenshot'>" >> index.html
+              echo "<p><a href='${dir}index.html'>${dir%/}'s Project</a></p>" >> index.html
+              echo "</div>" >> index.html
             fi
           done
 
