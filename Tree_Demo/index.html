@@ -181,16 +181,16 @@ leftHand.addEventListener('buttondown', function (evt) {
   // Right thumbstick event listener for binary movement
   rightHand.addEventListener('thumbstickmoved', function (evt) {
     if (evt.detail.y < -0.85) { // pushed forward
-      position.z -= 1; // move drone forward by 1 unit
+      position.z -= .2; // move drone forward by 1 unit
       updateDronePosition();
     } else if (evt.detail.y > 0.85) { // pushed backward
-      position.z += 1; // move drone backward by 1 unit
+      position.z += .2; // move drone backward by 1 unit
       updateDronePosition();
     } else if (evt.detail.x < -0.85) { // pushed left
-      position.x -= 1; // move drone left by 1 unit
+      position.x -= .2; // move drone left by 1 unit
       updateDronePosition();
     } else if (evt.detail.x > 0.85) { // pushed right
-      position.x += 1; // move drone right by 1 unit
+      position.x += .2; // move drone right by 1 unit
       updateDronePosition();
     }
   });
