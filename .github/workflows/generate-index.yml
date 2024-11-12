@@ -37,10 +37,12 @@ jobs:
               if [ -f "${dir}Screenshot.png" ]; then
                 img_path="${dir}Screenshot.png"
               else
-                img_path=".github/workflows/Screenshot.png"
+                img_path="/.github/workflows/Screenshot.png"
               fi
               echo "<div class='project'>" >> index.html
+              echo "<a href='${dir}index.html'>" >> index.html
               echo "<img src='${img_path}' alt='${dir%/} project screenshot'>" >> index.html
+              echo "</a>" >> index.html
               echo "<p><a href='${dir}index.html'>${dir%/}'s Project</a></p>" >> index.html
               echo "</div>" >> index.html
             else
