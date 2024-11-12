@@ -67,6 +67,7 @@
   document.addEventListener('keydown', function(event) {
     if (event.code === 'Space') {
       plantTree();
+      createTreeAtDronePosition();
     }
   });
 
@@ -125,7 +126,6 @@
           case 'ArrowRight': position.x += 0.5; break;
           case 'ArrowUp': position.z -= 0.5; break;
           case 'ArrowDown': position.z += 0.5; break;
-          case 'Space': createTreeAtDronePosition(); break;
         }
         updateDronePosition(); 
       });
