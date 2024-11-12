@@ -2,7 +2,7 @@
 <html lang="en">
   <head> 
     <meta charset="UTF-8" />
-    <title>Tree Planting VR Demo</title>
+    <title>Tree Planting VR Demo v3</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   </head>
   <body> 
@@ -161,12 +161,12 @@ leftHand.addEventListener('gripdown', function (evt) {
   updateDronePosition();
 });
 
-
 // Listen for A button press (button index 4 for Oculus/Meta controllers)
 rightHand.addEventListener('buttondown', function (evt) {
     if (evt.detail.id === 4) {
       console.log('A button pressed on right hand');
       plantTree();
+      createTreeAtDronePosition();
     }
   });
 
