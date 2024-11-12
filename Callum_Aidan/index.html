@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js">
+    </script>
+
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+
+  </head>
+  <body>
+    <a-scene>
+   <a-assets>
+
+<a-assets-item id="sun" src="sun/scene.gltf"></a-assets-item>
+<a-assets-item id="house" src="house/scene.gltf"></a-assets-item>
+<a-assets-item id="terrain" src="dry_sand_terrain/scene.gltf"></a-assets-item>
+<a-assets-item id="crate" src="crates/scene.gltf"></a-assets-item>
+<a-assets-item id="skybox" src="skybox/scene.gltf"></a-assets-item>
+<a-assets-item id="box" src="box/scene.gltf"></a-assets-item>
+<a-assets-item id="bot" src="clawbot_v5/scene.gltf"></a-assets-item>
+
+    </a-assets>
+      
+      <a-entity gltf-model="#sun" position="-150 80 -5" scale="2 2 2" animation="property: rotation; to: 0 360 0; dur: 100000; loop: true; easing: linear"></a-entity>
+      <a-entity gltf-model="#terrain" position="100 -5 -100" scale="0.1 0.1 0.1"></a-entity>
+      <a-sky src="sky.jpg"></a-sky>
+      <a-entity gltf-model="#skybox" position="0 0 0" scale="100 100 100"></a-entity>
+      <a-entity gltf-model="#house" position="-15 0 -20" scale="0.6 0.6 0.6"></a-entity>
+      <a-entity gltf-model="#crate" position="-12 0 -20" scale="0.01 0.01 0.01" animation="property: rotation; to: 0 180 0; dur: 1; loop: false; easing: linear"></a-entity>
+      <a-entity gltf-model="#box" position="10 0 -20" scale="1 1 1" animation="property: position; to: -7 0 -20; dur: 10000; loop: true; easing: linear"></a-entity>
+      <a-entity gltf-model="#bot" position="10 2 -19.1" scale="0.025 0.025 0.025" animation__first="property: rotation; to: 0 270 0; dur: 1; loop: false; easing: linear" animation="property: position; to: -7 2 -19.1; dur:10000; loop: true; easing: linear"<a-animation attribute="position" to="-7 2 -19.1" dur="10000" loop="true" easing="linear";></a-animation></a-entity>
+     
+    </a-scene>
+  </body>
+</html>
