@@ -26,8 +26,23 @@ jobs:
           echo '  .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }' >> index.html
           echo '  .project { text-align: center; }' >> index.html
           echo '  .project img { width: 480px; height: 320px; object-fit: cover; }' >> index.html
+          
+          # Media queries for responsive layout
+          echo '  @media (max-width: 768px) {' >> index.html
+          echo '    .project-grid { grid-template-columns: repeat(2, 1fr); }' >> index.html
+          echo '    .project img { width: 240px; height: 160px; }' >> index.html
+          echo '  }' >> index.html
+          
+          echo '  @media (max-width: 480px) {' >> index.html
+          echo '    .project-grid { grid-template-columns: 1fr; }' >> index.html
+          echo '    .project img { width: 100%; height: auto; }' >> index.html
+          echo '  }' >> index.html
+          
           echo '</style></head><body>' >> index.html
-          echo '<h1>Student Projects</h1><div class="project-grid">' >> index.html
+          echo '<h1>BGS STRIVE Student VR Projects</h1>' >> index.html
+          echo '<hr>' >> index.html
+          echo '<div class="project-grid">' >> index.html
+
 
           # Loop through each folder to add projects
           for dir in */; do
