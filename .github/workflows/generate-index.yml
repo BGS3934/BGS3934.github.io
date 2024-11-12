@@ -29,6 +29,7 @@ jobs:
 
           # Loop through each folder to add projects
           for dir in */; do
+            echo "Checking folder: $dir"  # Add this line
             if [ -f "${dir}screenshot.png" ] && [ -f "${dir}index.html" ]; then
               echo "<div class='project'>" >> index.html
               echo "<img src='${dir}screenshot.png' alt='${dir%/} project screenshot'>" >> index.html
