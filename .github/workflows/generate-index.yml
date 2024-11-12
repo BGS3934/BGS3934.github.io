@@ -1,44 +1,42 @@
-name: Generate Index
+name: Generate Project Index
 
 on:
   push:
     branches:
-      - main  # Adjust to your default branch if needed
-permissions:
-  contents: write
+      - main
+
 jobs:
   update-index:
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Delay start by 30 seconds
         run: sleep 30
     
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Remove existing index.html
-        run: rm -f index.html
-
 
       - name: Generate index.html
         run: |
           echo '<!DOCTYPE html><html lang="en">' > index.html
-          echo '<head><meta charset="UTF-8"><title>Student Projects</title></head>' >> index.html
-          echo '<body><h1>Student Projects</h1><ul>' >> index.html
+          echo '<head><meta charset="UTF-8"><title>Student Projects</title>' >> index.html
+          echo '<style>' >> index.html
+          echo '  body { font-family: Arial, sans-serif; padding: 20px; display: flex; flex-wrap: wrap; justify-content: center; }' >> index.html
+          echo '  .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }' >> index.html
+          echo '  .project { text-align: center; }' >> index.html
+          echo '  .project img { width: 320px; height: 480px; object-fit: cover; }' >> index.html
+          echo '</style></head><body>' >> index.html
+          echo '<h1>Student Projects</h1><div class="project-grid">' >> index.html
 
-          for dir in $(find . -type d -mindepth 1 -maxdepth 1); do
-            student=$(basename "$dir")
-            if [ -f "$dir/index.html" ]; then
-              echo "<li><a href='${student}/index.html'>${student}'s Project</a></li>" >> index.html
+          for dir in */; do
+            if [[ -f "$dir/index.html" && -f "$dir/screenshot.png" ]]; then
+              project_name=$(basename "$dir")
+              echo "<div class='project'><a href='$dir/index.html'>" >> index.html
+              echo "<img src='$dir/screenshot.png' alt='$project_name screenshot'>" >> index.html
+              echo "<div>$project_name's Project</div></a></div>" >> index.html
             fi
           done
 
-          echo '</ul></body></html>' >> index.html
-
-      - name: Verify Generated Index File
-        run: cat index.html
+          echo '</div></body></html>' >> index.html
 
       - name: Commit and push changes
         run: |
@@ -54,3 +52,4 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
