@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nature blocks collection
+* source:	https://sketchfab.com/3d-models/nature-blocks-collection-7a36d086cb654de68e0f83366cd99a4c
+* author:	Kroko.blend (https://sketchfab.com/jaromir.ternavskiy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nature blocks collection" (https://sketchfab.com/3d-models/nature-blocks-collection-7a36d086cb654de68e0f83366cd99a4c) by Kroko.blend (https://sketchfab.com/jaromir.ternavskiy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
   </head>
   <body>
-    <button onclick="window.history.back()" style="position: fixed; top: 10px; left: 10px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; z-index: 1000;">Go Back</button>
     <a-scene>
       <a-assets>
         <a-asset-item id="car" src="pony_cartoon/scene.gltf"></a-asset-item>
@@ -31,14 +30,14 @@
       <a-entity gltf-model="#batman" position="3 2.8 -3" scale="0.01 0.01 0.01" rotation="0 -45 0" ></a-entity>
 
 
-       <a-entity gltf-model="#c" position="0 0 -2" scale="0.1 0.1 0.1" rotation="0 90 0" animation__first="property: position; to: -3 0 -2; dur: 1000; startEvents: loaded, animationcomplete__fourth"
+       <a-entity gltf-model="#c" position="0 0 -2" scale="0.1 0.1 0.1" rotation="0 90 0" animation__first="property: position; to: -3 0 -2; dur: 100; startEvents: loaded, animationcomplete__fourth"
          animation__second="property: rotation; to: 0 90 0; dur: 10000; startEvents: animationcomplete__first" 
-         animation__third="property: position; to: 4 0 -2; dur: 10000; startEvents: animationcomplete__second"
-         animation__fourth="property: rotation; to: 0 90 0; dur: 10000/; startEvents: animationcomplete__third"> </a-entity>
+         animation__third="property: position; to: 16 0 -2; dur: 20000; startEvents: animationcomplete__second"
+         animation__fourth="property: rotation; to: 0 90 0; dur: 10000; startEvents: animationcomplete__third"> </a-entity>
 
-      <a-entity gltf-model="#clawbot" position="0 0 -2" scale="0.01 0.01 0.01" rotation="0 90 0" animation__first="property: position; to: -4.9 0.49 -2; dur: 1000; startEvents: loaded, animationcomplete__fourth"
+      <a-entity gltf-model="#clawbot" position="0 0 -2" scale="0.01 0.01 0.01" rotation="0 90 0" animation__first="property: position; to: -4.9 0.50 -2; dur: 100; startEvents: loaded, animationcomplete__fourth"
          animation__second="property: rotation; to: 0 90 0; dur: 10000; startEvents: animationcomplete__first" 
-         animation__third="property: position; to: 3 0.49 -2; dur: 10000; startEvents: animationcomplete__second"
+         animation__third="property: position; to: 15.9 0.50 -2; dur: 20000; startEvents: animationcomplete__second"
          animation__fourth="property: rotation; to: 0 90 0; dur: 10000/; startEvents: animationcomplete__third"> </a-entity>
         
      
@@ -57,6 +56,7 @@
       <a-plane position="0 0.01 -3" rotation="-90 0 0" width="12" height="1.75" src= "dirt1.JPG" color="#7f6244"></a-plane>
       
       <a-sphere position="1 0 -5" radius="1.25" rotation= "0 -95 0" color="#FFFF66" src= "sleeplysigma.JPG" animation= "property: position; to: 1 10 -5; dur: 200000; easing: linear; loop:true " ></a-sphere>
+       <a-sphere position="0 2 5" radius="1.25" rotation= "0 0 0" color="#" src= "sleeplysigma.JPG" animation= "property: rotation; to: 0 360 0; loop: true; dur: 4000" ></a-sphere>
       <a-plane position="0 0 -4" rotation="-90 0 0" width="12" height="12"  src= "dirt3.JPG" color="#" ></a-plane> 
       <a-plane position="0 0 9" rotation="90 0 0" width="12" height="12"  src= "dogsideeye.JPG" color="#" ></a-plane> 
       
