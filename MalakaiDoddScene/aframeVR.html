@@ -1,0 +1,106 @@
+<html>
+<head>
+  <meta charset="UTF-8">  
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/@c-frame/aframe-particle-system-component@1.2.x/dist/aframe-particle-system-component.min.js"></script>
+
+</head>
+
+<body>
+  
+
+
+  
+  <a-scene loading-screen="dotsColor: white; backgroundColor: blue"   fog="type: exponential; color: #000000; density: 0.025" reflection="directionalLight:a-light#dirlight;">
+    <a-light id="dirlight" intensity="1" light="castShadow:true;type:directional" position="1 1 1"></a-light>
+    
+
+
+    
+    <a-assets>
+      <!-- an asset lets the computer know the file location of a model. An entity is the placement of said model -->
+
+    <a-asset-item id="forest" src="pine_forest/scene.gltf"></a-asset-item> 
+    <a-asset-item id="grass" src="realtime_grass/scene.gltf"></a-asset-item>
+    <a-asset-item id="medbox" src="emergency_medical_services_box/scene.gltf"></a-asset-item>
+    <a-asset-item id="drone" src="deliverydrone/scene.gltf"></a-asset-item>
+    <a-asset-item id="rubble" src="optimized_rubble_photoscan/scene.gltf"></a-asset-item>
+
+  </a-assets>
+
+    
+    <a-entity gltf-model="#forest" rotation="0 180 0" scale="3.5 3.5 3.5" position="0 -1.7 0" castShadow='true' recieveShadow='true' animation__3="property: scale; from: 3.5 3.5 3.5; to: 3.525 3.525 3.5; dur: 1000; dir: alternate; easing: linear; loop: true;"></a-entity>
+    <a-entity gltf-model="#forest" rotation="0 75 0" scale="3.5 3.5 3.5" position="0 -1.7 0" castShadow='true' recieveShadow='true'animation__3="property: scale; from: 3.5 3.5 3.5; to: 3.525 3.525 3.5; dur: 1000; dir: alternate; easing: linear; loop: true;" ></a-entity>
+    <a-entity gltf-model="#forest" rotation="0 20 0" scale="3.5 3.5 3.5" position="5 -1.7 5" castShadow='true' recieveShadow='true'animation__3="property: scale; from: 3.5 3.5 3.5; to: 3.525 3.525 3.5; dur: 1000; dir: alternate; easing: linear; loop: true;"></a-entity>
+    <a-entity gltf-model="#grass" rotation="0 180 0" scale="3.5 3.5 3.5" position="0 -3.5 0"></a-entity>
+    <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
+    <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
+    <a-entity gltf-model="#medbox" rotation="0 100 0" scale="0.01 0.01 0.01" position="-2 -6 -5" castShadow='true' recieveShadow='true'></a-entity>
+    <a-entity gltf-model="#drone" rotation="45 180 45" scale="0.025 0.025 0.025" position="0 0 0"></a-entity>
+    <a-entity id="rain" particle-system="preset: rain; color: #3f4357; particleCount: 10000; splash: true"  ></a-entity>
+    <a-entity gltf-model="#rubble" rotation="0 180 0" scale="1 1 1" position="3.8 -1.8 -5.5"></a-entity>
+    
+    <!-- text entities -->
+      <!-- left side above med box -->
+      <a-entity text="value: Our robot can drive on rough;" position="-3 3 -7" rotation="0 40 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: terrain, hidden under the tree;" position="-3 2.5 -7" rotation="0 40 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: canopies to avoid possible;" position="-3 2 -7" rotation="0 40 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: threats up in the skies;" position="-3 1.5 -7" rotation="0 40 0" color="white" scale="10 10 10" ></a-entity>
+      
+      <!-- center -->
+      <a-entity text="value: Some people that live in;" position="3 4 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: remote locations don't have;" position="3 3.5 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: access to necessary medications;" position="3 3 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: and items.;" position="3 2.5 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: So Without further ado;" position="3 2 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: We present to you:;" position="3 1.5 -9" rotation="0 0 0" color="white" scale="10 10 10" ></a-entity>
+      <a-entity text="value: THE ULTRACLAW;" position="3 1 -9" rotation="0 0 0" color="#db0b0b" scale="10 10 10" ></a-entity>
+
+
+
+
+
+
+
+
+      <!-- right side above drone -->
+
+      <!-- behind -->
+      <a-entity text="value: Scene made by Malakai Dodd;" position="2 -0.5 7" rotation="0 210 0" color="white" scale="5 5 5" opacity="0.1" ></a-entity>
+
+
+
+
+
+
+
+
+   
+    
+
+
+
+    
+
+
+  </a-scene>  
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
