@@ -1,0 +1,11 @@
+Model Information:
+* title:	Emergency Medical Services Box
+* source:	https://sketchfab.com/3d-models/emergency-medical-services-box-c63c74e3cefa48e787912477889f738e
+* author:	Connections XR (https://sketchfab.com/connectionsxr)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Emergency Medical Services Box" (https://sketchfab.com/3d-models/emergency-medical-services-box-c63c74e3cefa48e787912477889f738e) by Connections XR (https://sketchfab.com/connectionsxr) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
