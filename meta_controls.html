@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+</head>
+<body>
+  <a-scene>
+
+    <a-entity meta-touch-controls="hand: left" thumbstick-logging></a-entity>
+    <a-entity meta-touch-controls="hand: right" thumbstick-logging></a-entity>
+
+    <!-- Camera rig (moves with thumbstick) -->
+    <a-entity id="cameraRig" position="0 1.6 0" meta-touch-controls="hand: right">
+      <a-camera>
+        <a-text id="treeCounter" value="Trees Planted: 0" position="-0.5 0 -1" width="1"></a-text>
+        <a-text id="co2Counter" value="CO₂ Captured: 0 kg" position="-0.5 -0.1 -1" width="1"></a-text>
+      </a-camera>
+    </a-entity>
+
+    <!-- Ground -->
+    <a-box position="0 0 0" width="100" height="0.1" depth="100" color="green"></a-box>
+
+    <!-- Visual indicator for planting -->
+    <a-entity id="drone" position="0 1.5 0">
+      <a-sphere radius="0.2" color="gray"></a-sphere>
+      <a-cone id="plantingArm" position="0 -0.3 0" radius-bottom="0.1" radius-top="0" height="0.3" color="red"></a-cone>
+    </a-entity>
+  </a-scene>
+
+  <script>
+
+AFRAME.registerComponent('thumbstick-logging',{
+  init: function () {
+    this.el.addEventListener('thumbstickmoved', this.logThumbstick);
+  },
+  logThumbstick: function (evt) {
+    if (evt.detail.y > 0.95) { console.log("DOWN"); 
+    position.z -= .2; // move drone forward by 1 unit
+    updateDronePosition();
+     }
+    if (evt.detail.y < -0.95) { console.log("UP"); }
+    if (evt.detail.x < -0.95) { console.log("LEFT"); }
+    if (evt.detail.x > 0.95) { console.log("RIGHT"); }
+  }
+});
+
+
+
+  // Right thumbstick event listener for binary movement
+  //rightHand.addEventListener('thumbstickmoved', function (evt) {
+    // if (evt.detail.y < -0.85) { // pushed forward
+    //   position.z -= .2; // move drone forward by 1 unit
+    //   updateDronePosition();
+    // } else if (evt.detail.y > 0.85) { // pushed backward
+    //   position.z += .2; // move drone backward by 1 unit
+    //   updateDronePosition();
+    // } else if (evt.detail.x < -0.85) { // pushed left
+    //   position.x -= .2; // move drone left by 1 unit
+    //   updateDronePosition();
+    // } else if (evt.detail.x > 0.85) { // pushed right
+    //   position.x += .2; // move drone right by 1 unit
+    //   updateDronePosition();
+    // };
+
+
+
+
+
+    let treeCount = 0;
+    let totalCO2Captured = 0;
+
+    AFRAME.registerComponent("tree-planter", {
+      init: function () {
+        this.el.addEventListener("abuttondown", this.plantTree.bind(this));
+        this.el.addEventListener("xbuttondown", this.plantTree.bind(this));
+      },
+      plantTree: function () {
+        const cameraRig = document.querySelector("#cameraRig");
+        const pos = cameraRig.getAttribute("position");
+
+        let tree = document.createElement("a-entity");
+        tree.setAttribute("position", `${pos.x} 0 ${pos.z}`);
+        tree.innerHTML = `
+          <a-sphere radius="0.5" color="green" position="0 1 0"></a-sphere>
+          <a-cylinder radius="0.1" height="0.5" color="brown"></a-cylinder>
+        `;
+        document.querySelector("a-scene").appendChild(tree);
+
+        treeCount++;
+        totalCO2Captured += Math.floor(Math.random() * 5) + 8;
+        document.querySelector("#treeCounter").setAttribute("value", `Trees Planted: ${treeCount}`);
+        document.querySelector("#co2Counter").setAttribute("value", `CO₂ Captured: ${totalCO2Captured} kg`);
+      },
+    });
+
+    document.querySelector("#cameraRig").setAttribute("tree-planter", "");
+  </script>
+</body>
+</html>

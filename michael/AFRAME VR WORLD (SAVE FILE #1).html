@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js">
+    </script>
+
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <button onclick="window.history.back()" style="position: fixed; top: 10px; left: 10px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; z-index: 1000;">Go Back</button>
+    <a-scene>
+<a-assets>
+  <a-asset-item id="bedroom" src="Town/scene.gltf"></a-asset-item> 
+  
+</a-assets>
+      <a-sky src="SENSET.png" rotation="0 80 0"> </a-sky>
+
+<a-entity gltf-model="#bedroom" position="0 0 -3" scale="0.01 0.01 0.01"  ></a-entity>
+      
+    <a-light type="point" color="#EC7A24" position="0 5 15" intensity="4"></a-light>
+    <a-light type="ambient" color="#EC7A24"  intensity="0.2"></a-light>
+    <a-text value="This is a simulation of how delivering \n a package of supplies to a milliatary installation \n and i will cover how our robot will replace it" position="3 2 -5" rotation="0 180 0"></a-text>
+  </a-entity>
+
+  </a-box>
+    </a-scene>
+  </body>
+</html>
