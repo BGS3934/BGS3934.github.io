@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js">
+    </script>
+
+    <title>My A-Frame Scene</title>
+
+  </head>
+  <body>
+    <button onclick="window.history.back()" style="position: fixed; top: 10px; left: 10px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; z-index: 1000;">Go Back</button>
+    <a-scene>
+
+      <a-entity gltf-model="#Bot" position="8 0.55 -15" scale="0.01 0.01 0.01" 
+      animation__1="property: rotation; to: 0 -90 0; dur: 2400; easing: linear; startEvents: loaded, animationcomplete__8" 
+      animation__2="property: position; to: 2 0.55 -15; dur: 2400; easing: linear; startEvents: animationcomplete__1" 
+      animation__3="property: rotation; to: 0 0 0; dur: 2500; startEvents: animationcomplete__2" 
+      animation__4="property: position; to: 2 0.55 10; dur: 10000; easing: linear; startEvents: animationcomplete__3"
+  
+      animation__7="property: rotation; to: 0 90 0; dur: 2400; startEvents: animationcomplete__4"
+      animation__8="property: position; to: 8 -1.1 -5.0; dur: 1; easing: linear; startEvents: animationcomplete__7"
+    
+        ></a-entity>
+
+
+<a-assets>
+  <a-asset-item id="bedroom" src="Town/scene.gltf"></a-asset-item> 
+  <a-asset-item id="Bot" src="clawbot_v5/scene.gltf">
+</a-assets>
+      <a-sky src="SENSET.png" rotation="0 80 0"> </a-sky>
+
+<a-entity gltf-model="#bedroom" position="0 0 -3" scale="0.01 0.01 0.01"  ></a-entity>
+      
+    <a-light type="point" color="#EC7A24" position="0 5 15" intensity="4"></a-light>
+    <a-light type="ambient" color="#EC7A24"  intensity="0.2"></a-light>
+    <a-text value="This is a simulation of how delivering \n a package of supplies to a milliatary installation \n and i will cover how our robot will replace it \n press the trigger to move foward" position="4 2 -15" rotation="0 225 0"></a-text>
+      </a-entity>
+
+    <!-- Camera + controllers rig -->
+  <a-entity id="rig" rotation=" 0 180 0">
+    <a-camera id="camera" position="0 1.6 0" ></a-camera>
+  </a-entity>
+  <a-entity id="right-hand" laser-controls="hand: right"></a-entity>
+  </a-scene>
+  <script>
+
+let position = { x:0, y:0, z:-15 };
+
+const rightHand = document.querySelector('#right-hand');
+const camera = document.querySelector("#rig");
+
+updatePosition();
+
+
+rightHand.addEventListener('triggerdown', function (evt) {
+  position.z += 5;
+  updatePosition();
+});
+
+rightHand.addEventListener('gripdown', function (evt) {
+  position.z += -5;
+  updatePosition();
+});
+
+function updatePosition(){
+  camera.setAttribute("position", `${position.x} ${position.y} ${position.z}`);
+  console.log("Trigger");
+  console.log(position.x);
+};
+
+
+  </script>
+  </body>
+</html>
