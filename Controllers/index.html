@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Add hand controllers -->
+      <a-entity id="leftHand" laser-controls="hand: left"></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right"></a-entity>
+
+      <!-- Interactive box -->
+      <a-box id="clickableBox" position="0 1.5 -3" color="#4CC3D9" depth="1" height="1" width="1"
+             class="clickable"
+             event-set__enter="_event: mouseenter; color: #FF0000"
+             event-set__leave="_event: mouseleave; color: #4CC3D9"
+             event-set__click="_event: click; color: #00FF00">
+      </a-box>
+
+      <!-- Ground and sky -->
+      <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+  </body>
+</html>
