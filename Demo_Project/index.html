@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame Sandbox</title>
+    <!-- Adds aframe core functionality for building VR scenes -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <!-- Allows objects to react to events like clicks -->
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <!-- Adds support for animated 3D models (GLB files) -->
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <!-- Main VR scene container -->
+    <a-scene>
+
+      <!-- Right-hand controller for VR interaction (if using VR headset) -->
+      <a-entity laser-controls="hand: right"></a-entity>
+
+      <!-- Camera setup: lets you look and move around the scene -->
+      <a-entity position="0 1.6 0">
+        <a-camera wasd-controls-enabled="true" look-controls-enabled="true">
+          <!-- Cursor for clicking/interacting with objects -->
+          <a-cursor fuse="false" color="black"></a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <!-- Preload images and 3D models for faster loading -->
+      <a-assets>
+        <!-- Sky and ground textures -->
+        <img id="sky" src="Sky/clear_sky.jpg">
+        <img id="ground" src="Ground/Cobblestone A.jpg">
+
+      </a-assets>
+
+      <!-- Large ground plane for the scene -->
+      <a-plane rotation="-90 0 0" width="200" height="200" repeat="50 50" src="#ground"></a-plane>
+
+      <!-- Sky background image -->
+      <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+
+      <!-- 🧍 Adventurer character model -->
+      <a-entity id="adventurer" gltf-model="Assets/City_Pack/Adventurer.glb" 
+        scale="1.7 1.7 1.7"
+        position="-5 0 -10"
+        rotation="0 45 0">
+      </a-entity>
+
+      <!-- Enemy 1 - Wasp flying in a circle (animated) -->
+      <!-- Parent entity rotates, child wasp moves in a circle -->
+      <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+        <a-entity id="Wasp" gltf-model="Assets/Animated_Enemies/Wasp.glb" 
+          animation-mixer="clip: WaspArmature|Wasp_Flying; loop: repeat"
+          position="5 0 0" 
+          rotation="0 90 0" 
+          scale="1 1 1"
+          class="clickable"
+          event-set__click="_event: click; animation-mixer: clip: WaspArmature|Wasp_Death; loop: once"
+          animation__fall="property: position; to: 5 0 0; dur: 2000; startEvents: click">
+        </a-entity>
+      </a-entity>
+
+      <!-- 🐸 Animated frog that jumps back and forth -->
+      <a-entity id="Frog" gltf-model="Assets/Animated_Enemies/Frog.glb"
+        animation-mixer="clip: FrogArmature|Frog_Jump; loop: repeat"
+        position="5 0 0"
+        rotation="0 -90 0"
+        scale="0.2 0.2 0.2"
+        animation__1="property: position; to: -5 0 0; dur: 5000; interpolation: linear; startEvents: animationcomplete__4"
+        animation__2="property: rotation; to: 0 90 0; dur: 3500; startEvents: animationcomplete__1"
+        animation__3="property: position; to: 5 0 0; dur: 5000; interpolation: linear; startEvents: animationcomplete__2"
+        animation__4="property: rotation; to: 0 -90 0; dur: 3500; startEvents: loaded, animationcomplete__3">
+      </a-entity>
+
+      <!-- 🚗 Car model: grows when hovered, spins when clicked -->
+      <a-entity id="car" gltf-model="Assets/City_Pack/Car-unqqkULtRU.glb"
+        class="clickable"
+        position="0 0 -10"
+        scale="2 2 2"
+        rotation="0 90 0"
+        event-set__enter="_event: mouseenter; scale: 2.2 2.2 2.2"
+        event-set__leave="_event: mouseleave; scale: 2 2 2"
+        event-set__click="_event: click; rotation: 0 180 0">
+      </a-entity>
+
+      <!-- 🏠 House model -->
+      <a-entity id="house" gltf-model="Assets/House.glb"
+        scale="12 12 12"
+        position="10 0 -10"
+        rotation="0 -80 0">
+      </a-entity>
+
+      <!-- 🌲 Forest scene (large background model) -->
+      <a-entity id="forest" gltf-model="Assets/Nature.glb"
+        scale="100 100 100"
+        position="-25 5 -100"
+        rotation="0 0 0">
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
