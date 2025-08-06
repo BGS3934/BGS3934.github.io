@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame Model Playground</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene background="color: #ECECEC">
+      <!-- Camera and controls -->
+      <a-entity position="0 1.6 0">
+        <a-camera wasd-controls-enabled="true" look-controls-enabled="true">
+          <a-cursor fuse="false" color="black"></a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <!-- Ground -->
+      <a-plane rotation="-90 0 0" width="50" height="50" color="#7BC8A4"></a-plane>
+
+      <!-- Models -->
+      <a-assets>
+        <a-asset-item id="adventurer" src="Assets/Adventurer.glb"></a-asset-item>
+        <a-asset-item id="car" src="Assets/CAR Model.glb"></a-asset-item>
+        <a-asset-item id="house" src="Assets/House.glb"></a-asset-item>
+        <a-asset-item id="forest" src="Assets/Walk in the Woods.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- 🧍 Adventurer -->
+      <a-entity 
+        gltf-model="#adventurer" 
+        scale="1.5 1.5 1.5"
+        position="-5 0 -10"
+        rotation="0 45 0">
+      </a-entity>
+
+      <!-- 🚗 Car -->
+      <a-entity 
+        gltf-model="#car" 
+        scale="2 2 2"
+        position="0 0 -10"
+        rotation="0 90 0">
+      </a-entity>
+
+      <!-- 🏠 House -->
+      <a-entity 
+        gltf-model="#house"
+        scale="1.5 1.5 1.5"
+        position="5 0 -10"
+        rotation="0 0 0">
+      </a-entity>
+
+      <!-- 🌲 Forest Scene (Commented out for experimentation) -->
+      <!--
+      <a-entity 
+        gltf-model="#forest"
+        scale="0.1 0.1 0.1"
+        position="0 0 -25"
+        rotation="0 0 0">
+      </a-entity>
+      -->
+
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-Frame Animated Model</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <!-- Lighting -->
+        <a-light type="directional" position="5 10 7" intensity="1.2"></a-light>
+        <a-light type="ambient" color="#BBB"></a-light>
+
+        <!-- Ground -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="gray"></a-plane>
+
+        <!-- Animated Model -->
+        <a-entity 
+            gltf-model="assets/clawbot_anim.glb"
+            position="0 1 0" 
+            scale="2 2 2" 
+            rotation="0 90 0"
+            animation-mixer>
+        </a-entity>
+
+        <!-- Camera -->
+        <a-entity position="0 3 5">
+            <a-camera></a-camera>
+        </a-entity>
+    </a-scene>
+</body>
+</html>
