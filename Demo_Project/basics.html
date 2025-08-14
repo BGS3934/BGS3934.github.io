@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Year 9 VR Tutorial - Basics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    header {
+      background-color: #000;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #e30613;
+    }
+    nav {
+      background-color: #333;
+      padding: 0.5em;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a.active {
+      color: #e30613;
+      text-decoration: underline;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 1.5em;
+    }
+    section {
+      background: white;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 2em;
+      box-shadow: 0 0 5px #ccc;
+    }
+    .demo {
+      height: 400px;
+      border: 1px solid #ccc;
+    }
+    pre {
+      background: #eee;
+      padding: 1em;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Year 9 VR Tutorial</h1>
+    <p>Basics of A-Frame</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="basics.html" class="active">Basics</a>
+    <a href="examples.html">Examples</a>
+    <a href="resources.html">Resources</a>
+  </nav>
+
+  <main>
+    <section>
+      <h2>Simple Box Example</h2>
+      <p>This is a simple A-Frame scene with a red box you can look at and interact with.</p>
+
+      <a-scene embedded class="demo" cursor="rayOrigin: mouse">
+        <a-box position="0 1.25 -3" rotation="0 45 0" color="#e30613" shadow
+               class="clickable"
+               event-set__mouseenter="color: #004d4d"
+               event-set__mouseleave="color: #e30613"
+               event-set__click="rotation: 0 360 0; animation__rotate: property: rotation; to: 0 360 0; dur: 1000; easing: linear">
+        </a-box>
+        <a-plane rotation="-90 0 0" width="10" height="10" color="#ccc"></a-plane>
+        <a-sky color="#ececec"></a-sky>
+
+        <!-- Camera with mouse cursor for desktop -->
+        <a-entity camera look-controls position="0 1.6 0">
+          <a-cursor></a-cursor>
+        </a-entity>
+      </a-scene>
+
+      <h3>Code</h3>
+      <pre>
+&lt;a-scene embedded cursor="rayOrigin: mouse"&gt;
+  &lt;a-box position="0 1.25 -3" rotation="0 45 0" color="#e30613" shadow
+         class="clickable"
+         event-set__mouseenter="color: #ff4d4d"
+         event-set__mouseleave="color: #e30613"
+         event-set__click="rotation: 0 360 0; animation__rotate: property: rotation; to: 0 360 0; dur: 1000; easing: linear"&gt;
+  &lt;/a-box&gt;
+  &lt;a-plane rotation="-90 0 0" width="10" height="10" color="#ccc"&gt;&lt;/a-plane&gt;
+  &lt;a-sky color="#ececec"&gt;&lt;/a-sky&gt;
+
+  &lt;a-entity camera look-controls position="0 1.6 0"&gt;
+    &lt;a-cursor&gt;&lt;/a-cursor&gt;
+  &lt;/a-entity&gt;
+&lt;/a-scene&gt;
+      </pre>
+    </section>
+
+    <section>
+      <h2>What next?</h2>
+      <ul>
+        <li>Try editing the box’s color or position in the code above.</li>
+        <li>Explore the <a href="https://aframe.io/docs/">A-Frame documentation</a> for more components and examples.</li>
+        <li>Next, head over to the <a href="examples.html">Examples</a> page to see more complex demos.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Your School Name – VR Class Resources
+  </footer>
+
+</body>
+</html>
