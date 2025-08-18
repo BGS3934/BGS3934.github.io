@@ -1,0 +1,21 @@
+   <a-scene>
+
+      <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+      
+      <!-- Large ground plane for the scene -->
+      <a-plane rotation="-90 0 0" width="200" height="200" repeat="50 50" id="ground" src="Ground/Cobblestone A.jpg"></a-plane>
+
+    </a-scene>

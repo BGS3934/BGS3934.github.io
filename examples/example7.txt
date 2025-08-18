@@ -4,8 +4,12 @@
   </a-assets>
 
   <!-- Animate rotation of the robot -->
-  <a-entity gltf-model="#frog" position="0 0 -3" scale="0.8 0.8 0.8"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-entity>
+  <a-entity gltf-model="#frog" position="0 0 -3" scale="0.8 0.8 0.8" 
+            animation-mixer="clip: *Jump; loop: repeat"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"
+            sound="src: url(SFX/frog2.mp3); autoplay: true; loop: true; maxDistance: 10; positional: true; volume: 10"
+            ></a-entity>
 
   <a-sky color="#DDD"></a-sky>
+  <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 </a-scene>
