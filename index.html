@@ -1,33 +1,117 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8"><title>Student Projects</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body { font-family: Arial, sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-  h1 { text-align: center; margin-bottom: 10px; }
-  hr { width: 100%; margin-bottom: 20px; }
-  .project-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .project { text-align: center; }
-  .project img { width: 350px; height: 240px; object-fit: cover; }
-  @media (max-width: 1024px) { .project-grid { grid-template-columns: repeat(2, 1fr); } .project img { width: 320px; height: 213px; } }
-  @media (max-width: 768px) { .project-grid { grid-template-columns: 1fr; } .project img { width: 100%; height: auto; } }
-</style></head><body>
-<hr><div class="project-grid">
-<div class='project'>
-<a href='Controllers/index.html'>
-<img src='/Screenshot.png' alt='Controllers project screenshot'>
-</a>
-<p><a href='Controllers/index.html'>Controllers's Project</a></p>
-</div>
-<div class='project'>
-<a href='Demo_Project/index.html'>
-<img src='/Screenshot.png' alt='Demo_Project project screenshot'>
-</a>
-<p><a href='Demo_Project/index.html'>Demo_Project's Project</a></p>
-</div>
-<div class='project'>
-<a href='Tree_Demo/index.html'>
-<img src='Tree_Demo/Screenshot.png' alt='Tree_Demo project screenshot'>
-</a>
-<p><a href='Tree_Demo/index.html'>Tree_Demo's Project</a></p>
-</div>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Year 9 VR Tutorial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    header {
+      background-color: #000;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #e30613; /* School red */
+    }
+    nav {
+      background-color: #333;
+      padding: 0.5em;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: #e30613;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 1.5em;
+    }
+    section {
+      margin-bottom: 2em;
+      padding: 1em;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .demo {
+      height: 300px;
+      margin-top: 1em;
+      border: 1px solid #ccc;
+    }
+    footer {
+      background-color: #000;
+      color: white;
+      text-align: center;
+      padding: 0.5em;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Year 9 VR Tutorial</h1>
+    <p>Intro to A-Frame & Virtual Reality</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="basics.html">Basics</a>
+    <a href="examples.html">Examples</a>
+    <a href="resources.html">Resources</a>
+  </nav>
+
+  <main>
+    <section>
+      <h2>Welcome to the VR Tutorial</h2>
+      <p>
+        This site will guide you through the basics of building Virtual Reality scenes using A-Frame.
+        You’ll learn to add objects, lights, and interactions, and then create your own VR projects in VS Code.
+      </p>
+    </section>
+
+    <section>
+      <h2>Example Scene</h2>
+      <p>Here’s a simple A-Frame demo you can explore right here in your browser.  You can move around with the WASD keys and click and drag to look around</p>
+
+      <a-scene embedded class="demo">
+        <a-box position="0 1 -3" rotation="0 45 0" color="#e30613" shadow></a-box>
+        <a-sphere position="2 1 -4" radius="1" color="#444" shadow></a-sphere>
+        <a-plane rotation="-90 0 0" width="10" height="10" color="#ccc"></a-plane>
+        <a-sky color="#ececec"></a-sky>
+      </a-scene>
+    </section>
+
+    <section>
+      <h2>Next Steps</h2>
+      <ul>
+        <li>Follow the <strong>Basics</strong> section to learn how to set up A-Frame.</li>
+        <li>Try out interactive <strong>Examples</strong>.</li>
+        <li>Use the <strong>Resources</strong> section for quick reference.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Your School Name – VR Class Resources
+  </footer>
+
+</body>
+</html>

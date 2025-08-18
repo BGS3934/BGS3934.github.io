@@ -1,0 +1,11 @@
+<a-scene>
+  <a-assets>
+    <a-asset-item id="frog" src="assets/animated_enemies/frog.glb"></a-asset-item>
+  </a-assets>
+
+  <!-- Animate rotation of the robot -->
+  <a-entity gltf-model="#frog" position="0 0 -3" scale="0.8 0.8 0.8"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-entity>
+
+  <a-sky color="#DDD"></a-sky>
+</a-scene>

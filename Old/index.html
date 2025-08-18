@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><title>Student Projects</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+  h1 { text-align: center; margin-bottom: 10px; }
+  hr { width: 100%; margin-bottom: 20px; }
+  .project-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .project { text-align: center; }
+  .project img { width: 350px; height: 240px; object-fit: cover; }
+  @media (max-width: 1024px) { .project-grid { grid-template-columns: repeat(2, 1fr); } .project img { width: 320px; height: 213px; } }
+  @media (max-width: 768px) { .project-grid { grid-template-columns: 1fr; } .project img { width: 100%; height: auto; } }
+</style></head><body>
+<hr><div class="project-grid">
+<div class='project'>
+<a href='Controllers/index.html'>
+<img src='/Screenshot.png' alt='Controllers project screenshot'>
+</a>
+<p><a href='Controllers/index.html'>Controllers's Project</a></p>
+</div>
+<div class='project'>
+<a href='Demo_Project/index.html'>
+<img src='/Screenshot.png' alt='Demo_Project project screenshot'>
+</a>
+<p><a href='Demo_Project/index.html'>Demo_Project's Project</a></p>
+</div>
+<div class='project'>
+<a href='Tree_Demo/index.html'>
+<img src='Tree_Demo/Screenshot.png' alt='Tree_Demo project screenshot'>
+</a>
+<p><a href='Tree_Demo/index.html'>Tree_Demo's Project</a></p>
+</div>
+</div></body></html>

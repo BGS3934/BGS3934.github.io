@@ -1,0 +1,5 @@
+<a-scene>
+  <a-box position="0 1 -3" color="pink"
+         animation="property: rotation; to: 0 360 0; loop: true; dur: 2000"></a-box>
+  <a-sky color="#EEE"></a-sky>
+</a-scene>

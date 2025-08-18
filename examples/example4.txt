@@ -1,0 +1,10 @@
+<a-scene>
+  <a-entity 
+         cursor="rayOrigin: mouse" 
+         raycaster="objects: .clickable">
+  </a-entity>
+
+  <a-box position="0 1 -3" color="lightgreen" class="clickable"
+         sound="src: url(SFX/unlock.wav); autoplay: false;  on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-box>
+  <a-sky color="#88C"></a-sky>
+</a-scene>
