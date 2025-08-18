@@ -1,7 +1,7 @@
 <a-scene>
   <!-- Load a glTF model -->
   <a-assets>
-    <a-asset-item id="tree" src="Assets/Homely_Houses/tree.glb"></a-asset-item>
+    <a-asset-item id="tree" src="Assets/Homely_Houses/Tree.glb"></a-asset-item>
   </a-assets>
 
   <a-entity gltf-model="#tree" position="0 0 -3" scale="0.5 0.5 0.5"></a-entity>

@@ -1,6 +1,6 @@
 <a-scene>
   <a-assets>
-    <a-asset-item id="clawbot" src="assets/clawbot_anim.glb"></a-asset-item>
+    <a-asset-item id="clawbot" src="Assets/clawbot_anim.glb"></a-asset-item>
   </a-assets>
 
   <!-- Animate movement and rotation of the clawbot -->
