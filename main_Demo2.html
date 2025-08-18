@@ -11,10 +11,27 @@
     <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
     <!-- Adds VR controller thumbstick movement support -->
     <script src="thumbstick-move.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+
   </head>
   <body>
+
+
     <!-- Main VR scene container -->
-    <a-scene>
+    <a-scene physics>
+
+  <a-entity geometry="primitive: box" material="color: red"
+            position="0 3 -2" dynamic-body></a-entity>
+  <a-entity geometry="primitive: plane; width: 10; height: 10"
+            material="color: green" rotation="-90 0 0" static-body></a-entity>
+  <!-- Ground (does not move) -->
+  <a-plane rotation="-90 0 0" width="20" height="20" color="green" static-body></a-plane>
+  <a-sky color="lightblue"></a-sky>
+  <!-- Falling objects -->
+  <a-box position="0 3.5 -3" color="red" dynamic-body></a-box>
+  <a-sphere position="2 3 -3" radius="0.5" color="blue" dynamic-body></a-sphere>
+  <a-cylinder position="-2 2 -3" radius="0.5" height="1.5" color="orange" dynamic-body></a-cylinder>
 
       <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
       <a-entity id="cameraRig" 
