@@ -6,19 +6,22 @@ base = os.path.dirname(os.path.abspath(__file__))
 
 # Top-level resource folders
 folders = {
+    "Sky": os.path.join("Sky"),
     "Buildings": os.path.join(base, "Assets", "Buildings"),
     "Characters": os.path.join(base, "Assets", "Characters"),
-    "City_Pack": os.path.join(base, "Assets", "City_Pack"),
-    "Cube_World": os.path.join(base, "Assets", "Cube_World"),
-    "Food_Pack": os.path.join(base, "Assets", "Food_Pack"),
+    "Vehicles": os.path.join(base, "Assets", "Vehicles"),
+    "City Pack": os.path.join(base, "Assets", "City_Pack"),
+    "Cube World": os.path.join(base, "Assets", "Cube_World"),
+    "Food Pack": os.path.join(base, "Assets", "Food_Pack"),
     "Houses": os.path.join(base, "Assets", "Houses"),
-    "Outdoor_Decorations": os.path.join(base, "Assets", "Outdoor_Decorations"),
-    "Post_Apocolypse": os.path.join(base, "Assets", "Post_Apocolypse"),
+    "Outdoor Decorations": os.path.join(base, "Assets", "Outdoor_Decorations"),
+    "Outdoor Decorations": os.path.join(base, "Assets", "Furniture"),
+    "Post Apocolypse": os.path.join(base, "Assets", "Post_Apocolypse"),
     "Space_Kit": os.path.join(base, "Assets", "Space_Kit"),
-    "Ground Textures": os.path.join("Ground"),
+    "Textures": os.path.join("Ground"),
     "Sounds": os.path.join("Sounds"),
     "SFX": os.path.join("SFX"),
-    "Sky": os.path.join("Sky"),
+
 }
 
 manifest = {}

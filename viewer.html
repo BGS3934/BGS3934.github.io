@@ -35,7 +35,7 @@ document.write(`
 
     ${/\.(glb|gltf)$/i.test(file) ? `
       <a-entity gltf-model="${file}" position="0 0 -3"
-        ${spin === "true" ? 'animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"' : ''}>
+        ${spin === "true" ? 'animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear"' : ''}>
       </a-entity>
     ` : ""}
 

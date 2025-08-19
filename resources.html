@@ -83,7 +83,8 @@
   <a href="index.html">Home</a>
   <a href="main_Demo.html">Demo Project</a>
   <a href="examples.html">Examples</a>
-  <a href="resources.html">Resources</a>
+  <a href="resources.html">Asset Library</a>
+  <a href="builder.html">Builder</a>
 </nav>
 
 <main>
@@ -117,7 +118,7 @@ require(["vs/editor/editor.main"], function () {
     language: "html",
     theme: "vs-dark",
     wordWrap: "on",
-    readOnly: true,
+    readOnly: false,   // ✅ now editable
     minimap: { enabled: false }
   });
 });
@@ -198,9 +199,8 @@ function loadViewer(type, file, isSky = false) {
   if (isSky) {
     currentSky = file;
   } else if (type.includes("Texture")) {
-    // update plane texture only
     currentAsset = currentAsset || {};
-    currentAsset.planeTex = file;
+    currentAsset.planeTex = file; // ✅ store texture
   } else {
     currentAsset = { type, file };
   }
@@ -216,22 +216,20 @@ function loadViewer(type, file, isSky = false) {
 
   viewer.src = `viewer.html?${params.toString()}`;
 
-
-
-
   // Build code snippet
   let codeSnippet = "";
   if (currentSky) {
     codeSnippet += `<a-assets>\n  <img id="skyTex" src="${currentSky}">\n</a-assets>\n<a-sky src="#skyTex"></a-sky>\n\n`;
   }
 
-  codeSnippet += `<a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>\n\n`;
+  // ✅ ground plane with optional texture
+  codeSnippet += `<a-plane id="groundPlane" ${currentAsset?.planeTex ? `src="${currentAsset.planeTex}" ` : ""}position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>\n\n`;
 
-  if (currentAsset) {
+  if (currentAsset?.file) {
     const f = currentAsset.file;
     if (/\.(gltf|glb)$/i.test(f)) {
-      codeSnippet += `<a-entity gltf-model="${f}" position="0 0 -3"${spinEnabled ? 
-        ' animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"' : ''}></a-entity>`;
+      codeSnippet += `<a-entity gltf-model="${f}" position="0 0 -3" scale="1 1 1" rotation="0 0 0"${spinEnabled ? 
+        ' animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear"' : ''}></a-entity>`;
     } else if (/\.(png|jpg|jpeg|gif)$/i.test(f)) {
       codeSnippet += `<a-plane src="${f}" position="0 1.5 -3" width="2" height="2"></a-plane>`;
     } else if (/\.(mp3|wav|ogg)$/i.test(f)) {
@@ -250,15 +248,10 @@ document.getElementById("copyCode").addEventListener("click", () => {
 
 document.getElementById("toggleSpin").addEventListener("click", () => {
   spinEnabled = !spinEnabled;
-  const viewer = document.getElementById("viewer");
-  const src = new URL(viewer.src);
-  src.searchParams.set("spin", spinEnabled);
-  viewer.src = src.toString();
-
-  if (currentAsset && currentAsset.type.toLowerCase().includes("model")) {
-    loadViewer(currentAsset.type, currentAsset.file);
-  }
+  if (currentAsset) loadViewer(currentAsset.type || "", currentAsset.file || "");
 });
+
+
 
 loadResources();
 </script>

@@ -1,4 +1,66 @@
 {
+  "Sky": [
+    {
+      "name": "Sky/ballawley_park_2k.jpg",
+      "file": "Sky/ballawley_park_2k.jpg"
+    },
+    {
+      "name": "Sky/brown_photostudio_02_2k.jpg",
+      "file": "Sky/brown_photostudio_02_2k.jpg"
+    },
+    {
+      "name": "Sky/cannon_2k.jpg",
+      "file": "Sky/cannon_2k.jpg"
+    },
+    {
+      "name": "Sky/christmas_photo_studio_01_2k.jpg",
+      "file": "Sky/christmas_photo_studio_01_2k.jpg"
+    },
+    {
+      "name": "Sky/clear_sky.jpg",
+      "file": "Sky/clear_sky.jpg"
+    },
+    {
+      "name": "Sky/golden_gate_hills_2k.jpg",
+      "file": "Sky/golden_gate_hills_2k.jpg"
+    },
+    {
+      "name": "Sky/horn-koppe_spring_2k.jpg",
+      "file": "Sky/horn-koppe_spring_2k.jpg"
+    },
+    {
+      "name": "Sky/overcast_soil_puresky_2k.jpg",
+      "file": "Sky/overcast_soil_puresky_2k.jpg"
+    },
+    {
+      "name": "Sky/park_music_stage_2k.jpg",
+      "file": "Sky/park_music_stage_2k.jpg"
+    },
+    {
+      "name": "Sky/pine_picnic_2k.jpg",
+      "file": "Sky/pine_picnic_2k.jpg"
+    },
+    {
+      "name": "Sky/qwantani_mid_morning_puresky_2k.jpg",
+      "file": "Sky/qwantani_mid_morning_puresky_2k.jpg"
+    },
+    {
+      "name": "Sky/rogland_clear_night_2k.jpg",
+      "file": "Sky/rogland_clear_night_2k.jpg"
+    },
+    {
+      "name": "Sky/satara_night_2k.jpg",
+      "file": "Sky/satara_night_2k.jpg"
+    },
+    {
+      "name": "Sky/sunny_country_road_2k.jpg",
+      "file": "Sky/sunny_country_road_2k.jpg"
+    },
+    {
+      "name": "Sky/zawiszy_czarnego_2k.jpg",
+      "file": "Sky/zawiszy_czarnego_2k.jpg"
+    }
+  ],
   "Buildings": [
     {
       "name": "Assets/Buildings/Barricade Window C.glb",
@@ -23,6 +85,10 @@
     {
       "name": "Assets/Buildings/Barricade.glb",
       "file": "Assets/Buildings/Barricade.glb"
+    },
+    {
+      "name": "Assets/Buildings/Base Large.glb",
+      "file": "Assets/Buildings/Base Large.glb"
     },
     {
       "name": "Assets/Buildings/Border Corner Diagon.glb",
@@ -117,6 +183,10 @@
       "file": "Assets/Buildings/Floor.glb"
     },
     {
+      "name": "Assets/Buildings/Geodesic Dome.glb",
+      "file": "Assets/Buildings/Geodesic Dome.glb"
+    },
+    {
       "name": "Assets/Buildings/Grey Door.glb",
       "file": "Assets/Buildings/Grey Door.glb"
     },
@@ -139,6 +209,14 @@
     {
       "name": "Assets/Buildings/Gutter Vertical.glb",
       "file": "Assets/Buildings/Gutter Vertical.glb"
+    },
+    {
+      "name": "Assets/Buildings/House.glb",
+      "file": "Assets/Buildings/House.glb"
+    },
+    {
+      "name": "Assets/Buildings/Large Building.glb",
+      "file": "Assets/Buildings/Large Building.glb"
     },
     {
       "name": "Assets/Buildings/Modern door.glb",
@@ -399,7 +477,21 @@
       "file": "Assets/Characters/Wasp.glb"
     }
   ],
-  "City_Pack": [
+  "Vehicles": [
+    {
+      "name": "Assets/Vehicles/CAR Model.glb",
+      "file": "Assets/Vehicles/CAR Model.glb"
+    },
+    {
+      "name": "Assets/Vehicles/clawbot_anim.glb",
+      "file": "Assets/Vehicles/clawbot_anim.glb"
+    },
+    {
+      "name": "Assets/Vehicles/Police Car.glb",
+      "file": "Assets/Vehicles/Police Car.glb"
+    }
+  ],
+  "City Pack": [
     {
       "name": "Assets/City_Pack/Air conditioner.glb",
       "file": "Assets/City_Pack/Air conditioner.glb"
@@ -609,7 +701,7 @@
       "file": "Assets/City_Pack/Yellow Post-it.glb"
     }
   ],
-  "Cube_World": [
+  "Cube World": [
     {
       "name": "Assets/Cube_World/Axe Stone.glb",
       "file": "Assets/Cube_World/Axe Stone.glb"
@@ -951,7 +1043,7 @@
       "file": "Assets/Cube_World/Zombie.glb"
     }
   ],
-  "Food_Pack": [
+  "Food Pack": [
     {
       "name": "Assets/Food_Pack/Apple Green.glb",
       "file": "Assets/Food_Pack/Apple Green.glb"
@@ -1263,217 +1355,337 @@
       "file": "Assets/Houses/Tree.glb"
     }
   ],
-  "Outdoor_Decorations": [
+  "Outdoor Decorations": [
     {
-      "name": "Assets/Outdoor_Decorations/Bamboo.glb",
-      "file": "Assets/Outdoor_Decorations/Bamboo.glb"
+      "name": "Assets/Furniture/Bathroom Sink.glb",
+      "file": "Assets/Furniture/Bathroom Sink.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Bench.glb",
-      "file": "Assets/Outdoor_Decorations/Bench.glb"
+      "name": "Assets/Furniture/Bathroom Toilet Paper.glb",
+      "file": "Assets/Furniture/Bathroom Toilet Paper.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Bird House.glb",
-      "file": "Assets/Outdoor_Decorations/Bird House.glb"
+      "name": "Assets/Furniture/Bathtub.glb",
+      "file": "Assets/Furniture/Bathtub.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Bonsai.glb",
-      "file": "Assets/Outdoor_Decorations/Bonsai.glb"
+      "name": "Assets/Furniture/Bed King.glb",
+      "file": "Assets/Furniture/Bed King.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Bottle.glb",
-      "file": "Assets/Outdoor_Decorations/Bottle.glb"
+      "name": "Assets/Furniture/Bed Single.glb",
+      "file": "Assets/Furniture/Bed Single.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Bridge.glb",
-      "file": "Assets/Outdoor_Decorations/Bridge.glb"
+      "name": "Assets/Furniture/Bunk Bed.glb",
+      "file": "Assets/Furniture/Bunk Bed.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Chair.glb",
-      "file": "Assets/Outdoor_Decorations/Chair.glb"
+      "name": "Assets/Furniture/Cactus.glb",
+      "file": "Assets/Furniture/Cactus.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Chiminea.glb",
-      "file": "Assets/Outdoor_Decorations/Chiminea.glb"
+      "name": "Assets/Furniture/Ceiling Light.glb",
+      "file": "Assets/Furniture/Ceiling Light.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Cup Tea.glb",
-      "file": "Assets/Outdoor_Decorations/Cup Tea.glb"
+      "name": "Assets/Furniture/Chair-Rlyhe93NNe.glb",
+      "file": "Assets/Furniture/Chair-Rlyhe93NNe.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Cup.glb",
-      "file": "Assets/Outdoor_Decorations/Cup.glb"
+      "name": "Assets/Furniture/Chair.glb",
+      "file": "Assets/Furniture/Chair.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Fan.glb",
-      "file": "Assets/Outdoor_Decorations/Fan.glb"
+      "name": "Assets/Furniture/Column Round.glb",
+      "file": "Assets/Furniture/Column Round.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Fire Place.glb",
-      "file": "Assets/Outdoor_Decorations/Fire Place.glb"
+      "name": "Assets/Furniture/Couch Large.glb",
+      "file": "Assets/Furniture/Couch Large.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Bed-dM9hXXth1I.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Bed-dM9hXXth1I.glb"
+      "name": "Assets/Furniture/Couch Medium-mWgQ94zhDZ.glb",
+      "file": "Assets/Furniture/Couch Medium-mWgQ94zhDZ.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Bed-eUCvK3Oq9z.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Bed-eUCvK3Oq9z.glb"
+      "name": "Assets/Furniture/Couch Medium.glb",
+      "file": "Assets/Furniture/Couch Medium.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Bed-kxvm53IIIU.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Bed-kxvm53IIIU.glb"
+      "name": "Assets/Furniture/Couch Small-X9msj0gtb5.glb",
+      "file": "Assets/Furniture/Couch Small-X9msj0gtb5.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Bed-wibWtE6p8L.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Bed-wibWtE6p8L.glb"
+      "name": "Assets/Furniture/Couch Small.glb",
+      "file": "Assets/Furniture/Couch Small.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Bed.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Bed.glb"
+      "name": "Assets/Furniture/Curtains Double.glb",
+      "file": "Assets/Furniture/Curtains Double.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-F8zLx6wGG8.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-F8zLx6wGG8.glb"
+      "name": "Assets/Furniture/Dead Houseplant.glb",
+      "file": "Assets/Furniture/Dead Houseplant.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-FNqGPLKY0V.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-FNqGPLKY0V.glb"
+      "name": "Assets/Furniture/Door Double.glb",
+      "file": "Assets/Furniture/Door Double.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-k1FsCQTgWu.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-k1FsCQTgWu.glb"
+      "name": "Assets/Furniture/Door-8it1hH1oRu.glb",
+      "file": "Assets/Furniture/Door-8it1hH1oRu.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-Kgt363WkKd.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-Kgt363WkKd.glb"
+      "name": "Assets/Furniture/Door-atrxVW0q9N.glb",
+      "file": "Assets/Furniture/Door-atrxVW0q9N.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-oUUQhKrSUL.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-oUUQhKrSUL.glb"
+      "name": "Assets/Furniture/Door-b0AIfzp6VL.glb",
+      "file": "Assets/Furniture/Door-b0AIfzp6VL.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot-u0CrZnpykb.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot-u0CrZnpykb.glb"
+      "name": "Assets/Furniture/Door-ihXwSN12P1.glb",
+      "file": "Assets/Furniture/Door-ihXwSN12P1.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flower Pot.glb",
-      "file": "Assets/Outdoor_Decorations/Flower Pot.glb"
+      "name": "Assets/Furniture/Door-KGt4ztcKrM.glb",
+      "file": "Assets/Furniture/Door-KGt4ztcKrM.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Flowers.glb",
-      "file": "Assets/Outdoor_Decorations/Flowers.glb"
+      "name": "Assets/Furniture/Door-LI93WgnjyS.glb",
+      "file": "Assets/Furniture/Door-LI93WgnjyS.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Garden Lamp.glb",
-      "file": "Assets/Outdoor_Decorations/Garden Lamp.glb"
+      "name": "Assets/Furniture/Door-xuFNaNLzfE.glb",
+      "file": "Assets/Furniture/Door-xuFNaNLzfE.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Gazebo.glb",
-      "file": "Assets/Outdoor_Decorations/Gazebo.glb"
+      "name": "Assets/Furniture/Door.glb",
+      "file": "Assets/Furniture/Door.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Grill.glb",
-      "file": "Assets/Outdoor_Decorations/Grill.glb"
+      "name": "Assets/Furniture/Drawer-8xZQEZL2w3.glb",
+      "file": "Assets/Furniture/Drawer-8xZQEZL2w3.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Hanging Flower Pot.glb",
-      "file": "Assets/Outdoor_Decorations/Hanging Flower Pot.glb"
+      "name": "Assets/Furniture/Drawer-G1H0wnCHQf.glb",
+      "file": "Assets/Furniture/Drawer-G1H0wnCHQf.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Japanese Sedge.glb",
-      "file": "Assets/Outdoor_Decorations/Japanese Sedge.glb"
+      "name": "Assets/Furniture/Drawer-N3ERi89OeO.glb",
+      "file": "Assets/Furniture/Drawer-N3ERi89OeO.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Lamp.glb",
-      "file": "Assets/Outdoor_Decorations/Lamp.glb"
+      "name": "Assets/Furniture/Drawer-T4uDbyP90C.glb",
+      "file": "Assets/Furniture/Drawer-T4uDbyP90C.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Parasol.glb",
-      "file": "Assets/Outdoor_Decorations/Parasol.glb"
+      "name": "Assets/Furniture/Drawer.glb",
+      "file": "Assets/Furniture/Drawer.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Pillar.glb",
-      "file": "Assets/Outdoor_Decorations/Pillar.glb"
+      "name": "Assets/Furniture/Fireplace.glb",
+      "file": "Assets/Furniture/Fireplace.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Rock-exqqSHbNeN.glb",
-      "file": "Assets/Outdoor_Decorations/Rock-exqqSHbNeN.glb"
+      "name": "Assets/Furniture/Houseplant-bfLOqIV5uP.glb",
+      "file": "Assets/Furniture/Houseplant-bfLOqIV5uP.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Rock-fM90QFMNtS.glb",
-      "file": "Assets/Outdoor_Decorations/Rock-fM90QFMNtS.glb"
+      "name": "Assets/Furniture/Houseplant-dveIJ0xNpX.glb",
+      "file": "Assets/Furniture/Houseplant-dveIJ0xNpX.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Rock-p5J3xclZRY.glb",
-      "file": "Assets/Outdoor_Decorations/Rock-p5J3xclZRY.glb"
+      "name": "Assets/Furniture/Houseplant-f6GPjbEgg0.glb",
+      "file": "Assets/Furniture/Houseplant-f6GPjbEgg0.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Rock-UkxWNmiFFj.glb",
-      "file": "Assets/Outdoor_Decorations/Rock-UkxWNmiFFj.glb"
+      "name": "Assets/Furniture/Houseplant-IBLX2Jz90O.glb",
+      "file": "Assets/Furniture/Houseplant-IBLX2Jz90O.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Rock.glb",
-      "file": "Assets/Outdoor_Decorations/Rock.glb"
+      "name": "Assets/Furniture/Houseplant-VtJh4Irl4w.glb",
+      "file": "Assets/Furniture/Houseplant-VtJh4Irl4w.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Sleepbed.glb",
-      "file": "Assets/Outdoor_Decorations/Sleepbed.glb"
+      "name": "Assets/Furniture/Houseplant.glb",
+      "file": "Assets/Furniture/Houseplant.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-0Mkdl3SJDT.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-0Mkdl3SJDT.glb"
+      "name": "Assets/Furniture/Kitchen Fridge.glb",
+      "file": "Assets/Furniture/Kitchen Fridge.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-gieXYyUTYr.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-gieXYyUTYr.glb"
+      "name": "Assets/Furniture/Kitchen Sink.glb",
+      "file": "Assets/Furniture/Kitchen Sink.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-JXmywADgSk.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-JXmywADgSk.glb"
+      "name": "Assets/Furniture/L Couch.glb",
+      "file": "Assets/Furniture/L Couch.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-NZo0rzQExF.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-NZo0rzQExF.glb"
+      "name": "Assets/Furniture/Lamp.glb",
+      "file": "Assets/Furniture/Lamp.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-OoxOKtoXsO.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-OoxOKtoXsO.glb"
+      "name": "Assets/Furniture/Light Ceiling Single.glb",
+      "file": "Assets/Furniture/Light Ceiling Single.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-VerAznL5lK.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-VerAznL5lK.glb"
+      "name": "Assets/Furniture/Light Ceiling-NNlnaiDJIh.glb",
+      "file": "Assets/Furniture/Light Ceiling-NNlnaiDJIh.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue-YMO2Qq75Nh.glb",
-      "file": "Assets/Outdoor_Decorations/Statue-YMO2Qq75Nh.glb"
+      "name": "Assets/Furniture/Light Ceiling-ToOLJDO5FI.glb",
+      "file": "Assets/Furniture/Light Ceiling-ToOLJDO5FI.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Statue.glb",
-      "file": "Assets/Outdoor_Decorations/Statue.glb"
+      "name": "Assets/Furniture/Light Ceiling.glb",
+      "file": "Assets/Furniture/Light Ceiling.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Table-MuBw2WmVTU.glb",
-      "file": "Assets/Outdoor_Decorations/Table-MuBw2WmVTU.glb"
+      "name": "Assets/Furniture/Light Chandelier.glb",
+      "file": "Assets/Furniture/Light Chandelier.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Table-wAaFESADdd.glb",
-      "file": "Assets/Outdoor_Decorations/Table-wAaFESADdd.glb"
+      "name": "Assets/Furniture/Light Cube-gJpALEpLcy.glb",
+      "file": "Assets/Furniture/Light Cube-gJpALEpLcy.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Table.glb",
-      "file": "Assets/Outdoor_Decorations/Table.glb"
+      "name": "Assets/Furniture/Light Cube.glb",
+      "file": "Assets/Furniture/Light Cube.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Tree.glb",
-      "file": "Assets/Outdoor_Decorations/Tree.glb"
+      "name": "Assets/Furniture/Light Desk.glb",
+      "file": "Assets/Furniture/Light Desk.glb"
     },
     {
-      "name": "Assets/Outdoor_Decorations/Water Fountain.glb",
-      "file": "Assets/Outdoor_Decorations/Water Fountain.glb"
+      "name": "Assets/Furniture/Light Floor-eBQtooeh43.glb",
+      "file": "Assets/Furniture/Light Floor-eBQtooeh43.glb"
+    },
+    {
+      "name": "Assets/Furniture/Light Floor.glb",
+      "file": "Assets/Furniture/Light Floor.glb"
+    },
+    {
+      "name": "Assets/Furniture/Light Icosahedron.glb",
+      "file": "Assets/Furniture/Light Icosahedron.glb"
+    },
+    {
+      "name": "Assets/Furniture/Light Stand.glb",
+      "file": "Assets/Furniture/Light Stand.glb"
+    },
+    {
+      "name": "Assets/Furniture/Night Stand-08S1j15Jcx.glb",
+      "file": "Assets/Furniture/Night Stand-08S1j15Jcx.glb"
+    },
+    {
+      "name": "Assets/Furniture/Night Stand-7cobkfclNv.glb",
+      "file": "Assets/Furniture/Night Stand-7cobkfclNv.glb"
+    },
+    {
+      "name": "Assets/Furniture/Night Stand.glb",
+      "file": "Assets/Furniture/Night Stand.glb"
+    },
+    {
+      "name": "Assets/Furniture/Oven.glb",
+      "file": "Assets/Furniture/Oven.glb"
+    },
+    {
+      "name": "Assets/Furniture/Round Rug.glb",
+      "file": "Assets/Furniture/Round Rug.glb"
+    },
+    {
+      "name": "Assets/Furniture/Rug.glb",
+      "file": "Assets/Furniture/Rug.glb"
+    },
+    {
+      "name": "Assets/Furniture/Shelf Large.glb",
+      "file": "Assets/Furniture/Shelf Large.glb"
+    },
+    {
+      "name": "Assets/Furniture/Shelf Small-TfdgUV2RYe.glb",
+      "file": "Assets/Furniture/Shelf Small-TfdgUV2RYe.glb"
+    },
+    {
+      "name": "Assets/Furniture/Shelf Small.glb",
+      "file": "Assets/Furniture/Shelf Small.glb"
+    },
+    {
+      "name": "Assets/Furniture/Square Plate.glb",
+      "file": "Assets/Furniture/Square Plate.glb"
+    },
+    {
+      "name": "Assets/Furniture/Stool.glb",
+      "file": "Assets/Furniture/Stool.glb"
+    },
+    {
+      "name": "Assets/Furniture/Table Lamp.glb",
+      "file": "Assets/Furniture/Table Lamp.glb"
+    },
+    {
+      "name": "Assets/Furniture/Table Round Large.glb",
+      "file": "Assets/Furniture/Table Round Large.glb"
+    },
+    {
+      "name": "Assets/Furniture/Table Round Small-57W671WvS2.glb",
+      "file": "Assets/Furniture/Table Round Small-57W671WvS2.glb"
+    },
+    {
+      "name": "Assets/Furniture/Table Round Small.glb",
+      "file": "Assets/Furniture/Table Round Small.glb"
+    },
+    {
+      "name": "Assets/Furniture/Toilet Paper stack.glb",
+      "file": "Assets/Furniture/Toilet Paper stack.glb"
+    },
+    {
+      "name": "Assets/Furniture/Toilet.glb",
+      "file": "Assets/Furniture/Toilet.glb"
+    },
+    {
+      "name": "Assets/Furniture/Towel Rack.glb",
+      "file": "Assets/Furniture/Towel Rack.glb"
+    },
+    {
+      "name": "Assets/Furniture/Trashcan Large.glb",
+      "file": "Assets/Furniture/Trashcan Large.glb"
+    },
+    {
+      "name": "Assets/Furniture/Trashcan Small-ZWYTK2SmBA.glb",
+      "file": "Assets/Furniture/Trashcan Small-ZWYTK2SmBA.glb"
+    },
+    {
+      "name": "Assets/Furniture/Trashcan Small.glb",
+      "file": "Assets/Furniture/Trashcan Small.glb"
+    },
+    {
+      "name": "Assets/Furniture/Trashcan-XSwahu252t.glb",
+      "file": "Assets/Furniture/Trashcan-XSwahu252t.glb"
+    },
+    {
+      "name": "Assets/Furniture/Trashcan.glb",
+      "file": "Assets/Furniture/Trashcan.glb"
+    },
+    {
+      "name": "Assets/Furniture/Washing Machine.glb",
+      "file": "Assets/Furniture/Washing Machine.glb"
+    },
+    {
+      "name": "Assets/Furniture/Window Large.glb",
+      "file": "Assets/Furniture/Window Large.glb"
+    },
+    {
+      "name": "Assets/Furniture/Window Round.glb",
+      "file": "Assets/Furniture/Window Round.glb"
+    },
+    {
+      "name": "Assets/Furniture/Window Small.glb",
+      "file": "Assets/Furniture/Window Small.glb"
     }
   ],
-  "Post_Apocolypse": [
+  "Post Apocolypse": [
     {
       "name": "Assets/Post_Apocolypse/Axe.glb",
       "file": "Assets/Post_Apocolypse/Axe.glb"
@@ -2025,7 +2237,7 @@
       "file": "Assets/Space_Kit/Tree Swirl.glb"
     }
   ],
-  "Ground Textures": [
+  "Textures": [
     {
       "name": "Ground/Cobblestone A.jpg",
       "file": "Ground/Cobblestone A.jpg"
@@ -2249,68 +2461,6 @@
     {
       "name": "SFX/wind_chimes.mp3",
       "file": "SFX/wind_chimes.mp3"
-    }
-  ],
-  "Sky": [
-    {
-      "name": "Sky/ballawley_park_2k.jpg",
-      "file": "Sky/ballawley_park_2k.jpg"
-    },
-    {
-      "name": "Sky/brown_photostudio_02_2k.jpg",
-      "file": "Sky/brown_photostudio_02_2k.jpg"
-    },
-    {
-      "name": "Sky/cannon_2k.jpg",
-      "file": "Sky/cannon_2k.jpg"
-    },
-    {
-      "name": "Sky/christmas_photo_studio_01_2k.jpg",
-      "file": "Sky/christmas_photo_studio_01_2k.jpg"
-    },
-    {
-      "name": "Sky/clear_sky.jpg",
-      "file": "Sky/clear_sky.jpg"
-    },
-    {
-      "name": "Sky/golden_gate_hills_2k.jpg",
-      "file": "Sky/golden_gate_hills_2k.jpg"
-    },
-    {
-      "name": "Sky/horn-koppe_spring_2k.jpg",
-      "file": "Sky/horn-koppe_spring_2k.jpg"
-    },
-    {
-      "name": "Sky/overcast_soil_puresky_2k.jpg",
-      "file": "Sky/overcast_soil_puresky_2k.jpg"
-    },
-    {
-      "name": "Sky/park_music_stage_2k.jpg",
-      "file": "Sky/park_music_stage_2k.jpg"
-    },
-    {
-      "name": "Sky/pine_picnic_2k.jpg",
-      "file": "Sky/pine_picnic_2k.jpg"
-    },
-    {
-      "name": "Sky/qwantani_mid_morning_puresky_2k.jpg",
-      "file": "Sky/qwantani_mid_morning_puresky_2k.jpg"
-    },
-    {
-      "name": "Sky/rogland_clear_night_2k.jpg",
-      "file": "Sky/rogland_clear_night_2k.jpg"
-    },
-    {
-      "name": "Sky/satara_night_2k.jpg",
-      "file": "Sky/satara_night_2k.jpg"
-    },
-    {
-      "name": "Sky/sunny_country_road_2k.jpg",
-      "file": "Sky/sunny_country_road_2k.jpg"
-    },
-    {
-      "name": "Sky/zawiszy_czarnego_2k.jpg",
-      "file": "Sky/zawiszy_czarnego_2k.jpg"
     }
   ]
 }

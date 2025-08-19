@@ -1,19 +1,3 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>A-Frame Sandbox</title>
-    <!-- Adds aframe core functionality for building VR scenes -->
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <!-- Allows objects to react to events like clicks -->
-    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <!-- Adds support for animated 3D models (GLB files) -->
-    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <!-- Adds VR controller thumbstick movement support -->
-    <script src="thumbstick-move.js"></script>
-  </head>
-  <body>
-    <!-- Main VR scene container -->
     <a-scene>
 
       <!-- Start background sound loop -->
@@ -43,7 +27,7 @@
       <a-entity id="ambientLight" light="type: ambient; color: #fff; intensity: 1"></a-entity>
 
       <!-- Adventurer character model -->
-      <a-entity id="adventurer" gltf-model="Assets/City_Pack/Adventurer.glb" 
+      <a-entity id="adventurer" gltf-model="Assets/Characters/Adventurer.glb" 
         class="clickable" scale="1.2 1.2 1.2" position="-5 0 -10" rotation="0 45 0"
         sound="src: url(SFX/welcome.mp3); on: mouseenter; positional: true" volume="1">
       </a-entity>
@@ -51,7 +35,7 @@
       <!-- Enemy 1 - Wasp flying in a circle (animated) -->
       <!-- Parent entity rotates, child wasp moves in a circle -->
       <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
-        <a-entity id="Wasp" gltf-model="Assets/Animated_Enemies/Wasp.glb" 
+        <a-entity id="Wasp" gltf-model="Assets/Characters/Wasp.glb" 
           animation-mixer="clip: WaspArmature|Wasp_Flying; loop: repeat"
           position="5 0 0" rotation="0 90 0" class="clickable"
           sound="src: url(SFX/wasp.wav); autoplay: true; loop: true; maxDistance: 10; positional: true; volume: 1">
@@ -59,7 +43,7 @@
       </a-entity>
 
       <!-- Animated frog that jumps back and forth -->
-      <a-entity id="Frog" gltf-model="Assets/Animated_Enemies/Frog.glb"
+      <a-entity id="Frog" gltf-model="Assets/Characters/Frog.glb"
         animation-mixer="clip: *Jump; loop: repeat"
         position="5 0 0" rotation="0 -90 0" scale="0.2 0.2 0.2"
         sound="src: url(SFX/frog2.mp3); autoplay: true; loop: true; maxDistance: 10; positional: true; volume: 1"
@@ -94,22 +78,20 @@
       </a-box>
 
       <!-- House model -->
-      <a-entity id="house" gltf-model="Assets/House.glb"
+      <a-entity id="house" gltf-model="Assets/Buildings/House.glb"
         scale="12 12 12" position="10 0 -10" rotation="0 -80 0">
       </a-entity>
 
       <!-- Forest scene (large background model) -->
-      <a-entity id="forest" gltf-model="Assets/Nature.glb"
+      <a-entity id="forest" gltf-model="Assets/Environments/Nature.glb"
         scale="100 100 100" position="-25 7 -100" rotation="1 0 0">
       </a-entity>
 
       <a-ocean depth="200" width="200" position="0 -1 0"></a-ocean>
 
       <!-- Wind chimes with sound -->
-      <a-entity id="windchimes" gltf-model="Assets/wind_chimes.glb"
+      <a-entity id="windchimes" gltf-model="Assets/Outdoor_Decorations/wind_chimes.glb"
         sound="src: url(SFX/wind_chimes.mp3); autoplay: true; loop: true; maxDistance: 20; positional: true; volume: 1"
         scale="0.1 0.1 0.1" position="7.5 2.5 -9" rotation="0 -80 0">
       </a-entity>
     </a-scene>
-  </body>
-</html>

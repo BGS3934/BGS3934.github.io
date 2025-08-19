@@ -4,4 +4,5 @@
   <li>Change the <b>property</b> to animate <code>position</code> or <code>scale</code>.</li>
   <li>Slow it down or speed it up by changing <b>dur</b> (duration).</li>
   <li>Make it animate in a smooth loop by adding <span style="background-color:#1e1e1e; color:#d4d4d4; color:#ce9178;">easing: linear</span>
+  <li>Having troulbe getting it to work?  Reload and try again, watch for typos, a missing semi colon <code> ; </code> can be all it takes to stop things working.</li>
 </ol>

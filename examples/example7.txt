@@ -1,6 +1,6 @@
 <a-scene>
   <a-assets>
-    <a-asset-item id="frog" src="Assets/Animated_Enemies/Frog.glb"></a-asset-item>
+    <a-asset-item id="frog" src="Assets/Characters/Frog.glb"></a-asset-item>
   </a-assets>
 
   <!-- Animate rotation of the robot -->
