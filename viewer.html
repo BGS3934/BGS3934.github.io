@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resource Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+</head>
+<body>
+<script>
+function getQueryParams() {
+  const params = {};
+  new URLSearchParams(window.location.search).forEach((v, k) => params[k] = v);
+  return params;
+}
+
+const { type, file, spin, sky, planeTex } = getQueryParams();
+
+// Helper to generate <a-sky>
+function getSkyElement() {
+  if (sky) {
+    return `<a-assets><img id="skyTex" src="${sky}"></a-assets><a-sky src="#skyTex"></a-sky>`;
+  }
+  // default sky
+  return `<a-sky color="#ECECEC"></a-sky>`;
+}
+
+// Determine if plane should have a texture
+const planeAttributes = planeTex ? `src="${planeTex}" ` : "";
+
+// Start writing the scene
+document.write(`
+  <a-scene>
+    ${getSkyElement()}
+
+    ${/\.(glb|gltf)$/i.test(file) ? `
+      <a-entity gltf-model="${file}" position="0 0 -3"
+        ${spin === "true" ? 'animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"' : ''}>
+      </a-entity>
+    ` : ""}
+
+    ${/\.(png|jpg|jpeg|gif)$/i.test(file) && !file.startsWith("Sky/") ? `
+      <a-plane src="${file}" position="0 1.6 -3" width="6" height="4"></a-plane>
+    ` : ""}
+
+    <a-plane id="groundPlane" ${planeAttributes} position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+
+    <a-entity position="2 4 4" rotation="-30 30 0" light="type: directional; color: #FFF; intensity: 1"></a-entity>
+    
+  </a-scene>
+`);
+
+// Audio playback for sounds
+if (/\.(mp3|wav|ogg)$/i.test(file)) {
+  document.write(`
+    <div style="display:flex;justify-content:center;align-items:center;height:100vh;">
+      <button id="playSound" style="padding:1em 2em;font-size:1.2em;">▶️ Play Sound</button>
+    </div>
+  `);
+
+  let currentAudio = null;
+  const btn = document.getElementById("playSound");
+  btn.addEventListener("click", () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(file);
+    currentAudio.play();
+  });
+}
+</script>
+</body>
+</html>

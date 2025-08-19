@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VR Resources</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+  <!-- Monaco Editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    header { background-color: #000; color: white; padding: 1em; text-align: center; }
+    header h1 { margin: 0; color: #e30613; }
+    nav { background-color: #333; padding: 0.5em; text-align: center; }
+    nav a { color: white; margin: 0 1em; text-decoration: none; }
+    nav a:hover { color: #e30613; }
+
+    main {
+      max-width: 1500px;
+      margin: auto;
+      padding: 1.5em;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+    #resources {
+      flex: 1;
+      max-width: 350px;
+      max-height: calc(100vh - 260px);
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+    #resourceSearch {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+    .resource-section h3 { margin: 0.3em 0; color: #3F51B5; cursor: pointer; }
+    .resource-section ul { list-style: none; padding-left: 1em; margin: 0; display: none; }
+    .resource-section li { margin-bottom: 0.5em; cursor: pointer; display: flex; align-items: center; }
+    .resource-section li img { width: 50px; height: 50px; object-fit: cover; margin-right: 5px; border: 1px solid #ccc; border-radius: 4px; }
+
+    #right-panel {
+      flex: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      height: 100vh;
+    }
+    #viewer { flex: 2; width: 100%; border: 1px solid #ccc; border-radius: 8px; }
+    #code-preview { flex: 1; display: flex; flex-direction: column; border: 1px solid #ccc; border-radius: 8px; background: white; }
+    #editor { flex: 1; width: 100%; }
+    #code-buttons { padding: 0.5em; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #ccc; background: #f0f0f0; }
+    button { padding: 0.3em 0.6em; cursor: pointer; border: 1px solid #aaa; border-radius: 5px; background: #fff; }
+    button:hover { background: #e0e0e0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>VR Resources Explorer</h1>
+  <p>Click an item to preview in the viewer</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="main_Demo.html">Demo Project</a>
+  <a href="examples.html">Examples</a>
+  <a href="resources.html">Resources</a>
+</nav>
+
+<main>
+  <div id="resources">
+    <input type="text" id="resourceSearch" placeholder="Search resources...">
+  </div>
+
+  <div id="right-panel">
+    <iframe id="viewer" src="viewer.html"></iframe>
+    <div id="code-preview">
+      <div id="editor"></div>
+      <div id="code-buttons">
+        <button id="toggleSpin">Toggle Spin</button>
+        <button id="copyCode">Copy Code</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+let editor, spinEnabled = true;
+let currentSky = null;
+let currentAudio = null;
+let currentAsset = null;
+
+// Monaco Editor
+require.config({ paths: { vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs" }});
+require(["vs/editor/editor.main"], function () {
+  editor = monaco.editor.create(document.getElementById("editor"), {
+    value: "<!-- Select a resource to see code here -->",
+    language: "html",
+    theme: "vs-dark",
+    wordWrap: "on",
+    readOnly: true,
+    minimap: { enabled: false }
+  });
+});
+
+// Fetch resources
+async function loadResources() {
+  const response = await fetch('manifest.json');
+  const data = await response.json();
+  const container = document.getElementById('resources');
+
+  for (const [type, files] of Object.entries(data)) {
+    const section = document.createElement('div');
+    section.classList.add("resource-section");
+
+    const heading = document.createElement('h3');
+    heading.textContent = type;
+    const list = document.createElement('ul');
+
+    heading.addEventListener('click', () => {
+      list.style.display = list.style.display === "none" ? "block" : "none";
+    });
+
+    files.forEach(f => {
+      const li = document.createElement('li');
+
+      if (type.toLowerCase().includes('texture') || /\.(png|jpg|jpeg|gif)$/i.test(f.file)) {
+        li.innerHTML = `<img src="${f.file}" alt="${f.name}"> ${f.name}`;
+      } else if (type.toLowerCase().includes('sound') || /\.(mp3|wav|ogg)$/i.test(f.file)) {
+        li.innerHTML = `${f.name} <button class="play-sound">▶️</button>`;
+        li.querySelector('button').addEventListener('click', e => {
+          e.stopPropagation();
+          if (currentAudio) currentAudio.pause();
+          currentAudio = new Audio(f.file);
+          currentAudio.play();
+        });
+      } else {
+        li.textContent = f.name;
+      }
+
+      const isSky = f.file.startsWith("Sky/");
+      li.addEventListener('click', () => loadViewer(type, f.file, isSky));
+
+      list.appendChild(li);
+    });
+
+    section.appendChild(heading);
+    section.appendChild(list);
+    container.appendChild(section);
+  }
+
+  // Search/filter logic
+  const searchInput = document.getElementById("resourceSearch");
+  searchInput.addEventListener("input", () => {
+    const filter = searchInput.value.toLowerCase();
+    document.querySelectorAll(".resource-section").forEach(section => {
+      let hasMatch = false;
+      section.querySelectorAll("li").forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? "flex" : "none";
+        if (text.includes(filter)) hasMatch = true;
+      });
+      // Show/hide section & auto-expand matched sections
+      if (filter === "") {
+        section.querySelector("ul").style.display = "none";
+        section.style.display = "block";
+      } else {
+        section.style.display = hasMatch ? "block" : "none";
+        section.querySelector("ul").style.display = hasMatch ? "block" : "none";
+      }
+    });
+  });
+}
+
+// Load asset/sky into iframe and update code preview
+function loadViewer(type, file, isSky = false) {
+  const viewer = document.getElementById('viewer');
+
+  if (isSky) {
+    currentSky = file;
+  } else if (type.includes("Texture")) {
+    // update plane texture only
+    currentAsset = currentAsset || {};
+    currentAsset.planeTex = file;
+  } else {
+    currentAsset = { type, file };
+  }
+
+  const params = new URLSearchParams();
+  if (currentAsset) {
+    if (currentAsset.type) params.set("type", currentAsset.type);
+    if (currentAsset.file) params.set("file", currentAsset.file);
+    if (currentAsset.planeTex) params.set("planeTex", currentAsset.planeTex);
+  }
+  params.set("spin", spinEnabled);
+  if (currentSky) params.set("sky", currentSky);
+
+  viewer.src = `viewer.html?${params.toString()}`;
+
+
+
+
+  // Build code snippet
+  let codeSnippet = "";
+  if (currentSky) {
+    codeSnippet += `<a-assets>\n  <img id="skyTex" src="${currentSky}">\n</a-assets>\n<a-sky src="#skyTex"></a-sky>\n\n`;
+  }
+
+  codeSnippet += `<a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>\n\n`;
+
+  if (currentAsset) {
+    const f = currentAsset.file;
+    if (/\.(gltf|glb)$/i.test(f)) {
+      codeSnippet += `<a-entity gltf-model="${f}" position="0 0 -3"${spinEnabled ? 
+        ' animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"' : ''}></a-entity>`;
+    } else if (/\.(png|jpg|jpeg|gif)$/i.test(f)) {
+      codeSnippet += `<a-plane src="${f}" position="0 1.5 -3" width="2" height="2"></a-plane>`;
+    } else if (/\.(mp3|wav|ogg)$/i.test(f)) {
+      codeSnippet += `<a-sound src="${f}" autoplay="false" position="0 1.5 -3"></a-sound>`;
+    }
+  }
+
+  editor.setValue(codeSnippet);
+}
+
+// Buttons
+document.getElementById("copyCode").addEventListener("click", () => {
+  navigator.clipboard.writeText(editor.getValue());
+  alert("Code copied!");
+});
+
+document.getElementById("toggleSpin").addEventListener("click", () => {
+  spinEnabled = !spinEnabled;
+  const viewer = document.getElementById("viewer");
+  const src = new URL(viewer.src);
+  src.searchParams.set("spin", spinEnabled);
+  viewer.src = src.toString();
+
+  if (currentAsset && currentAsset.type.toLowerCase().includes("model")) {
+    loadViewer(currentAsset.type, currentAsset.file);
+  }
+});
+
+loadResources();
+</script>
+
+</body>
+</html>

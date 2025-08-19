@@ -1,16 +1,12 @@
-<h2 style="color:#2196F3;">🔺 Adding Shapes</h2>
-
-<p>We now have a <b>box</b>, <b>plane</b> and a <b>sphere</b>.</p>
-
+<h2 style="color: #2196f3;">🔺 Adding Shapes</h2>
+<p>We now have a <strong>box</strong>, <strong>plane</strong> and a <strong>sphere</strong>.</p>
 <ol>
-  &nbsp; <li>Change the sphere’s <span style="color:purple;">radius</span> or make it taller using <b>scale</b>.</li>
-  &nbsp; <li>Move the shapes to create an arrangement.</li>
-  &nbsp; <li>Try adding a <b>cylinder</b> with the following properties</li>
-
-  <span style="background-color:#1e1e1e; color:#d4d4d4; padding: 0.25em 0.5em; display:inline-block; border-radius: 4px;">
-    <span style="color:#9cdcfe;">rotation</span><span style="color:#808080;">=</span><span style="color:#ce9178;">"-90 0 0"</span><span style="color:#d4d4d4;"> </span>
-    <span style="color:#9cdcfe;">width</span><span style="color:#808080;">=</span><span style="color:#ce9178;">"4"</span><span style="color:#d4d4d4;"> </span>
-    <span style="color:#9cdcfe;">height</span><span style="color:#808080;">=</span><span style="color:#ce9178;">"4"</span><span style="color:#d4d4d4;"> </span>
-    <span style="color:#9cdcfe;">color</span><span style="color:#808080;">=</span><span style="color:#ce9178;">"#7BC8A4"</span>
-  </span>
+<ol>&nbsp;
+<li>Change the sphere&rsquo;s <span style="color: purple;">radius</span> or make it taller using <strong>scale</strong>.</li>
+&nbsp;
+<li>Move the shapes to create an arrangement.</li>
+&nbsp;
+<li>Try adding a <strong>cylinder</strong> with the following properties</li>
 </ol>
+</ol>
+<p><span style="background-color: #1e1e1e; color: #d4d4d4; padding: 0.25em 0.5em; display: inline-block; border-radius: 4px;"> <span style="color: #9cdcfe;">position</span><span style="color: #808080;">=</span><span style="color: #ce9178;">"1 0.75 -3"</span>&nbsp;</span><span style="background-color: #1e1e1e; color: #d4d4d4; padding: 0.25em 0.5em; display: inline-block; border-radius: 4px;"><span style="color: #9cdcfe;">radius</span><span style="color: #808080;">=</span><span style="color: #ce9178;">"0.5"</span> <span style="color: #9cdcfe;">height</span><span style="color: #808080;">=</span><span style="color: #ce9178;">"2"</span> <span style="color: #9cdcfe;">color</span><span style="color: #808080;">=</span><span style="color: #ce9178;">"#FFC65D"</span> </span></p>
