@@ -1,0 +1,57 @@
+<html>
+  <head>
+<!-- Adds aframe core functionality for building VR scenes -->
+<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+<!-- Allows objects to react to events like clicks -->
+<script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+<!-- Adds support for animated 3D models (GLB files) -->
+<script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+<!-- Adds VR controller thumbstick movement support -->
+<script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+   
+    <a-scene>
+
+            <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="constrainToNavMesh: false" 
+                thumbstick-controls
+                position="4 0 20" rotation="0 180 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+      <a-assets>
+       
+        <a-asset-item id="land" src="Island.glb"></a-asset-item>
+        <a-asset-item id="sky" src="sky.glb"></a-asset-item>
+        <a-asset-item id="house" src="suburban.glb"></a-asset-item>
+        <a-asset-item id="flower" src="flower.glb"></a-asset-item>
+        <a-asset-item id="table" src="table.glb"></a-asset-item>
+        <a-asset-item id="grill" src="grill.glb"></a-asset-item>
+
+      </a-assets>
+
+      <a-entity gltf-model="#land" scale="115 35 115" position="0 -27 0"></a-entity>
+      <a-entity gltf-model="#sky"></a-entity>
+      <a-entity gltf-model="#house" scale="2 3 2" position="0 0 0"></a-entity>
+      <a-entity gltf-model="#flower" scale="3.5 3.5 3.5" position="0 -1 25"></a-entity>
+      <a-entity gltf-model="#table" scale="0.5 0.5 0.5" position="0 -1 25"></a-entity>
+      <a-entity gltf-model="#grill" scale="1.8 1 1.8" position="0 0 21"></a-entity>
+      <a-plane id="p1" src="P1.png" position="3 2 38" rotation="0 180 0" width="3.5" height="5.8"></a-plane>
+      <a-plane id="p2" src="P2.png" position="7 2 38" rotation="0 180 0" width="3.5" height="5.8"></a-plane>
+
+
+    </a-scene>
+  
+
+    </body>
+
+
+</html>
