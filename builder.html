@@ -5,6 +5,14 @@
   <title>A-Frame Project Builder</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
   <script src="js/builder.js" defer></script>
+  <script>
+    window.addEventListener("beforeunload", function (e) {
+     e.preventDefault();
+     e.returnValue = ""; 
+     
+    });
+  </script>
+
   <style>
     body {
       margin: 0;
@@ -98,9 +106,9 @@
   <header>
     <h1>A-Frame Project Builder</h1>
     <nav>
-      <a href="resources.html">Asset Library</a>
-      <a href="viewer.html">Viewer</a>
-      <a href="builder.html" class="active">Builder</a>
+      <a href="resources.html" target="_blank">Asset Library</a>
+      <a href="viewer.html" target="_blank">Viewer</a>
+      <a href="builder.html" target="_blank" class="active">Builder</a>
     </nav>
   </header>
 
