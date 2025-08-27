@@ -1,0 +1,168 @@
+<html>
+  <head>
+        <!-- Adds aframe core functionality for building VR scenes -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <!-- Allows objects to react to events like clicks -->
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <!-- Adds support for animated 3D models (GLB files) -->
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script> AFRAME.registerComponent('thumbstick-jump', {
+  init: function () {
+    this.canMove = true;
+    this.deadZone = 0.2;
+    this.moveThreshold = 0.8;
+
+    // Cache references to rig and head for movement & direction
+    this.rig = document.querySelector('#cameraRig');
+    this.head = document.querySelector('#head');
+
+    if (!this.rig || !this.head) {
+      console.warn('thumbstick-jump component requires #cameraRig and #head entities.');
+      return;
+    }
+
+    this.el.addEventListener('thumbstickmoved', this.onThumbstickMoved.bind(this));
+  },
+
+  onThumbstickMoved: function (evt) {
+    const x = evt.detail.x;
+    const y = evt.detail.y;
+
+    if (Math.abs(x) < this.deadZone && Math.abs(y) < this.deadZone) {
+      // Stick back to neutral, allow next move
+      this.canMove = true;
+      return;
+    }
+
+    if (!this.canMove) {
+      // Already moved for this push, wait for neutral to reset
+      return;
+    }
+
+    // Get forward direction vector (head direction on horizontal plane)
+    const direction = new THREE.Vector3();
+    this.head.object3D.getWorldDirection(direction);
+    direction.y = 0;
+    direction.normalize();
+
+    // Calculate right vector (perpendicular to forward and up)
+    const right = new THREE.Vector3();
+    right.crossVectors(this.rig.object3D.up, direction).normalize();
+
+    // Move rig 1 meter jump in one direction
+    if (y < -this.moveThreshold) {
+      this.rig.object3D.position.addScaledVector(direction, -2);
+      this.canMove = false;
+    } else if (y > this.moveThreshold) {
+      this.rig.object3D.position.addScaledVector(direction, 2);
+      this.canMove = false;
+    } else if (x < -this.moveThreshold) {
+      this.rig.object3D.position.addScaledVector(right, -2);
+      this.canMove = false;
+    } else if (x > this.moveThreshold) {
+      this.rig.object3D.position.addScaledVector(right, 2);
+      this.canMove = false;
+    }
+  }
+});</script>
+  </head>
+  
+  <body>
+    <a-scene>
+
+      <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-jump teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+      <a-assets>
+        <audio>
+        <a-asset-item id= "tree" src="Tree.glb"></a-asset-item>
+        <a-asset-item id="campfire" src="Campfire.glb"></a-asset-item>
+        <a-asset-item id="tent" src="Tent.glb"></a-asset-item>
+        <a-asset-item id="pinetrees" src="Pine.glb"></a-asset-item>
+        <a-asset-item id="cigarette" src="Cigarette butt.glb"></a-asset-item>
+        <a-asset-item id="battery" src="AA battery.glb"></a-asset-item>
+        <a-asset-item id="phone" src="Phone.glb"></a-asset-item>
+        <a-asset-item id="stick" src="Stick.glb"></a-asset-item>
+        <a-asset-item id="drytree" src="Dead Tree (2).glb"></a-asset-item>  
+        <a-asset-item id="smoke" src="Smoke.glb"></a-asset-item>
+        <a-asset-item id="bush" src="Bush.glb"></a-asset-item>
+        <a-asset-item id="bird" src="Western bluebird.glb"></a-asset-item>
+        <a-asset-item id="bird2" src="Parrot.glb"></a-asset-item>
+        <a-asset-item id="guys" src="VR Guys.glb"></a-asset-item>
+
+      </a-assets>
+      <a-entity gltf-model="#guys" position="-3 1.5 -2" rotation="0 180 0" scale="1 0.7 1"  class="clickable" sound="src: url(Yeah it all happened.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+      </a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-18 3 5"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-20 3 15"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-5 3 0"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-9 3 12 "></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-4 3 19"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-8 3 15"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-17 3 18"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="18 3 -5"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-20 3 -17"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="12 3 0"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="9 3 -12 "></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="-4 3 -10"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="8 3 -18"></a-entity>
+      <a-entity gltf-model="#tree" scale="3 3 3" position="20 3 -16"></a-entity>
+      <a-entity gltf-model="#cigarette" position="-7 0 20" class="clickable" sound="src: url(Discarded cigarettes.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1" scale="0.05 0.1 0.1"></a-entity>
+      <a-entity gltf-model="#campfire" position="0 0.5 0" class="clickable" 
+                sound="src: url(Unattended campfires.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+      </a-entity>
+      <a-entity gltf-model="#tent" position="0 0 -5" scale="0.25 0.25 0.25"></a-entity>
+      <a-entity gltf-model="#pinetrees" position="4 0 -10" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="9 0 5" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="-26 0 -5" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="-12 0 5" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="0 0 -28" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="-20 0 -27" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="-23 0 6" ></a-entity>
+      <a-entity gltf-model="#pinetrees" position="21 0 8" ></a-entity>
+      <a-entity gltf-model="#battery" class="clickable" position="19 0 -14" sound="src: url(Discarded batteries .wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1" scale="8 8 8"></a-entity>
+      <a-entity gltf-model="#battery" class="clickable" position="18 0 -14" sound="src: url(Discarded batteries .wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1" scale="8 8 8"></a-entity>
+      <a-entity gltf-model="#phone" class="clickable"  position="8.5 0.3 -11.5" sound="src: url(Discarded batteries .wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1" scale="0.5 0.5 0.5" scale="0.75 0.75 0.75" class="clickable"
+      sound="src: url(Discarded phones or .wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-entity>
+      <a-entity gltf-model="#stick" class="clickable" sound="src: url(Dry vegetation signi.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"position="5 0.22 12" scale="2 2 2"></a-entity>
+      <a-entity gltf-model="#stick" class="clickable" sound="src: url(Dry vegetation signi.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"position="-5 0.22 -15" scale="-2 2 2"></a-entity>
+      <a-entity gltf-model="#stick" class="clickable" sound="src: url(Dry vegetation signi.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"position="7 0.22 2" scale="2 2 2"></a-entity>
+      <a-entity gltf-model="#stick" class="clickable" sound="src: url(Dry vegetation signi.wav); autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"position="-18 0.22 -2" scale="2 2 2"></a-entity>
+      <a-entity gltf-model="#drytree" position="10 0 12" scale="0.5 0.5 0.5"></a-entity>
+      <a-entity gltf-model="#drytree" position="-10 0 -12" scale="0.5 0.5 0.5"></a-entity>
+      <a-entity gltf-model="#smoke" position="0 3 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear "></a-entity>
+      <a-entity gltf-model="#bush" position="12 0 17"></a-entity>
+      <a-entity gltf-model="#bush" position="0 0 10"></a-entity>
+      <a-entity gltf-model="#bush" position="-12 0 -15"></a-entity>
+      <a-entity gltf-model="#bush" position="-12 0 15"></a-entity>
+      <a-entity gltf-model="#bush" position="14 0 -20"></a-entity>
+      <a-entity gltf-model="#bird" position="2 0 -3" scale="0.5 0.5 0.5"></a-entity>
+      <a-entity gltf-model="#bird2" position="-15 8 0" scale="0.008 0.008 0.008" animation="property: object3D.position.x; to: 18;dir: alternate; dur: 2000; loop: true"></a-entity>
+        
+
+
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" scale="13 16 13 13" color="#06402B" src="green_ground_land_grass_textures_free_24.jpg"></a-plane>
+      <a-sound src="night-forest-soundscape-158701.wav" loop="true" autoplay="true" position="0 1.5 -3"></a-sound>
+      <a-sky color="#000435"></a-sky>
+    </a-scene>
+  </body>
+  
+</html>
+
+
+
+
+
+
