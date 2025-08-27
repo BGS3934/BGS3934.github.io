@@ -98,6 +98,7 @@
       <div id="editor"></div>
       <div id="code-buttons">
         <button id="toggleSpin">Toggle Spin</button>
+        <button id="downloadBtn">Download Model</button>
         <button id="copyCode">Copy Code</button>
       </div>
     </div>
@@ -203,6 +204,13 @@ function loadViewer(type, file, isSky = false) {
     currentAsset.planeTex = file; // ✅ store texture
   } else {
     currentAsset = { type, file };
+    // ✅ if it's a model, remember it for download
+    if (/\.(gltf|glb)$/i.test(file)) {
+      currentModelUrl = file;
+    } else {
+      currentModelUrl = null;
+    }
+  
   }
 
   const params = new URLSearchParams();
@@ -251,6 +259,18 @@ document.getElementById("toggleSpin").addEventListener("click", () => {
   if (currentAsset) loadViewer(currentAsset.type || "", currentAsset.file || "");
 });
 
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  if (currentModelUrl) {
+    const link = document.createElement("a");
+    link.href = currentModelUrl;
+    link.download = currentModelUrl.split("/").pop(); // ✅ use filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } else {
+    alert("No model selected to download.");
+  }
+});
 
 
 loadResources();
