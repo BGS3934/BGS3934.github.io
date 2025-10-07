@@ -29,19 +29,6 @@
          </a-text>
          </a-entity>
 
-  <!-- Thirdd animated clawbot -->
-    <a-entity gltf-model="#clawbot" position="0 0 -10" scale="1 1 1" rotation="0 45 0"     
-         animation-mixer="clip: *wheels; loop: repeat; easing: linear"
-         animation__first="property: position; to: 5 0 -5; dur: 5000; startEvents: loaded, animationcomplete__fourth"
-         animation__second="property: rotation; to: 0 225 0; dur: 2000; startEvents: animationcomplete__first" 
-         animation__third="property: position; to: 0 0 -10; dur: 5000; startEvents: animationcomplete__second"
-         animation__fourth="property: rotation; to: 0 45 0; dur: 2000; startEvents: animationcomplete__third"
-         sound="src: url(SFX/servo_sound.wav); autoplay: true; loop: true; maxDistance: 10; positional: true; volume: 10">
-        <a-text value="Clawbot 3" position="0 1.5 0" rotation="0 -45 0" align="center" color="black" 
-                scale="2 2 2" side="double" font="mozillavr">
-        </a-text>
-        </a-entity>
-
 
   <a-sky color="lightblue"></a-sky>
   <a-plane position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
