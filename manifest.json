@@ -1,5 +1,5 @@
 {
-  "Sky": [
+  "Sky Textures": [
     {
       "name": "Sky/ballawley_park_2k.jpg",
       "file": "Sky/ballawley_park_2k.jpg"
@@ -59,6 +59,188 @@
     {
       "name": "Sky/zawiszy_czarnego_2k.jpg",
       "file": "Sky/zawiszy_czarnego_2k.jpg"
+    }
+  ],
+    "Surface Textures": [
+    {
+      "name": "Ground/Cobblestone A.jpg",
+      "file": "Ground/Cobblestone A.jpg"
+    },
+    {
+      "name": "Ground/Cobblestone B.jpg",
+      "file": "Ground/Cobblestone B.jpg"
+    },
+    {
+      "name": "Ground/Flat Rocks Overlay A.png",
+      "file": "Ground/Flat Rocks Overlay A.png"
+    },
+    {
+      "name": "Ground/Flat Rocks Overlay B.png",
+      "file": "Ground/Flat Rocks Overlay B.png"
+    },
+    {
+      "name": "Ground/Flat Stone Floor A.jpg",
+      "file": "Ground/Flat Stone Floor A.jpg"
+    },
+    {
+      "name": "Ground/Flat Stone Floor B.jpg",
+      "file": "Ground/Flat Stone Floor B.jpg"
+    },
+    {
+      "name": "Ground/Grass Bright.jpg",
+      "file": "Ground/Grass Bright.jpg"
+    },
+    {
+      "name": "Ground/Grass Dark Rocky.jpg",
+      "file": "Ground/Grass Dark Rocky.jpg"
+    },
+    {
+      "name": "Ground/Grass Dark.jpg",
+      "file": "Ground/Grass Dark.jpg"
+    },
+    {
+      "name": "Ground/Grass.jpg",
+      "file": "Ground/Grass.jpg"
+    },
+    {
+      "name": "Ground/Gray Brick Floor A.jpg",
+      "file": "Ground/Gray Brick Floor A.jpg"
+    },
+    {
+      "name": "Ground/Gray Brick Floor B.jpg",
+      "file": "Ground/Gray Brick Floor B.jpg"
+    },
+    {
+      "name": "Ground/Gray Brick Floor C.jpg",
+      "file": "Ground/Gray Brick Floor C.jpg"
+    },
+    {
+      "name": "Ground/Herringbone A.jpg",
+      "file": "Ground/Herringbone A.jpg"
+    },
+    {
+      "name": "Ground/Herringbone B.jpg",
+      "file": "Ground/Herringbone B.jpg"
+    },
+    {
+      "name": "Ground/Herringbone C.jpg",
+      "file": "Ground/Herringbone C.jpg"
+    },
+    {
+      "name": "Ground/Herringbone Overlay A.png",
+      "file": "Ground/Herringbone Overlay A.png"
+    },
+    {
+      "name": "Ground/Herringbone Overlay B.png",
+      "file": "Ground/Herringbone Overlay B.png"
+    },
+    {
+      "name": "Ground/Herringbone Overlay C.png",
+      "file": "Ground/Herringbone Overlay C.png"
+    },
+    {
+      "name": "Ground/Rectangular Tiles A.jpg",
+      "file": "Ground/Rectangular Tiles A.jpg"
+    },
+    {
+      "name": "Ground/Rectangular Tiles B.jpg",
+      "file": "Ground/Rectangular Tiles B.jpg"
+    },
+    {
+      "name": "Ground/Rectangular Tiles E.jpg",
+      "file": "Ground/Rectangular Tiles E.jpg"
+    },
+    {
+      "name": "Ground/Rock Tiles A.jpg",
+      "file": "Ground/Rock Tiles A.jpg"
+    },
+    {
+      "name": "Ground/Rock Tiles B.jpg",
+      "file": "Ground/Rock Tiles B.jpg"
+    },
+    {
+      "name": "Ground/Rock Tiles Mossy A.jpg",
+      "file": "Ground/Rock Tiles Mossy A.jpg"
+    },
+    {
+      "name": "Ground/Rock Tiles Mossy B.jpg",
+      "file": "Ground/Rock Tiles Mossy B.jpg"
+    },
+    {
+      "name": "Ground/Rock Tiles Mossy C.jpg",
+      "file": "Ground/Rock Tiles Mossy C.jpg"
+    },
+    {
+      "name": "Ground/Seamless Calm Water 16x16 B.jpg",
+      "file": "Ground/Seamless Calm Water 16x16 B.jpg"
+    },
+    {
+      "name": "Ground/Seamless Calm Water 16x16.jpg",
+      "file": "Ground/Seamless Calm Water 16x16.jpg"
+    },
+    {
+      "name": "Ground/Sparse Grass Bright.jpg",
+      "file": "Ground/Sparse Grass Bright.jpg"
+    },
+    {
+      "name": "Ground/Sparse Grass Dark.jpg",
+      "file": "Ground/Sparse Grass Dark.jpg"
+    },
+    {
+      "name": "Ground/Sparse Grass.jpg",
+      "file": "Ground/Sparse Grass.jpg"
+    },
+    {
+      "name": "Ground/Square Cobblestone E.jpg",
+      "file": "Ground/Square Cobblestone E.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles B.jpg",
+      "file": "Ground/Square Tiles B.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles C.jpg",
+      "file": "Ground/Square Tiles C.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles E.jpg",
+      "file": "Ground/Square Tiles E.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles G.jpg",
+      "file": "Ground/Square Tiles G.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles H.jpg",
+      "file": "Ground/Square Tiles H.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles I.jpg",
+      "file": "Ground/Square Tiles I.jpg"
+    },
+    {
+      "name": "Ground/Square Tiles J.jpg",
+      "file": "Ground/Square Tiles J.jpg"
+    },
+    {
+      "name": "Ground/Uneven Brick Floor A.jpg",
+      "file": "Ground/Uneven Brick Floor A.jpg"
+    },
+    {
+      "name": "Ground/Uneven Brick Floor B.jpg",
+      "file": "Ground/Uneven Brick Floor B.jpg"
+    },
+    {
+      "name": "Ground/Uneven Brick Floor C.jpg",
+      "file": "Ground/Uneven Brick Floor C.jpg"
+    },
+    {
+      "name": "Ground/Uneven Brick Floor E.jpg",
+      "file": "Ground/Uneven Brick Floor E.jpg"
+    },
+    {
+      "name": "Ground/Uneven Brick Floor F.jpg",
+      "file": "Ground/Uneven Brick Floor F.jpg"
     }
   ],
   "Buildings": [
@@ -2235,188 +2417,6 @@
     {
       "name": "Assets/Space_Kit/Tree Swirl.glb",
       "file": "Assets/Space_Kit/Tree Swirl.glb"
-    }
-  ],
-  "Textures": [
-    {
-      "name": "Ground/Cobblestone A.jpg",
-      "file": "Ground/Cobblestone A.jpg"
-    },
-    {
-      "name": "Ground/Cobblestone B.jpg",
-      "file": "Ground/Cobblestone B.jpg"
-    },
-    {
-      "name": "Ground/Flat Rocks Overlay A.png",
-      "file": "Ground/Flat Rocks Overlay A.png"
-    },
-    {
-      "name": "Ground/Flat Rocks Overlay B.png",
-      "file": "Ground/Flat Rocks Overlay B.png"
-    },
-    {
-      "name": "Ground/Flat Stone Floor A.jpg",
-      "file": "Ground/Flat Stone Floor A.jpg"
-    },
-    {
-      "name": "Ground/Flat Stone Floor B.jpg",
-      "file": "Ground/Flat Stone Floor B.jpg"
-    },
-    {
-      "name": "Ground/Grass Bright.jpg",
-      "file": "Ground/Grass Bright.jpg"
-    },
-    {
-      "name": "Ground/Grass Dark Rocky.jpg",
-      "file": "Ground/Grass Dark Rocky.jpg"
-    },
-    {
-      "name": "Ground/Grass Dark.jpg",
-      "file": "Ground/Grass Dark.jpg"
-    },
-    {
-      "name": "Ground/Grass.jpg",
-      "file": "Ground/Grass.jpg"
-    },
-    {
-      "name": "Ground/Gray Brick Floor A.jpg",
-      "file": "Ground/Gray Brick Floor A.jpg"
-    },
-    {
-      "name": "Ground/Gray Brick Floor B.jpg",
-      "file": "Ground/Gray Brick Floor B.jpg"
-    },
-    {
-      "name": "Ground/Gray Brick Floor C.jpg",
-      "file": "Ground/Gray Brick Floor C.jpg"
-    },
-    {
-      "name": "Ground/Herringbone A.jpg",
-      "file": "Ground/Herringbone A.jpg"
-    },
-    {
-      "name": "Ground/Herringbone B.jpg",
-      "file": "Ground/Herringbone B.jpg"
-    },
-    {
-      "name": "Ground/Herringbone C.jpg",
-      "file": "Ground/Herringbone C.jpg"
-    },
-    {
-      "name": "Ground/Herringbone Overlay A.png",
-      "file": "Ground/Herringbone Overlay A.png"
-    },
-    {
-      "name": "Ground/Herringbone Overlay B.png",
-      "file": "Ground/Herringbone Overlay B.png"
-    },
-    {
-      "name": "Ground/Herringbone Overlay C.png",
-      "file": "Ground/Herringbone Overlay C.png"
-    },
-    {
-      "name": "Ground/Rectangular Tiles A.jpg",
-      "file": "Ground/Rectangular Tiles A.jpg"
-    },
-    {
-      "name": "Ground/Rectangular Tiles B.jpg",
-      "file": "Ground/Rectangular Tiles B.jpg"
-    },
-    {
-      "name": "Ground/Rectangular Tiles E.jpg",
-      "file": "Ground/Rectangular Tiles E.jpg"
-    },
-    {
-      "name": "Ground/Rock Tiles A.jpg",
-      "file": "Ground/Rock Tiles A.jpg"
-    },
-    {
-      "name": "Ground/Rock Tiles B.jpg",
-      "file": "Ground/Rock Tiles B.jpg"
-    },
-    {
-      "name": "Ground/Rock Tiles Mossy A.jpg",
-      "file": "Ground/Rock Tiles Mossy A.jpg"
-    },
-    {
-      "name": "Ground/Rock Tiles Mossy B.jpg",
-      "file": "Ground/Rock Tiles Mossy B.jpg"
-    },
-    {
-      "name": "Ground/Rock Tiles Mossy C.jpg",
-      "file": "Ground/Rock Tiles Mossy C.jpg"
-    },
-    {
-      "name": "Ground/Seamless Calm Water 16x16 B.jpg",
-      "file": "Ground/Seamless Calm Water 16x16 B.jpg"
-    },
-    {
-      "name": "Ground/Seamless Calm Water 16x16.jpg",
-      "file": "Ground/Seamless Calm Water 16x16.jpg"
-    },
-    {
-      "name": "Ground/Sparse Grass Bright.jpg",
-      "file": "Ground/Sparse Grass Bright.jpg"
-    },
-    {
-      "name": "Ground/Sparse Grass Dark.jpg",
-      "file": "Ground/Sparse Grass Dark.jpg"
-    },
-    {
-      "name": "Ground/Sparse Grass.jpg",
-      "file": "Ground/Sparse Grass.jpg"
-    },
-    {
-      "name": "Ground/Square Cobblestone E.jpg",
-      "file": "Ground/Square Cobblestone E.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles B.jpg",
-      "file": "Ground/Square Tiles B.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles C.jpg",
-      "file": "Ground/Square Tiles C.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles E.jpg",
-      "file": "Ground/Square Tiles E.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles G.jpg",
-      "file": "Ground/Square Tiles G.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles H.jpg",
-      "file": "Ground/Square Tiles H.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles I.jpg",
-      "file": "Ground/Square Tiles I.jpg"
-    },
-    {
-      "name": "Ground/Square Tiles J.jpg",
-      "file": "Ground/Square Tiles J.jpg"
-    },
-    {
-      "name": "Ground/Uneven Brick Floor A.jpg",
-      "file": "Ground/Uneven Brick Floor A.jpg"
-    },
-    {
-      "name": "Ground/Uneven Brick Floor B.jpg",
-      "file": "Ground/Uneven Brick Floor B.jpg"
-    },
-    {
-      "name": "Ground/Uneven Brick Floor C.jpg",
-      "file": "Ground/Uneven Brick Floor C.jpg"
-    },
-    {
-      "name": "Ground/Uneven Brick Floor E.jpg",
-      "file": "Ground/Uneven Brick Floor E.jpg"
-    },
-    {
-      "name": "Ground/Uneven Brick Floor F.jpg",
-      "file": "Ground/Uneven Brick Floor F.jpg"
     }
   ],
   "Sounds": [
