@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+    
+      <a-assets>
+        <a-asset-item id="house" src="House.glb"></a-asset-item>
+
+        <a-asset-item id="farm" src="Farm.glb"></a-asset-item>
+        <a-asset-item id="plane" src="Boeing 747.glb"></a-asset-item>
+        <a-asset-item id="blimp" src="Airship.glb"></a-asset-item>
+
+      </a-assets>
+
+      <a-entity gltf-model="#farm" scale="100 100 100"></a-entity>
+<a-entity animation="property: rotation; to: 0 360 0; dur: 20000; loop: true; easing: linear">
+      <a-entity gltf-model="#plane" scale="200 200 200" position="2100 2100 0" rotation="35 0 90"></a-entity>
+</a-entity>
+<a-entity animation="property: rotation; to: 0 -360 0; dur: 100000; loop: true; easing: linear">
+  <a-entity gltf-model="#blimp" scale="10 10 10" position="7000 4000 0"></a-entity>
+</a-entity>
+
+
+
+
+      <a-sky src="sky-blue.jpg" scale="20 20 20"></a-sky>
+
+    
+
+<!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+        <a-entity id="cameraRig"
+                  movement-controls="constrainToNavMesh: false"
+                  thumbstick-controls
+                  position="0 0 0">
+          <a-entity id="head" camera look-controls position="0 1.6 0">
+              <a-entity
+                cursor="fuse: false; rayOrigin: mouse"
+                raycaster="objects: .clickable">
+              </a-entity>
+          </a-entity>
+          <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+          <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+        </a-entity>
+    </a-scene>
+  </body>
+</html>
