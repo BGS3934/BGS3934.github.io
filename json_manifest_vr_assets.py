@@ -7,6 +7,7 @@ base = os.path.dirname(os.path.abspath(__file__))
 # Top-level resource folders
 folders = {
     "Sky": os.path.join("Sky"),
+    "Sustainability": os.path.join(base, "Assets", "Sustainability"),
     "Buildings": os.path.join(base, "Assets", "Buildings"),
     "Characters": os.path.join(base, "Assets", "Characters"),
     "Vehicles": os.path.join(base, "Assets", "Vehicles"),
