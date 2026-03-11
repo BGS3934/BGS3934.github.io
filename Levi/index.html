@@ -1,6 +1,7 @@
 <html>
   <head>
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+      <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
     <!-- Removed Cannon.js / aframe-physics-system (incompatible) - using raycast-based kinematic collisions instead -->
   </head>
   <body>
@@ -31,7 +32,7 @@
         <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
       </a-entity>
 
-      
+
   <a-entity gltf-model="#CAR-Model.glb" scale="0.0175 0.0175 0.0175" position="4 0 35" rotation="0 135 0" static-body></a-entity>
   <a-entity gltf-model="#big tall building" scale="300 300 300" position="75 0 -30" rotation="0 135 0" static-body></a-entity>   
   <a-entity gltf-model="#car garage" scale="100 100 100" position="0.5 0 35" rotation="0 180 0" static-body></a-entity>
