@@ -1,0 +1,139 @@
+
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+  </head>
+  <body>
+    <a-scene>
+
+      <a-assets>
+      <a-asset-item id="Park" src="Urban Park v1.glb">
+      </a-asset-item>
+      <a-asset-item id="trash" src="TIME HOTEL 4.17.glb">
+      </a-asset-item>
+      <a-assets-item id="bag" src="trash bag black.glb"></a-assets-item>
+         <a-assets-item id="bin" src="Recycle bin.glb"></a-assets-item>
+      </a-assets>
+   
+      <a-entity gltf-model="#bin" class="clickable" scale="2 2 2" position="9 0.5 5" rotation="0 90 0" sound="src: url(SFX/bin.mp3); on: click; positional: true; volume: 17"></a-entity>
+
+      <a-sky  src="sky.jpg" scale="20 20 20"></a-sky>
+      
+      <!-- <a-entity id="cameraRig"
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0"></a-entity>
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+
+                  </a-entity>
+         <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity> -->
+
+       <a-entity 
+          cursor="fuse: false; rayOrigin: mouse" 
+          raycaster="objects: .clickable">
+          </a-entity>
+
+      
+      <a-sphere position="3 1.6 2"  height="5" width="5" src="roblox man face.jpg" rotation="0 -90 0" animation="property: position; to: 3 2.6 2; dur : 2500; loop: true; dir:alternate;"></a-sphere>
+    <a-entity gltf-model="#Park" scale="100 80 100" position="0 8.5 0"> 
+      </a-entity>
+      <!-- drinks -->
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="14 .2 -6"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-3 .2 18"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="22 .2 -11" rotation="64 -22 91"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-17 .2 6" rotation="64 -22 91"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="9 .2 27" rotation="12 -99 54"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-26 -.5 -14" rotation="-88 41 -67"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="28 -.5 3" rotation="60 -35 8"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-12 -.5 -22" rotation="-23 14 76"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="6 0 -19" rotation="57 100 -42"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-30 -.5 12" rotation="57 100 -42"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="19 -.5 21" rotation="57 100 -42"></a-entity>
+
+<a-entity gltf-model="#trash" class="clickable" event-set__click="_event: click; visible: false"
+          scale=".3 .3 .3" position="-8 -.5 -27" rotation="57 100 -42"></a-entity>
+
+<a-entity position="13 3.5 4" text="value: collect 24 trash;width:25;color:black"></a-entity>
+   
+<!-- bags -->
+<a-entity gltf-model="#bag" id="1" class="clickable" event-set__click="_event: click; visible: false"
+          scale="7.9 7.9 7.9" position="-12 .1 4" rotation="0 0 0"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="6.2 6.2 6.2" position="18 .1 -7" rotation="-44 12 77"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="5.4 5.4 5.4" position="-21 .1 11" rotation="33 -71 5"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="8.1 8.1 8.1" position="9 .1 -14" rotation="-98 44 -63"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="7.3 7.3 7.3" position="-4 .1 22" rotation="12 -55 88"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="6.7 6.7 6.7" position="27 .1 -9" rotation="-22 66 -14"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="5.8 5.8 5.8" position="-19 .1 -6" rotation="54 -33 100"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="8.4 8.4 8.4" position="6 .1 28" rotation="-11 88 -92"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="6.1 6.1 6.1" position="-25 .1 -12" rotation="77 -44 19"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="7.6 7.6 7.6" position="14 .1 7" rotation="-63 22 -88"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="5.2 5.2 5.2" position="-8 .1 19" rotation="91 -12 44"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="8.0 8.0 8.0" position="22 .1 -18" rotation="-55 100 -33"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="6.9 6.9 6.9" position="-17 .1 14" rotation="44 -77 12"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="5.7 5.7 5.7" position="3 .1 -22" rotation="12 33 -100"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="7.4 7.4 7.4" position="-11 .1 6" rotation="-88 55 66"></a-entity>
+
+<a-entity gltf-model="#bag" class="clickable" event-set__click="_event: click; visible: false"
+          scale="8.5 8.5 8.5" position="28 .1 -4" rotation="33 -22 91"></a-entity>
+ 
+
+
+ <a-entity sound="src: url(SFX/cars on road.mp3); autoplay: true; loop: true; volume: 0.5; positional: false"></a-entity>
+<a-entity sound="src: url(SFX/birds.mp3); autoplay: true; loop: true; volume: 0.5; positional: false"></a-entity>
+
+
+
+    </a-scene>
+  </body>
