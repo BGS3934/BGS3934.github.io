@@ -1,4 +1,8 @@
 AFRAME.registerComponent('thumbstick-jump', {
+  schema: {
+    distance: { type: 'number', default: 2 } // Default jump distance
+  },
+
   init: function () {
     this.canMove = true;
     this.deadZone = 0.2;
@@ -20,39 +24,38 @@ AFRAME.registerComponent('thumbstick-jump', {
     const x = evt.detail.x;
     const y = evt.detail.y;
 
+    // Reset canMove when stick is near center
     if (Math.abs(x) < this.deadZone && Math.abs(y) < this.deadZone) {
-      // Stick back to neutral, allow next move
       this.canMove = true;
       return;
     }
 
-    if (!this.canMove) {
-      // Already moved for this push, wait for neutral to reset
-      return;
-    }
+    if (!this.canMove) return;
 
-    // Get forward direction vector (head direction on horizontal plane)
+    // Forward direction vector (head orientation, horizontal only)
     const direction = new THREE.Vector3();
     this.head.object3D.getWorldDirection(direction);
     direction.y = 0;
     direction.normalize();
 
-    // Calculate right vector (perpendicular to forward and up)
+    // Right vector (perpendicular to forward and up)
     const right = new THREE.Vector3();
     right.crossVectors(this.rig.object3D.up, direction).normalize();
 
-    // Move rig 1 meter jump in one direction
+    // Use optional distance property for movement
+    const moveDist = this.data.distance;
+
     if (y < -this.moveThreshold) {
-      this.rig.object3D.position.addScaledVector(direction, -2);
+      this.rig.object3D.position.addScaledVector(direction, -moveDist);
       this.canMove = false;
     } else if (y > this.moveThreshold) {
-      this.rig.object3D.position.addScaledVector(direction, 2);
+      this.rig.object3D.position.addScaledVector(direction, moveDist);
       this.canMove = false;
     } else if (x < -this.moveThreshold) {
-      this.rig.object3D.position.addScaledVector(right, -2);
+      this.rig.object3D.position.addScaledVector(right, -moveDist);
       this.canMove = false;
     } else if (x > this.moveThreshold) {
-      this.rig.object3D.position.addScaledVector(right, 2);
+      this.rig.object3D.position.addScaledVector(right, moveDist);
       this.canMove = false;
     }
   }
