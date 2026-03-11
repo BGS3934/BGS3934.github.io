@@ -3,7 +3,7 @@
   <head>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+    <script src="https://bgs3934.github.io/thumbstick-move.js"></script>
   </head>
   <body>
     <a-scene>
@@ -21,15 +21,15 @@
 
       <a-sky  src="sky.jpg" scale="20 20 20"></a-sky>
       
-      <!-- <a-entity id="cameraRig"
+      <a-entity id="cameraRig"
                 movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
                 thumbstick-controls
                 position="0 0 0"></a-entity>
-        <a-entity id="head" camera look-controls position="0 1.6 0">
+        <a-entity id="head" camera look-controls position="0 2.6 0">
 
                   </a-entity>
          <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity> -->
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
 
        <a-entity 
           cursor="fuse: false; rayOrigin: mouse" 
