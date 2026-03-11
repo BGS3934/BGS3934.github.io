@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+<a-scene>
+
+<!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+<a-entity id="cameraRig" 
+        movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+        thumbstick-controls
+        position="0 0 0">
+<a-entity id="head" camera look-controls position="0 1.6 0">
+    <a-entity 
+        cursor="fuse: false; rayOrigin: mouse" 
+        raycaster="objects: .clickable">
+    </a-entity>
+</a-entity>
+<a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+<a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+</a-entity>
+
+<a-assets>
+
+<a-asset-item id="model0" src="src/ExquisiteJofo.glb"></a-asset-item>
+<a-asset-item id="model1" src="src/ExquisiteJofo1.glb"></a-asset-item>
+<a-asset-item id="model2" src="src/ExquisiteJofo2.glb"></a-asset-item>
+<a-asset-item id="model3" src="src/ExquisiteJofo3.glb"></a-asset-item>
+<a-asset-item id="model4" src="src/ExquisiteJofo4.glb"></a-asset-item>
+<a-asset-item id="model5" src="src/ExquisiteJofo5.glb"></a-asset-item>
+<a-asset-item id="model6" src="src/ExquisiteJofo6.glb"></a-asset-item>
+<a-asset-item id="model7" src="src/ExquisiteJofo7.glb"></a-asset-item>
+<a-asset-item id="model8" src="src/ExquisiteJofo8.glb"></a-asset-item>
+<a-asset-item id="model9" src="src/ExquisiteJofo9.glb"></a-asset-item>
+
+
+
+</a-assets>
+
+<!-- Camera -->
+<a-entity position="0 1.6 8">
+  <a-camera wasd-controls look-controls></a-camera>
+</a-entity>
+
+
+<!-- Models -->
+<a-entity gltf-model="#model0" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model1" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model2" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model3" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model4" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model5" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model6" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model7" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model8" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+<a-entity gltf-model="#model9" position="0 -5 0" scale="1000 1000 1000"></a-entity>
+
+
+<!-- Lighting -->
+<a-entity light="type: ambient; intensity: 0.7"></a-entity>
+<a-entity light="type: directional; intensity: 0.8" position="5 10 7"></a-entity>
+
+<a-sky color="#CCCCFF"></a-sky>
+
+</a-scene>
+</body>
+</html>
