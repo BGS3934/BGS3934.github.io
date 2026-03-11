@@ -14,6 +14,24 @@
       <a-asset-item id="big tall building" src="Copy of The Empire State Building.glb"></a-asset-item>
       <a-asset-item id="Charger" src="Smashing Inari-Vihelmo.glb"></a-asset-item>
     </a-assets>
+
+
+              <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+      
   <a-entity gltf-model="#CAR-Model.glb" scale="0.0175 0.0175 0.0175" position="4 0 35" rotation="0 135 0" static-body></a-entity>
   <a-entity gltf-model="#big tall building" scale="300 300 300" position="75 0 -30" rotation="0 135 0" static-body></a-entity>   
   <a-entity gltf-model="#car garage" scale="100 100 100" position="0.5 0 35" rotation="0 180 0" static-body></a-entity>
@@ -156,20 +174,7 @@
 
     <a-entity position="-33 0 -15"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
 
-          <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
-      <a-entity id="cameraRig" 
-                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
-                thumbstick-controls
-                position="0 0 0">
-        <a-entity id="head" camera look-controls position="0 1.6 0">
-            <a-entity 
-              cursor="fuse: false; rayOrigin: mouse" 
-              raycaster="objects: .clickable">
-            </a-entity>
-        </a-entity>
-        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
-      </a-entity>
+
 
     </a-scene>
 
