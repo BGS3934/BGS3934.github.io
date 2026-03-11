@@ -1,0 +1,351 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- Removed Cannon.js / aframe-physics-system (incompatible) - using raycast-based kinematic collisions instead -->
+  </head>
+  <body>
+      <a-scene>
+    
+      <!-- Preload assets and give the grass image an id so material can reliably reference it -->
+      <a-assets>
+        <a-asset-item id="car model.glb" src="car model.glb"></a-asset-item>
+        <img id="grass" src="download.jpg" crossorigin="anonymous">
+      <a-asset-item id="car garage" src="Tremendous Robo-Albar.glb"></a-asset-item>
+      <a-asset-item id="big tall building" src="Copy of The Empire State Building.glb"></a-asset-item>
+      <a-asset-item id="Charger" src="Smashing Inari-Vihelmo.glb"></a-asset-item>
+    </a-assets>
+  <a-entity gltf-model="#car model.glb" scale="0.0175 0.0175 0.0175" position="4 0 35" rotation="0 135 0" static-body></a-entity>
+  <a-entity gltf-model="#big tall building" scale="300 300 300" position="75 0 -30" rotation="0 135 0" static-body></a-entity>   
+  <a-entity gltf-model="#car garage" scale="100 100 100" position="0.5 0 35" rotation="0 180 0" static-body></a-entity>
+   <a-entity gltf-model="#car garage" scale="100 100 100" position="0.5 0 35" rotation="0 180 0" static-body></a-entity>
+  <a-entity gltf-model="#Charger" scale="100 100 100" position="6 0 41" rotation="0 180 0" static-body></a-entity>
+   <a-entity gltf-model="#Charger" scale="1000 1000 1000" position="80 0 80" rotation="0 -115 0" static-body></a-entity>
+      <!-- Tiled grass plane (enlarged): repeat scaled so individual tiles keep same size -->
+      <!-- Plane now 1000×1000; repeat scaled from 24→240 to preserve tile size (100->1000 = ×10) -->
+      <a-plane rotation="-90 0 0" width="1000" height="1000" material="src: #grass; repeat: 240 240; side: double" static-body="shape: box"></a-plane>
+
+      <!-- Player camera with kinematic collision controller (raycast-based) -->
+      <a-entity id="player" kinematic-controls="speed:8">
+        <!-- Invisible box collider around the player so the camera has a bounding volum6
+             Camera sits inside this box; the box is not rendered but provides stable dimensions. -->
+        <a-box id ="playerCollider" width="0.4" height="1.6" depth="0.4" position="0 0.8 0" visible="false"></a-box>
+        <a-camera id="camera" position="0 1.6 0" look-controls></a-camera>
+      </a-entity>
+     
+      <a-entity id="House" position="0 0 20" >
+      <!-- House: main box -->
+      <a-box position="3 1.25 -6" width="4" height="2.5" depth="4" color="#CD853F" src="brick  texture.webp"></a-box>
+      <!-- Pyramid roof: cone with 4 radial segments (rotated 45° around Y) -->
+      <a-cone position="3 3.5 -6" radius-bottom="2.5" height="2" color="#8B4513" segments-radial="4" rotation="0 45 0" src="roof.webp"></a-cone>
+      <!-- Door and one window on the front face (left window removed) -->
+      <a-box position="3.5 0.75 -8.01" width="1" height="1.5" depth="0.05" color="#654321" src="door.webp"></a-box>
+      <a-box position="2 1.6 -8.01" width="1.2" height="1.2" depth="0.05" color="#87CEEB" src="window texture.webp"></a-box>
+    </a-entity>
+
+
+          <a-entity id="House" position="10 0 20">
+      <!-- House: main box -->
+      <a-box position="3 1.25 -6" width="4" height="2.5" depth="4" color="#CD853F" src="brick  texture.webp"></a-box>
+      <!-- Pyramid roof: cone with 4 radial segments (rotated 45° around Y) -->
+      <a-cone position="3 3.5 -6" radius-bottom="2.5" height="2" color="#8B4513" segments-radial="4" rotation="0 45 0" src="roof.webp"></a-cone>
+      <!-- Door and one window on the front face (left window removed) -->
+      <a-box position="3.5 0.75 -8.01" width="1" height="1.5" depth="0.05" color="#654321" src="door.webp"></a-box>
+      <a-box position="2 1.6 -8.01" width="1.2" height="1.2" depth="0.05" color="#87CEEB" src="window texture.webp"></a-box>
+    </a-entity>
+      <!-- Lighting so PBR materials and textures are visible -->
+      <a-entity light="type: ambient; color: #ffffff; intensity: 0.6"></a-entity>
+      <a-entity light="type: directional; color: #ffffff; intensity: 0.6" position="0 10 5"></a-entity>
+
+      <a-sky color="#ECECEC" src="sky texture.webp"></a-sky>
+            <a-entity id="House" position="-10 0 20">
+      <!-- House: main box -->
+      <a-box position="3 1.25 -6" width="4" height="2.5" depth="4" color="#CD853F" src="brick  texture.webp"></a-box>
+      <!-- Pyramid roof: cone with 4 radial segments (rotated 45° around Y) -->
+      <a-cone position="3 3.5 -6" radius-bottom="2.5" height="2" color="#8B4513" segments-radial="4" rotation="0 45 0" src="roof.webp"></a-cone>
+      <!-- Door and one window on the front face (left window removed) -->
+      <a-box position="3.5 0.75 -8.01" width="1" height="1.5" depth="0.05" color="#654321" src="door.webp"></a-box>
+      <a-box position="2 1.6 -8.01" width="1.2" height="1.2" depth="0.05" color="#87CEEB" src="window texture.webp"></a-box>
+    </a-entity>
+    <!--walls-->
+    <a-box position="30 0 5" height="1.5" depth="0.5" width="50" src="brick  texture.webp" static-body></a-box>
+    <a-box position="30 1 5" height="0.5" depth="0.7" width="50" src="brick  texture.webp" static-body></a-box>
+    <a-box position="-30 0 5" height="1.5" depth="0.5" width="50" src="brick  texture.webp" static-body></a-box>
+    <a-box position="-30 1 5" height="0.5" depth="0.7" width="50" src="brick  texture.webp" static-body></a-box>
+    <a-box position="5 0 5" height="8.5" depth="1" width="1" rotation="0 90 0" src="brick  texture.webp" static-body></a-box>
+    <a-box position="-5 0 5" height="8.5" depth="1" width="1" rotation="0 90 0" src="brick  texture.webp" static-body></a-box>
+    <a-box position="0 4.5 5" height="1" depth="10" width="1" rotation="0 90 0" src="brick  texture.webp" static-body></a-box>
+
+    <!-- Large trees with z < 5, far from origin, clear rectangle at 0,0,0 to positive 5 -->
+    <!-- Far left side, large trees -->
+    <a-entity position="-35 0 -8" static-body><a-cylinder position="0 0 0" radius="0.8" height="18" color="#8B4513"></a-cylinder><a-cone position="0 8 0" radius-bottom="3" radius-top="0.2" height="5" color="#228B22"></a-cone><a-cone position="0 12 0" radius-bottom="2.2" radius-top="0.15" height="4" color="#2E8B57"></a-cone><a-cone position="0 15.5 0" radius-bottom="1.5" radius-top="0.1" height="3" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-35 0 -15" static-body><a-cylinder position="0 0 0" radius="0.79" height="18.5" color="#8B4513"></a-cylinder><a-cone position="0 8.3 0" radius-bottom="3.3" radius-top="0.24" height="5.5" color="#228B22"></a-cone><a-cone position="0 12.5 0" radius-bottom="2.4" radius-top="0.16" height="4.3" color="#2E8B57"></a-cone><a-cone position="0 16 0" radius-bottom="1.6" radius-top="0.1" height="3" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-28 0 -25"><a-cylinder position="0 0 0" radius="0.75" height="17" color="#8B4513"></a-cylinder><a-cone position="0 7.5 0" radius-bottom="3" radius-top="0.25" height="5.2" color="#228B22"></a-cone><a-cone position="0 11.5 0" radius-bottom="2.1" radius-top="0.15" height="4" color="#2E8B57"></a-cone><a-cone position="0 14.8 0" radius-bottom="1.3" radius-top="0.08" height="2.5" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-32 0 -30"><a-cylinder position="0 0 0" radius="0.7" height="16" color="#8B4513"></a-cylinder><a-cone position="0 7 0" radius-bottom="2.8" radius-top="0.2" height="4.8" color="#228B22"></a-cone><a-cone position="0 11 0" radius-bottom="2" radius-top="0.12" height="3.8" color="#2E8B57"></a-cone><a-cone position="0 14 0" radius-bottom="1.2" radius-top="0.08" height="2.5" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-18 0 -28"><a-cylinder position="0 0 0" radius="0.74" height="17.5" color="#8B4513"></a-cylinder><a-cone position="0 8 0" radius-bottom="3.1" radius-top="0.22" height="5.3" color="#228B22"></a-cone><a-cone position="0 12 0" radius-bottom="2.2" radius-top="0.15" height="4.1" color="#2E8B57"></a-cone><a-cone position="0 15.5 0" radius-bottom="1.5" radius-top="0.1" height="2.9" color="#3CB371"></a-cone></a-entity>
+    <!-- Far right side, large trees -->
+    <a-entity position="35 0 -10"><a-cylinder position="0 0 0" radius="0.73" height="17" color="#8B4513"></a-cylinder><a-cone position="0 7.8 0" radius-bottom="2.9" radius-top="0.2" height="4.9" color="#228B22"></a-cone><a-cone position="0 11.7 0" radius-bottom="2.1" radius-top="0.14" height="3.9" color="#2E8B57"></a-cone><a-cone position="0 14.9 0" radius-bottom="1.4" radius-top="0.09" height="2.8" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="35 0 -20"><a-cylinder position="0 0 0" radius="0.6" height="14" color="#8B4513"></a-cylinder><a-cone position="0 6 0" radius-bottom="2.5" radius-top="0.2" height="4.5" color="#228B22"></a-cone><a-cone position="0 9.5 0" radius-bottom="1.8" radius-top="0.1" height="3.5" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="30 0 -28"><a-cylinder position="0 0 0" radius="0.72" height="17" color="#8B4513"></a-cylinder><a-cone position="0 7.8 0" radius-bottom="2.9" radius-top="0.21" height="5" color="#228B22"></a-cone><a-cone position="0 11.8 0" radius-bottom="2.1" radius-top="0.14" height="3.9" color="#2E8B57"></a-cone><a-cone position="0 15 0" radius-bottom="1.4" radius-top="0.09" height="2.8" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="20 0 -32"><a-cylinder position="0 0 0" radius="0.77" height="18" color="#8B4513"></a-cylinder><a-cone position="0 8.2 0" radius-bottom="3.2" radius-top="0.23" height="5.4" color="#228B22"></a-cone><a-cone position="0 12.3 0" radius-bottom="2.3" radius-top="0.15" height="4.2" color="#2E8B57"></a-cone><a-cone position="0 15.8 0" radius-bottom="1.5" radius-top="0.1" height="2.9" color="#3CB371"></a-cone></a-entity>
+    <!-- Negative z area (behind), large trees -->
+    <a-entity position="-15 0 -22"><a-cylinder position="0 0 0" radius="0.76" height="18" color="#8B4513"></a-cylinder><a-cone position="0 8.2 0" radius-bottom="3.2" radius-top="0.23" height="5.4" color="#228B22"></a-cone><a-cone position="0 12.3 0" radius-bottom="2.3" radius-top="0.15" height="4.2" color="#2E8B57"></a-cone><a-cone position="0 15.8 0" radius-bottom="1.5" radius-top="0.1" height="2.9" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-8 0 -26"><a-cylinder position="0 0 0" radius="0.75" height="17.5" color="#8B4513"></a-cylinder><a-cone position="0 8 0" radius-bottom="3.1" radius-top="0.22" height="5.3" color="#228B22"></a-cone><a-cone position="0 12 0" radius-bottom="2.2" radius-top="0.15" height="4.1" color="#2E8B57"></a-cone><a-cone position="0 15.5 0" radius-bottom="1.5" radius-top="0.1" height="2.9" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="12 0 -35"><a-cylinder position="0 0 0" radius="0.8" height="18" color="#8B4513"></a-cylinder><a-cone position="0 8 0" radius-bottom="3" radius-top="0.2" height="5" color="#228B22"></a-cone><a-cone position="0 12 0" radius-bottom="2.2" radius-top="0.15" height="4" color="#2E8B57"></a-cone><a-cone position="0 15.5 0" radius-bottom="1.5" radius-top="0.1" height="3" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-12 0 -35"><a-cylinder position="0 0 0" radius="0.71" height="16.5" color="#8B4513"></a-cylinder><a-cone position="0 7.6 0" radius-bottom="2.8" radius-top="0.2" height="4.8" color="#228B22"></a-cone><a-cone position="0 11 0" radius-bottom="2" radius-top="0.14" height="3.8" color="#2E8B57"></a-cone></a-entity>
+    <!-- Positive z area (close), small-medium trees ONLY, away from clear zone -->
+
+
+    <a-entity position="20 0 3"><a-cylinder position="0 0 0" radius="0.65" height="15" color="#8B4513"></a-cylinder><a-cone position="0 7 0" radius-bottom="2.5" radius-top="0.17" height="4.5" color="#228B22"></a-cone><a-cone position="0 10.5 0" radius-bottom="1.8" radius-top="0.12" height="3.5" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="25 0 -3"><a-cylinder position="0 0 0" radius="0.74" height="17.5" color="#8B4513"></a-cylinder><a-cone position="0 8 0" radius-bottom="3.1" radius-top="0.22" height="5.3" color="#228B22"></a-cone><a-cone position="0 12 0" radius-bottom="2.2" radius-top="0.15" height="4.1" color="#2E8B57"></a-cone><a-cone position="0 15.5 0" radius-bottom="1.5" radius-top="0.1" height="2.9" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="30 0 2"><a-cylinder position="0 0 0" radius="0.55" height="13" color="#8B4513"></a-cylinder><a-cone position="0 6 0" radius-bottom="2.3" radius-top="0.16" height="4.2" color="#228B22"></a-cone><a-cone position="0 9 0" radius-bottom="1.6" radius-top="0.11" height="3.2" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="20 0 -15"><a-cylinder position="0 0 0" radius="0.35" height="1.8" color="#8B4513"></a-cylinder><a-cone position="0 1.3 0" radius-bottom="0.9" radius-top="0.1" height="1.3" color="#228B22"></a-cone><a-cone position="0 2.4 0" radius-bottom="0.7" radius-top="0.1" height="0.95" color="#2E8B57"></a-cone><a-cone position="0 3.2 0" radius-bottom="0.5" radius-top="0.05" height="0.7" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="-20 0 -5"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="15 0 10"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-25 0 15"><a-cylinder position="0 0 0" radius="0.32" height="1.6" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.85" radius-top="0.1" height="1.25" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone><a-cone position="0 3.2 0" radius-bottom="0.5" radius-top="0.05" height="0.8" color="#3CB371"></a-cone></a-entity>
+    <a-entity position="25 0 5"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="10 0 -20"><a-cylinder position="0 0 0" radius="0.26" height="1.3" color="#8B4513"></a-cylinder><a-cone position="0 1 0" radius-bottom="0.7" radius-top="0.08" height="1" color="#228B22"></a-cone><a-cone position="0 1.85 0" radius-bottom="0.6" radius-top="0.08" height="0.85" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="18 0 12"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-18 0 -12"><a-cylinder position="0 0 0" radius="0.29" height="1.45" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.77" radius-top="0.09" height="1.15" color="#228B22"></a-cone><a-cone position="0 2.1 0" radius-bottom="0.67" radius-top="0.0 9" height="0.95" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="8 0 -8"><a-cylinder position="0 0 0" radius="0.27" height="1.35" color="#8B4513"></a-cylinder><a-cone position="0 1.05 0" radius-bottom="0.72" radius-top="0.08" height="1.05" color="#228B22"></a-cone><a-cone position="0 1.95 0" radius-bottom="0.62" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="22 0 -8"><a-cylinder position="0 0 0" radius="0.33" height="1.65" color="#8B4513"></a-cylinder><a-cone position="0 1.25 0" radius-bottom="0.88" radius-top="0.1" height="1.3" color="#228B22"></a-cone><a-cone position="0 2.4 0" radius-bottom="0.76" radius-top="0.1" height="1.05" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-22 0 6"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="3 0 -18"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-3 0 18"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="28 0 -20"><a-cylinder position="0 0 0" radius="0.32" height="1.6" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.85" radius-top="0.1" height="1.25" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.74" radius-top="0.1" height="1.02" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-28 0 20"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-12 0 -15"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="14 0 8"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-14 0 -8"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="24 0 10"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-24 0 -10"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="6 0 -12"><a-cylinder position="0 0 0" radius="0.27" height="1.35" color="#8B4513"></a-cylinder><a-cone position="0 1.05 0" radius-bottom="0.72" radius-top="0.08" height="1.05" color="#228B22"></a-cone><a-cone position="0 1.95 0" radius-bottom="0.62" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="26 0 -12"><a-cylinder position="0 0 0" radius="0.32" height="1.6" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.85" radius-top="0.1" height="1.25" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.74" radius-top="0.1" height="1.02" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-26 0 12"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="0 0 -25"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="32 0 -25"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-32 0 25"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="35 0 -10"><a-cylinder position="0 0 0" radius="0.29" height="1.45" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.77" radius-top="0.09" height="1.15" color="#228B22"></a-cone><a-cone position="0 2.1 0" radius-bottom="0.67" radius-top="0.09" height="0.95" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-35 0 10"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="11 0 22"><a-cylinder position="0 0 0" radius="0.26" height="1.3" color="#8B4513"></a-cylinder><a-cone position="0 1 0" radius-bottom="0.7" radius-top="0.08" height="1" color="#228B22"></a-cone><a-cone position="0 1.85 0" radius-bottom="0.6" radius-top="0.08" height="0.85" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-11 0 -22"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="17 0 -7"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-17 0 7"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-9 0 -16"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="19 0 6"><a-cylinder position="0 0 0" radius="0.29" height="1.45" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.77" radius-top="0.09" height="1.15" color="#228B22"></a-cone><a-cone position="0 2.1 0" radius-bottom="0.67" radius-top="0.09" height="0.95" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-19 0 -6"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="7 0 11"><a-cylinder position="0 0 0" radius="0.27" height="1.35" color="#8B4513"></a-cylinder><a-cone position="0 1.05 0" radius-bottom="0.72" radius-top="0.08" height="1.05" color="#228B22"></a-cone><a-cone position="0 1.95 0" radius-bottom="0.62" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-7 0 -11"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="21 0 19"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-21 0 -19"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="27 0 11"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-27 0 -11"><a-cylinder position="0 0 0" radius="0.28" height="1.4" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.75" radius-top="0.08" height="1.1" color="#228B22"></a-cone><a-cone position="0 2 0" radius-bottom="0.65" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="5 0 25"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-5 0 -25"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="31 0 0"><a-cylinder position="0 0 0" radius="0.29" height="1.45" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.77" radius-top="0.09" height="1.15" color="#228B22"></a-cone><a-cone position="0 2.1 0" radius-bottom="0.67" radius-top="0.09" height="0.95" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-31 0 0"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="13 0 -26"><a-cylinder position="0 0 0" radius="0.27" height="1.35" color="#8B4513"></a-cylinder><a-cone position="0 1.05 0" radius-bottom="0.72" radius-top="0.08" height="1.05" color="#228B22"></a-cone><a-cone position="0 1.95 0" radius-bottom="0.62" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-13 0 26"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="23 0 22"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-23 0 -22"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="4 0 -3"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="29 0 19"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-29 0 -19"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="2 0 -14"><a-cylinder position="0 0 0" radius="0.29" height="1.45" color="#8B4513"></a-cylinder><a-cone position="0 1.1 0" radius-bottom="0.77" radius-top="0.09" height="1.15" color="#228B22"></a-cone><a-cone position="0 2.1 0" radius-bottom="0.67" radius-top="0.09" height="0.95" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="-2 0 14"><a-cylinder position="0 0 0" radius="0.3" height="1.5" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.8" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.2 0" radius-bottom="0.7" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+    <a-entity position="16 0 24"><a-cylinder position="0 0 0" radius="0.27" height="1.35" color="#8B4513"></a-cylinder><a-cone position="0 1.05 0" radius-bottom="0.72" radius-top="0.08" height="1.05" color="#228B22"></a-cone><a-cone position="0 1.95 0" radius-bottom="0.62" radius-top="0.08" height="0.9" color="#2E8B57"></a-cone></a-entity>
+
+    <a-entity position="-33 0 -15"><a-cylinder position="0 0 0" radius="0.31" height="1.55" color="#8B4513"></a-cylinder><a-cone position="0 1.2 0" radius-bottom="0.82" radius-top="0.1" height="1.2" color="#228B22"></a-cone><a-cone position="0 2.3 0" radius-bottom="0.72" radius-top="0.1" height="1" color="#2E8B57"></a-cone></a-entity>
+
+
+    </a-scene>
+
+    <!-- Auto-enable static-body on scene objects (trees/houses/walls) after scene loads -->
+    <script>
+      window.addEventListener('load', function(){
+        var scene = document.querySelector('a-scene');
+        if(!scene) return;
+        scene.addEventListener('loaded', function(){
+          // Add static-body to all wall/box/plane elements
+          document.querySelectorAll('a-box, a-plane').forEach(function(el){
+            if(!el.hasAttribute('static-body')) el.setAttribute('static-body', '');
+          });
+          // Add static-body to parent entities that contain geometry children (trees) or are houses
+          document.querySelectorAll('a-entity').forEach(function(el){
+            if(el.id === 'House'){
+              if(!el.hasAttribute('static-body')) el.setAttribute('static-body','');
+            }
+            // If entity contains a cylinder (our tree trunk), make it a static body
+            if(el.querySelector && el.querySelector('a-cylinder')){
+              if(!el.hasAttribute('static-body')) el.setAttribute('static-body','');
+            }
+          });
+        });
+      });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </a-scene>
+
+    <!-- Kinematic movement + collision component: raycast-based blocking (no physics engine required) -->
+    <script>
+      AFRAME.registerComponent('kinematic-controls', {
+        schema: { speed: { type: 'number', default: 8 } },
+        init: function () {
+          this.keys = {};
+          var self = this;
+          window.addEventListener('keydown', function (e) { self.keys[e.code] = true; });
+          window.addEventListener('keyup', function (e) { self.keys[e.code] = false; });
+          this.cameraEl = this.el.querySelector('a-camera') || document.querySelector('a-camera');
+          this.forward = new THREE.Vector3();
+          this.right = new THREE.Vector3();
+          this.raycaster = new THREE.Raycaster();
+          this.tempVec = new THREE.Vector3();
+          // cast heights (feet, center, head)
+          this.heights = [0.2, 0.8, 1.4];
+          // lateral offsets to check (center, left, right)
+          this.lateral = [0.0, -0.22, 0.22];
+        },
+        tick: function (time, dt) {
+          var speed = this.data.speed;
+          var moveX = 0, moveZ = 0;
+          if (this.cameraEl && this.cameraEl.object3D) {
+            this.cameraEl.object3D.getWorldDirection(this.forward);
+            this.forward.y = 0; this.forward.normalize();
+            this.right.crossVectors(this.forward, new THREE.Vector3(0,1,0)).normalize();
+            if (this.keys['KeyW']) { moveX += this.forward.x; moveZ += this.forward.z; }
+            if (this.keys['KeyS']) { moveX -= this.forward.x; moveZ -= this.forward.z; }
+            if (this.keys['KeyA']) { moveX -= this.right.x; moveZ -= this.right.z; }
+            if (this.keys['KeyD']) { moveX += this.right.x; moveZ += this.right.z; }
+          } else {
+            if (this.keys['KeyW']) moveZ -= 1;
+            if (this.keys['KeyS']) moveZ += 1;
+            if (this.keys['KeyA']) moveX -= 1;
+            if (this.keys['KeyD']) moveX += 1;
+          }
+          var len = Math.sqrt(moveX*moveX + moveZ*moveZ);
+          if (len < 0.001) return;
+          moveX /= len; moveZ /= len;
+          var dtSec = (dt || 16) / 1000;
+          var distance = speed * dtSec;
+          // compute desired movement vector in world space
+          this.tempVec.set(moveX * distance, 0, moveZ * distance);
+          var sceneObj = this.el.sceneEl.object3D;
+          var dir = this.tempVec.clone().normalize();
+          if (dir.length() === 0) return;
+
+          // perform multiple raycasts (feet/center/head and center/left/right) to avoid slipping through thin obstacles
+          var originWorld = new THREE.Vector3();
+          this.el.object3D.getWorldPosition(originWorld);
+          var blocked = false;
+          var margin = 0.36; // safety margin
+
+          for (var h = 0; h < this.heights.length && !blocked; h++){
+            for (var l = 0; l < this.lateral.length && !blocked; l++){
+              // compute origin for= this ray
+              var origin = originWorld.clone();
+              origin.y += this.heights[h];
+              // apply lateral offset in world space
+              var lateralOffset = this.right.clone().multiplyScalar(this.lateral[l]);
+              origin.add(lateralOffset);
+              // small forward offset so rays start just in front of player's box
+              var forwardOffset = this.forward.clone().multiplyScalar(0.05);
+              origin.add(forwardOffset);
+
+              this.raycaster.set(origin, dir);
+              var intersects = this.raycaster.intersectObjects(sceneObj.children, true);
+              if (intersects && intersects.length) {
+                for (var i = 0; i < intersects.length; i++){
+                  var it = intersects[i];
+                  if (!it.distance) continue;
+                  var mesh = it.object;
+                  var el = mesh.el;
+                  if (el && (el === this.el || el === this.cameraEl)) continue;
+                  if (it.distance < distance + margin) { blocked = true; break; }
+                }
+              }
+            }
+          }
+
+          if (!blocked) {
+            // apply movement by updating object's position
+            var pos = this.el.getAttribute('position');
+            if (!pos) pos = { x:0, y:0, z:0 };
+            pos.x += this.tempVec.x;
+            pos.z += this.tempVec.z;
+            this.el.setAttribute('position', pos);
+          }
+        }
+      });
+    </script>
+
+    <!-- Coordinate HUD -->
+    <script>
+      (function(){
+        const coords = document.createElement('div');
+        coords.id = 'coords-hud';
+        Object.assign(coords.style, {
+          position: 'fixed',
+          right: '12px',
+          bottom: '12px',
+          padding: '6px 10px',
+          background: 'rgba(0,0,0,0.6)',
+          color: '#e6ffe6',
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          borderRadius: '4px',
+          zIndex: 9999
+        });
+        document.body.appendChild(coords);
+
+        function fmt(n){ return (Math.round(n*100)/100).toFixed(2); }
+
+        function update(){
+          // Prefer an explicit camera element if present, otherwise use scene camera
+          const camEl = document.querySelector('[camera]') || document.querySelector('a-camera') || (AFRAME && AFRAME.scenes && AFRAME.scenes[0] && AFRAME.scenes[0].camera && AFRAME.scenes[0].camera.el);
+          if(!camEl){ coords.textContent = 'camera: not ready'; return; }
+          const pos = camEl.getAttribute('position') || camEl.object3D.position;
+          const rot = camEl.getAttribute('rotation') || camEl.object3D.rotation;
+          if(pos){
+            coords.textContent = `pos: x:${fmt(pos.x)} y:${fmt(pos.y)} z:${fmt(pos.z)}\nrot: x:${fmt(rot.x)} y:${fmt(rot.y)} z:${fmt(rot.z)}`;
+          }
+        }
+
+        // Update often so it looks responsive
+        setInterval(update, 100);
+        // Also update once when loaded
+        window.addEventListener('load', update);
+      })();
+    </script>
+
+  </body>
+</html>
