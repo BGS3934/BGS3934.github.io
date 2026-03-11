@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+  </head>
+  <body>
+    <a-scene>
+
+      <a-assets>
+
+      <a-asset-item id="car" src="source/1992_volkswagen_golf_gti_mk2.glb"></a-asset-item>
+      <a-asset-item id="solar" src="source/soler_panel_setup.glb"></a-asset-item>
+      <a-asset-item id="skyscraper" src="source/Skyscraper.glb"></a-asset-item>
+      <a-asset-item id="building3" src="source/building_03.glb"></a-asset-item>
+      <a-asset-item id="building6" src="source/building_06.glb"></a-asset-item>
+      <a-asset-item id="building2" src="source/building_02.glb"></a-asset-item>
+      <a-asset-item id="building1" src="source/building_01.glb"></a-asset-item>
+      <a-asset-item id="building5" src="source/building_05.glb"></a-asset-item>
+      <a-asset-item id="building7" src="source/building_07.glb"></a-asset-item>
+      <a-asset-item id="bench" src="source/bench.glb"></a-asset-item>
+      <a-asset-item id="tree" src="source/tree.glb"></a-asset-item>
+
+
+      </a-assets>
+
+<a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+      <a-box position="-401 1 -250" src="OIP (2).webp" scale="50 30 10" ></a-box>
+      <a-box position="-440 1 -250" src="OIP (1).jpg" scale="10 40 10" ></a-box>
+      
+      <a-plane position="700 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="600 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="500 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="400 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="300 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="200 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="100 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="0 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-100 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-200 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-300 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-400 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-500 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-600 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-700 -10 -204" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      
+      <a-plane position="0 -10 -300" rotation="-90 0 90" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="0 -10 -400" rotation="-90 0 90" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      
+      
+      <a-plane position="700 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="600 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="500 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="400 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="300 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="200 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="100 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="0 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-100 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-200 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-300 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-400 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-500 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-600 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+      <a-plane position="-700 -10 -500" rotation="-90 0 0" scale="100 100 100" src="Screenshot 2026-03-11 113924.png"></a-plane>
+
+      
+        
+
+      <a-plane position="1 -11 -600" rotation="-90 0 0" scale="200 200 200" src="OIP.webp"></a-plane>
+      <a-plane position="1 -12 -500" rotation="-90 0 0" scale="500 500 500" src="360_F_500657911_P3OBUdS5K77LpH5j3QLt8LOZHluoPwiL.jpg"></a-plane>
+      <a-plane position="-500 -12 -500" rotation="-90 0 0" scale="500 500 500" src="360_F_500657911_P3OBUdS5K77LpH5j3QLt8LOZHluoPwiL.jpg"></a-plane>
+      <a-plane position="500 -12 -500" rotation="-90 0 0" scale="500 500 500" src="360_F_500657911_P3OBUdS5K77LpH5j3QLt8LOZHluoPwiL.jpg"></a-plane>
+      <a-plane position="0 -13 -4" rotation="-90 0 0" scale="2000 2000 2000" src="pngtree-close-up-view-of-sand-texture-in-top-down-background-image_13639125.png"></a-plane>
+      <a-sky SRC="overcast_soil_puresky_2k.jpg" rotation="0 -90 0" scale="2 2 2"></a-sky>
+      
+      
+       
+
+
+      <a-box position="30 0 -640" src="2.png" scale="20 40 10" ></a-box>
+      <a-box position="0 0 -640" src="1.png" scale="20 40 10" ></a-box>
+      <a-box position="-30 0 -640" src="3.png" scale="20 40 10" ></a-box>
+      <a-box position="-30 10 -145" rotation="0 45 0" src="This is the solar field, Go forward to the giant building..png" scale="20 40 0" ></a-box>
+
+      <a-entity gltf-model="#bench" position="-60 -11 -600" scale="2 2 2" rotation="0 135 0"></a-entity>
+      <a-entity gltf-model="#bench" position="50 -11 -590" scale="2 2 2" rotation="0 -135 0"></a-entity>
+       
+      <a-entity gltf-model="#tree" position="60 -11 -620" scale="5 5 5" rotation="0 0 0"></a-entity>
+      <a-entity gltf-model="#tree" position="-60 -11 -620" scale="5 5 5" rotation="0 0 0"></a-entity>
+
+      <a-entity gltf-model="#car" position="550 -8 -220" scale="700 700 700" animation="property: position; to: -550 -8 -220; dur: 3000; loop: true;" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#car" position="-550 -8 -200" scale="700 700 700" animation="property: position; to: 550 -8 -208; dur: 4000; loop: true;" rotation="0 90 0"></a-entity>
+      
+      <a-entity gltf-model="#car" position="550 -8 -520" scale="700 700 700" animation="property: position; to: -550 -8 -520; dur: 2999; loop: true;" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#car" position="-550 -8 -500" scale="700 700 700" animation="property: position; to: 550 -8 -508; dur: 3452; loop: true;" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#skyscraper" position="1 -15 -720" scale="20 20 20" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#building1" position="-410 20 -430" scale="50 50 50" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building2" position="-125 40 -450" scale="100 100 100" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building3" position="210 40 -455" scale="100 100 100" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building2" position="410 40 -750" scale="100 100 100" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building3" position="-410 40 -750" scale="100 100 100" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building5" position="510 30 -430" scale="80 80 80" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building6" position="150 40 -700" scale="100 100 100" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#building7" position="-160 40 -700" scale="100 100 100" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="-250 -12 -100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-250 -12 -50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-250 -12 -0" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-250 -12 50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-250 -12 100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      
+      <a-entity gltf-model="#solar" position="-200 -12 -100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-200 -12 -50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-200 -12 -0" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-200 -12 50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-200 -12 100" scale="10 10 10" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="-150 -12 -100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-150 -12 -50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-150 -12 -0" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-150 -12 50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-150 -12 100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      
+      <a-entity gltf-model="#solar" position="-100 -12 -100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-100 -12 -50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-100 -12 -0" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-100 -12 50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-100 -12 100" scale="10 10 10" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="-50 -12 -100" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-50 -12 -50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-50 -12 0" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-50 -12 50" scale="10 10 10" rotation="0 90 0"></a-entity>
+      <a-entity gltf-model="#solar" position="-50 -12 100" scale="10 10 10" rotation="0 90 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="50 -12 -100" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="50 -12 -50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="50 -12 0" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="50 -12 50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="50 -12 100" scale="10 10 10" rotation="0 270 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="100 -12 -100" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="100 -12 -50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="100 -12 0" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="100 -12 50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="100 -12 100" scale="10 10 10" rotation="0 270 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="150 -12 -100" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="150 -12 -50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="150 -12 0" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="150 -12 50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="150 -12 100" scale="10 10 10" rotation="0 270 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="200 -12 -100" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="200 -12 -50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="200 -12 0" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="200 -12 50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="200 -12 100" scale="10 10 10" rotation="0 270 0"></a-entity>
+
+      <a-entity gltf-model="#solar" position="250 -12 -100" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="250 -12 -50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="250 -12 0" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="250 -12 50" scale="10 10 10" rotation="0 270 0"></a-entity>
+      <a-entity gltf-model="#solar" position="250 -12 100" scale="10 10 10" rotation="0 270 0"></a-entity>
+     
+    
+
+
+
+    </a-scene>
+
+  
+     
+  
+  
+  </body>
+</html>
