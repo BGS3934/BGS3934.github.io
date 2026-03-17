@@ -15,19 +15,7 @@ require(['vs/editor/editor.main'], function () {
   // Template for preview iframe
   function wrapCode(sceneContent) {
     return `
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <script src="thumbstick-move.js"></script>
-  </head>
-  <body>
-    ${sceneContent}
-  </body>
-</html>`;
+${sceneContent}`;
   }
 
   // Load code and description

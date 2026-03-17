@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+
+
+
 <a-scene>
   <a-entity 
          cursor="rayOrigin: mouse" 
@@ -8,3 +21,6 @@
          sound="src: url(SFX/unlock.wav); autoplay: false;  on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-box>
   <a-sky color="#88C"></a-sky>
 </a-scene>
+
+  </body>
+</html>

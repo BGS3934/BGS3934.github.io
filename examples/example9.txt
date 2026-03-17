@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+
+
+
    <a-scene>
 
       <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
@@ -19,3 +32,7 @@
       <a-plane rotation="-90 0 0" width="200" height="200" repeat="50 50" id="ground" src="Ground/Cobblestone A.jpg"></a-plane>
 
     </a-scene>
+
+
+  </body>
+</html>
