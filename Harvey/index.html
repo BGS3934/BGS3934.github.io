@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame VR Street Scene</title>
+
+    <!-- Core A-Frame -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <!-- Extras: provides movement-controls (thumbstick locomotion) -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+
+    <!-- Blink (teleport) controls for VR hand controllers -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+        <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+
+    <script>
+      /* ------------------------------------------------------------------
+         city-builder: rows of buildings on both sides of the street with
+         windows, balconies, doors, and hanging vines.
+         ------------------------------------------------------------------ */
+      AFRAME.registerComponent('city-builder', {
+        init: function () {
+          const scene = this.el;
+
+          const palette = [
+            '#C9A66B', '#A6794C', '#8C5E3C',
+            '#D6B98C', '#6E4A2E', '#B0855A',
+            '#9C6E45', '#E0C49B'
+          ];
+
+          function makeVine(parent, x, y, z, length) {
+            const vine = document.createElement('a-entity');
+            vine.setAttribute('position', `${x} ${y} ${z}`);
+
+            const stem = document.createElement('a-cylinder');
+            stem.setAttribute('radius', '0.04');
+            stem.setAttribute('height', length);
+            stem.setAttribute('color', '#2E7D32');
+            stem.setAttribute('position', `0 ${-length / 2} 0`);
+            vine.appendChild(stem);
+
+            const leafCount = Math.max(3, Math.floor(length * 2));
+            for (let i = 0; i < leafCount; i++) {
+              const t = (i + 1) / (leafCount + 1);
+              const leaf = document.createElement('a-sphere');
+              leaf.setAttribute('radius', 0.12 + Math.random() * 0.08);
+              const shade = ['#4CAF50', '#388E3C', '#66BB6A', '#2E7D32'][i % 4];
+              leaf.setAttribute('color', shade);
+              const offsetX = (Math.random() - 0.5) * 0.15;
+              const offsetZ = (Math.random() - 0.5) * 0.15;
+              leaf.setAttribute('position', `${offsetX} ${-length * t} ${offsetZ}`);
+              vine.appendChild(leaf);
+            }
+
+            const pot = document.createElement('a-cylinder');
+            pot.setAttribute('radius', '0.18');
+            pot.setAttribute('height', '0.22');
+            pot.setAttribute('color', '#8B4513');
+            pot.setAttribute('position', '0 0.11 0');
+            vine.appendChild(pot);
+
+            vine.setAttribute(
+              'animation',
+              'property: rotation; from: -3 0 0; to: 3 0 0; dir: alternate; loop: true; dur: 3500; easing: easeInOutSine'
+            );
+
+            parent.appendChild(vine);
+          }
+
+          function makeBuilding(x, z, width, depth, height, color, facing) {
+            const building = document.createElement('a-entity');
+            building.setAttribute('position', `${x} 0 ${z}`);
+
+            const body = document.createElement('a-box');
+            body.setAttribute('width', width);
+            body.setAttribute('depth', depth);
+            body.setAttribute('height', height);
+            body.setAttribute('color', color);
+            body.setAttribute('position', `0 ${height / 2} 0`);
+            building.appendChild(body);
+
+            const roof = document.createElement('a-box');
+            roof.setAttribute('width', width + 0.2);
+            roof.setAttribute('depth', depth + 0.2);
+            roof.setAttribute('height', 0.25);
+            roof.setAttribute('color', '#3E2723');
+            roof.setAttribute('position', `0 ${height + 0.12} 0`);
+            building.appendChild(roof);
+
+            const floors = Math.max(2, Math.floor(height / 1.6));
+            const windowsPerFloor = Math.max(2, Math.floor(width / 1.2));
+            const faceZ = (depth / 2 + 0.01) * facing;
+
+            for (let f = 0; f < floors; f++) {
+              const floorY = 1.0 + f * 1.6;
+
+              for (let w = 0; w < windowsPerFloor; w++) {
+                const spacing = width / (windowsPerFloor + 1);
+                const winX = -width / 2 + spacing * (w + 1);
+
+                const win = document.createElement('a-plane');
+                win.setAttribute('width', '0.6');
+                win.setAttribute('height', '0.8');
+                win.setAttribute('color', '#9CC9E3');
+                win.setAttribute('position', `${winX} ${floorY} ${faceZ}`);
+                win.setAttribute('rotation', `0 ${facing === 1 ? 0 : 180} 0`);
+                building.appendChild(win);
+
+                const frame = document.createElement('a-plane');
+                frame.setAttribute('width', '0.72');
+                frame.setAttribute('height', '0.92');
+                frame.setAttribute('color', '#2C2C2C');
+                frame.setAttribute('position', `${winX} ${floorY} ${faceZ - 0.005 * facing}`);
+                frame.setAttribute('rotation', `0 ${facing === 1 ? 0 : 180} 0`);
+                building.appendChild(frame);
+              }
+
+              if (f % 2 === 1) {
+                const balcony = document.createElement('a-box');
+                balcony.setAttribute('width', width * 0.85);
+                balcony.setAttribute('depth', 0.35);
+                balcony.setAttribute('height', 0.12);
+                balcony.setAttribute('color', '#5D4037');
+                balcony.setAttribute('position', `0 ${floorY - 0.55} ${faceZ + 0.18 * facing}`);
+                building.appendChild(balcony);
+
+                const railing = document.createElement('a-box');
+                railing.setAttribute('width', width * 0.85);
+                railing.setAttribute('depth', 0.04);
+                railing.setAttribute('height', 0.4);
+                railing.setAttribute('color', '#212121');
+                railing.setAttribute('position', `0 ${floorY - 0.35} ${faceZ + 0.35 * facing}`);
+                building.appendChild(railing);
+
+                const vineCount = 2 + Math.floor(Math.random() * 2);
+                for (let v = 0; v < vineCount; v++) {
+                  const t = (v + 1) / (vineCount + 1);
+                  const vx = -width * 0.4 + width * 0.8 * t;
+                  const vy = floorY - 0.6;
+                  const vz = faceZ + 0.35 * facing;
+                  const vlen = 0.8 + Math.random() * 0.7;
+                  makeVine(building, vx, vy, vz, vlen);
+                }
+              }
+            }
+
+            const door = document.createElement('a-plane');
+            door.setAttribute('width', '0.8');
+            door.setAttribute('height', '1.4');
+            door.setAttribute('color', '#3E2723');
+            door.setAttribute('position', `0 0.7 ${faceZ}`);
+            door.setAttribute('rotation', `0 ${facing === 1 ? 0 : 180} 0`);
+            building.appendChild(door);
+
+            const rooftopVines = 3;
+            for (let r = 0; r < rooftopVines; r++) {
+              const t = (r + 1) / (rooftopVines + 1);
+              const vx = -width / 2 + width * t;
+              const vy = height - 0.05;
+              const vz = faceZ + 0.05 * facing;
+              makeVine(building, vx, vy, vz, 1.2 + Math.random() * 0.8);
+            }
+
+            scene.appendChild(building);
+          }
+
+          const buildingDepth = 3;
+          const sideZ = 2.2 + buildingDepth / 2 + 0.2;
+          const positionsX = [-12, -8, -4, 0, 4, 8, 12];
+
+          positionsX.forEach((x, i) => {
+            const wL = 3.2 + Math.random() * 0.8;
+            const hL = 4 + Math.random() * 3.5;
+            const cL = palette[(i * 2) % palette.length];
+            makeBuilding(x, -sideZ, wL, buildingDepth, hL, cL, 1);
+
+            const wR = 3.2 + Math.random() * 0.8;
+            const hR = 4 + Math.random() * 3.5;
+            const cR = palette[(i * 2 + 1) % palette.length];
+            makeBuilding(x, sideZ, wR, buildingDepth, hR, cR, -1);
+          });
+        }
+      });
+
+      /* ------------------------------------------------------------------
+         street-markings: dashed center + solid edge lines
+         ------------------------------------------------------------------ */
+      AFRAME.registerComponent('street-markings', {
+        init: function () {
+          const scene = this.el;
+          const dashCount = 14;
+          const dashLength = 1.2;
+          const dashGap = 0.8;
+          const totalSpan = dashCount * (dashLength + dashGap);
+          const startX = -totalSpan / 2;
+
+          for (let i = 0; i < dashCount; i++) {
+            const dash = document.createElement('a-plane');
+            dash.setAttribute('width', dashLength);
+            dash.setAttribute('height', 0.15);
+            dash.setAttribute('color', '#F5F5F5');
+            dash.setAttribute('rotation', '-90 0 0');
+            const x = startX + i * (dashLength + dashGap) + dashLength / 2;
+            dash.setAttribute('position', `${x} 0.02 0`);
+            scene.appendChild(dash);
+          }
+
+          const edge1 = document.createElement('a-plane');
+          edge1.setAttribute('width', 30);
+          edge1.setAttribute('height', 0.12);
+          edge1.setAttribute('color', '#F5F5F5');
+          edge1.setAttribute('rotation', '-90 0 0');
+          edge1.setAttribute('position', '0 0.02 1.6');
+          scene.appendChild(edge1);
+
+          const edge2 = document.createElement('a-plane');
+          edge2.setAttribute('width', 30);
+          edge2.setAttribute('height', 0.12);
+          edge2.setAttribute('color', '#F5F5F5');
+          edge2.setAttribute('rotation', '-90 0 0');
+          edge2.setAttribute('position', '0 0.02 -1.6');
+          scene.appendChild(edge2);
+        }
+      });
+    </script>
+
+    <style>
+      body { margin: 0; }
+      #hint {
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        z-index: 10;
+        color: #fff;
+        font-family: system-ui, sans-serif;
+        font-size: 13px;
+        background: rgba(0,0,0,0.5);
+        padding: 8px 12px;
+        border-radius: 6px;
+        max-width: 320px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="hint">
+      <strong>Desktop:</strong> WASD to walk, mouse to look<br />
+      <strong>VR:</strong> click the goggles icon (bottom-right) &middot; thumbstick to walk &middot; trigger + aim to teleport
+    </div>
+
+    <a-scene background="color: #87CEEB"
+             renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true"
+             vr-mode-ui="enabled: true">
+
+             <a-assets>
+
+              <a-asset-item id="traffic" src="Three way traffic light.glb"></a-asset-item>
+
+             </a-assets>
+
+
+       <a-entity gltf-model="#traffic" scale="0.03 0.03 0.03" position="15 0 -2"></a-entity> 
+                
+       
+      <!-- Lighting -->
+      <a-entity light="type: ambient; color: #BBB; intensity: 0.7"></a-entity>
+      <a-entity light="type: directional; color: #FFF; intensity: 0.9"
+                position="-3 10 5"></a-entity>
+
+      <!-- Sky -->
+      <a-sky color="#87CEEB"></a-sky>
+
+      <!-- Rotating yellow sun (from your original code) -->
+      <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 10000;">
+        <a-sphere position="-2 10 0" color="yellow" radius="0.9"></a-sphere>
+      </a-entity>
+
+      <!-- Grass strips beside the road (teleportable) -->
+      <a-plane class="teleport-target" position="0 0 -8" rotation="-90 0 0"
+               width="32" height="12" color="#6BAE6E"></a-plane>
+      <a-plane class="teleport-target" position="0 0 8" rotation="-90 0 0"
+               width="32" height="12" color="#6BAE6E"></a-plane>
+
+      <!-- Sidewalks (teleportable) -->
+      <a-box class="teleport-target" position="0 0.05 -2.0"
+             width="32" height="0.1" depth="0.8" color="#BDBDBD"></a-box>
+      <a-box class="teleport-target" position="0 0.05 2.0"
+             width="32" height="0.1" depth="0.8" color="#BDBDBD"></a-box>
+
+      <!-- Street asphalt (teleportable) -->
+      <a-plane id="street" class="teleport-target" position="0 0.01 0"
+               rotation="-90 0 0" width="32" height="3.2" color="#3A3A3A"></a-plane>
+
+      <!-- Street markings -->
+      <a-entity street-markings></a-entity>
+
+      <!-- Buildings + hanging plants -->
+      <a-entity city-builder></a-entity>
+
+      <!-- ===========================================================
+           PLAYER RIG
+           - movement-controls: thumbstick locomotion in VR + WASD on desktop
+           - camera height 0 because the headset adds real-world height
+           - blink-controls on both hands for teleport
+           =========================================================== -->
+      <a-entity id="rig" position="-15 0 0" rotation="0 -90 0"
+                movement-controls="controls: gamepad, keyboard, touch; speed: 0.15; fly: false">
+
+        <a-entity camera look-controls="pointerLockEnabled: false"
+                  position="0 1.6 0"
+                  wasd-controls="enabled: false">
+        </a-entity>
+
+        <!-- Left controller: blink teleport -->
+        <a-entity id="leftHand"
+                  oculus-touch-controls="hand: left"
+                  meta-touch-controls="hand: left"
+                  vive-controls="hand: left"
+                  windows-motion-controls="hand: left"
+                  blink-controls="cameraRig: #rig; teleportOrigin: [camera]; collisionEntities: .teleport-target; button: trigger; curveShootingSpeed: 12">
+        </a-entity>
+
+        <!-- Right controller: blink teleport -->
+        <a-entity id="rightHand"
+                  oculus-touch-controls="hand: right"
+                  meta-touch-controls="hand: right"
+                  vive-controls="hand: right"
+                  windows-motion-controls="hand: right"
+                  blink-controls="cameraRig: #rig; teleportOrigin: [camera]; collisionEntities: .teleport-target; button: trigger; curveShootingSpeed: 12">
+        </a-entity>
+      </a-entity>
+     <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
