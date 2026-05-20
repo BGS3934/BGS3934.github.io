@@ -1,21 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <script src="thumbstick-move.js"></script>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
 
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
+</head>
+
+<body>
+
+<script>
+AFRAME.registerComponent('step-animations', {
+  init: function () {
+
+    let step = 1;
+
+    this.el.addEventListener('click', () => {
+
+      this.el.emit('step' + step);
+
+      step++;
+
+      if (step > 4) {
+        step = 1;
+      }
+
+    });
+  }
+});
+</script>
 
 <a-scene>
-  <a-box position="0 1 -3" color="pink"
-         animation="property: rotation; to: 0 360 0; loop: true; dur: 2000"></a-box>
-  <a-sky color="#EEE"></a-sky>
+
+  <!-- camera + cursor -->
+  <a-camera>
+    <a-cursor></a-cursor>
+  </a-camera>
+
+  <!-- spinning box -->
+  <a-box
+    position="3 1 -3"
+    color="pink"
+    animation="
+      property: rotation;
+      to: 0 360 0;
+      loop: true;
+      dur: 2000">
+  </a-box>
+
+  <!-- clickable animated box -->
+  <a-box
+    class="clickable"
+    position="0 1 -3"
+    color="red"
+
+    step-animations
+
+    animation__1="
+      property: position;
+      to: 1 1 -3;
+      dur: 1000;
+      startEvents: step1;"
+
+    animation__2="
+      property: rotation;
+      to: 0 90 0;
+      dur: 1000;
+      startEvents: step2;"
+
+    animation__3="
+      property: scale;
+      to: 2 2 2;
+      dur: 1000;
+      startEvents: step3;"
+
+    animation__4="
+      property: material.color;
+      to: blue;
+      dur: 1000;
+      startEvents: step4;">
+  </a-box>
+
+  <a-sky color="#EEEEEE"></a-sky>
+
 </a-scene>
 
-  </body>
+</body>
 </html>
