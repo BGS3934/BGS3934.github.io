@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+    <script>
+      let score = 0;
+
+      AFRAME.registerComponent('score-display', {
+        init: function() {
+          this.updateDisplay();
+        },
+        updateDisplay: function() {
+          this.el.setAttribute('text', 'value: Score: ' + score + '; color: #000; align: center; width: 4');
+        },
+        addPoint: function() {
+          score++;
+          this.updateDisplay();
+        }
+      });
+
+      AFRAME.registerComponent('pickup', {
+        init: function() {
+          var box = this.el;
+          box.addEventListener('click', function() {
+            var scoreEl = document.querySelector('#scoreBoard');
+            if (scoreEl && scoreEl.components['score-display']) {
+              scoreEl.components['score-display'].addPoint();
+            }
+            // Delay removal so the trash sound can fully play (~2 seconds)
+            setTimeout(function() {
+              box.remove();
+            }, 2000);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="Trash" src="Surprising Borwo-Kup.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity id="cameraRig"
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false"
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+         
+          <a-entity id="scoreBoard"
+                    score-display
+                    position="0 1 -2"
+                    text="value: Score: 0; color: #000; align: center; width: 4">
+          </a-entity>
+         
+          <a-entity
+            cursor="fuse: false; rayOrigin: mouse"
+            raycaster="objects: .clickable">
+          </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+     
+
+      <a-entity gltf-model="#Trash" scale="75 75 75" pickup class="clickable" position="-2 0.5 -3" color="red"
+                sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-entity>
+      <a-entity gltf-model="#Trash" scale="75 75 75" pickup class="clickable" position="0 0.5 -3" color="yellow"
+                sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-entity>
+      <a-entity gltf-model="#Trash" scale="75 75 75" pickup class="clickable" position="2 0.5 -3" color="purple"
+                sound="src:sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1"></a-entity>
+     
+     
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="green"></a-plane>
+      <a-sky color="blue"></a-sky>
+    </a-scene>
+  </body>
+</html>

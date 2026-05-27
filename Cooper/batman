@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Lego Batman</title>
+<style>
+    /* The styled box container */
+    .bat-box {
+        width: 300px;
+        height: 350px;
+        background: #222;
+        border: 10px solid #555;
+        border-radius: 15px;
+        position: relative;
+        margin: 50px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 10px #000;
+        cursor: pointer;
+    }
+
+    /* Screen glow effect */
+    .bat-box::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.8) 100%);
+    }
+
+    /* LEGO Batman Body Components */
+    .lego-batman {
+        position: relative;
+        width: 100px;
+        height: 150px;
+        animation: bobble 1s infinite alternate ease-in-out;
+    }
+
+    /* Head */
+    .head {
+        width: 50px;
+        height: 40px;
+        background: #222;
+        position: absolute;
+        top: 0;
+        left: 25px;
+        border-radius: 8px 8px 5px 5px;
+        z-index: 10;
+    }
+
+    /* Ears */
+    .head::before, .head::after {
+        content: '';
+        position: absolute;
+        top: -15px;
+        width: 10px;
+        height: 20px;
+        background: #222;
+        border-radius: 2px;
+    }
+    .head::before { left: 5px; transform: skewY(10deg); }
+    .head::after { right: 5px; transform: skewY(-10deg); }
+
+    /* Eyes */
+    .eyes {
+        position: absolute;
+        top: 15px;
+        left: 10px;
+        width: 30px;
+        height: 10px;
+        background: white;
+        border-radius: 5px;
+    }
+
+    /* Torso */
+    .torso {
+        width: 60px;
+        height: 60px;
+        background: #111;
+        position: absolute;
+        top: 40px;
+        left: 20px;
+        border-radius: 5px;
+        border-bottom: 5px solid #333;
+    }
+
+    /* Bat Symbol */
+    .torso::after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        width: 20px;
+        height: 15px;
+        background: #ffdb00;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    /* Cape */
+    .cape {
+        width: 70px;
+        height: 80px;
+        background: #000;
+        position: absolute;
+        top: 45px;
+        left: 15px;
+        border-radius: 10px;
+        z-index: -1;
+        animation: cape-wave 0.5s infinite alternate;
+    }
+
+    /* Animation Keyframes */
+    @keyframes bobble {
+        from { transform: translateY(0px); }
+        to { transform: translateY(10px); }
+    }
+
+    @keyframes cape-wave {
+        from { transform: skewX(2deg); }
+        to { transform: skewX(-2deg); }
+    }
+</style>
+</head>
+<body>
+
+    <div class="bat-box">
+        <div class="lego-batman">
+            <div class="head">
+                <div class="eyes"></div>
+            </div>
+            <div class="torso"></div>
+            <div class="cape"></div>
+        </div>
+    </div>
+
+</body>
+</html>

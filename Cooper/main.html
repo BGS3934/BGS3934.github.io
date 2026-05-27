@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+    <a-assets>
+
+      <a-asset-item id="trex" src="T-Rex.glb"></a-asset-item>
+<a-asset-item id="wasp" src="Wasp.glb" ></a-asset-item>
+
+    </a-assets>
+    <a-entity gltf-model="#trex" position="20 0 0"></a-entity>
+<a-entity gltf-model="#wasp" position="60 0 0" scale="0.1 0.1 0.1"></a-entity>
+
+
+      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" animation="property:position;to:-100 0 -3;dur:10000;loop:true:"></a-box>
+      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-cylinder position="1 0.75 -3" radius="0.5" height="700" color="#78FAD0"></a-cylinder>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#78FAD0"></a-plane>
+      <a-sky color="#6B93FF" src="sky.jpg" ></a-sky>
+      <a-sphere position="0 1.50 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere position="5 5 -200" radius="-100" color="#000000" animation="property:scale;to: 3 3 3;dur:100000;loop:false"></a-sphere>
+      <a-sphere position="-5 -5 200" radius="-100" color="#FFFFFF" animation="property:scale;to: 3 3 3;dur:100000;loop:false"></a-sphere>
+    <a-cross posistion="0 3.50 -5" color="#F873FF"></a-cross>
+    <a-torus position="0 5.50 0" width="4000000" height="2000" color="#F873FF" radius="-50"></a-torus>
+<a-sphere position="0 20 80" width="40" height="100" color="#F873FF"src="james.jpg" radius="-5"></a-sphere>
+<a-torus position="0 0 0" width="100" height="200" color="#6B62FF" radius="1"animation="property:scale;to: 100 100 100;dur:1000000;loop:false"></a-torus>
+</a-scene>
+
+  </body>
+</html>

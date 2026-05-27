@@ -1,18 +1,375 @@
-
 <html lang="en">
 <head>
-  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>  
+  <meta charset="utf-8">
+
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  <script src="thumbstick-move.js"></script>
+
+  <style>
+    #timer {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Arial, sans-serif;
+      font-size: 48px;
+      color: white;
+      background: rgba(30, 175, 110, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 100;
+    }
+  </style>
+
+  <script>
+    let score = 0;
+
+    AFRAME.registerComponent('score-display', {
+      init: function() {
+        this.updateDisplay();
+      },
+      updateDisplay: function() {
+        this.el.setAttribute(
+          'text',
+          'value: Score: ' + score + '; color: #000; align: center; width: 4'
+        );
+      },
+      addPoint: function() {
+        score++;
+        this.updateDisplay();
+      }
+    });
+
+    AFRAME.registerComponent('pickup', {
+      init: function() {
+        var box = this.el;
+
+        box.addEventListener('click', function() {
+          var scoreEl = document.querySelector('#scoreBoard');
+
+          if (scoreEl && scoreEl.components['score-display']) {
+            scoreEl.components['score-display'].addPoint();
+          }
+
+          setTimeout(function() {
+            box.remove();
+          }, 2);
+        });
+      }
+    });
+  </script>
 </head>
+
 <body>
+
+  <div id="timer">02:00</div>
+
   <a-scene>
-<a-assets> <a-assets-item id= "city" src="future_city.glb"></a-assets-item> </a-assets>    
+
+<a-assets>
+        <img id="skyTex" src="clear_sky.jpg">
+    </a-assets>
+        <a-sky src="#skyTex"></a-sky>
 
 
 
+    <a-assets>
+    
+<a-plane id="groundPlane" position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
-<a-entity gltf-model="#city" position="0 -1 0" scale="10 10 10" rotation="0 0 0"></a-entity>
+
+      <a-asset-item id="Trash" src="Surprising Borwo-Kup.glb"></a-asset-item>
+      <a-asset-item id="city" src="future_city.glb" position="0 10 0"></a-asset-item>
+ <a-assest-item id="trash2" src="pile_burned_trash_3d_scan.glb"></a-assest-item>
+    </a-assets>
+
+
+    <a-entity id="cameraRig"
+              movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false"
+              thumbstick-controls
+              position="0 0 0">
+
+      <a-entity id="head" camera look-controls position="0 1.6 0">
+
+        <a-entity id="scoreBoard"
+                  score-display
+                  position="0 1 -2"
+                  text="value: Score: 0; color: #000; align: center; width: 4">
+        </a-entity>
+
+        <a-entity
+          cursor="fuse: false; rayOrigin: mouse"
+          raycaster="objects: .clickable">
+        </a-entity>
+
+      </a-entity>
+
+      <a-entity id="leftHand"
+                hand-controls="hand: left"
+                thumbstick-move
+                teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger">
+      </a-entity>
+
+      <a-entity id="rightHand"
+                hand-controls="hand: right"
+                thumbstick-jump
+                laser-controls="hand: right"
+                raycaster="objects: .clickable">
+      </a-entity>
+
+    </a-entity>
+
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="40 1 30"
+              color="red"
+               autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 10">
+    </a-entity>
+
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="0 1 -3"
+              color="green"
+               autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+
+    <a-entity gltf-model="#Trash2"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="2 2 -3"
+              color="purple"
+               autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="7 1 -5"
+              color="purple"
+               autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="14 1 -11"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="2 1 -12"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="9 1 -16"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-30 1 -30"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+
+    <a-entity gltf-model="#city"
+              position="0 1 0"
+              scale="10 10 10"
+              rotation="0 0 0">
+    </a-entity>
+<a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-30 1 -30"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-30 1 -30"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="5 1 8"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="12 1 3"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-19 1 -19"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-14 1 -12"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-13 1 -13"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-6 1 -9"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="4 1 -40"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-3 1 -30"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-9 1 -12"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity><a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-21 1 -16"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="21 1 16"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="7 1 3"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="32 1 17"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="13 1 34"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="18 1 14"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="12 1 -16"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+    <a-entity gltf-model="#Trash"
+              scale="50 50 50"
+              pickup
+              class="clickable"
+              position="-21 1 -16"
+              color="purple"
+              sound="src: sound.mp3; autoplay: false; on: click; loop: false; maxDistance: 20; positional: true; volume: 1">
+    </a-entity>
+
+    
+
+   
+
   </a-scene>
 
-  </body>
-  </html>
+  <script>
+    let timeLeft = 120;
 
+    const timerDisplay = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+      timeLeft--;
+
+      let mins = Math.floor(timeLeft / 60);
+      let secs = timeLeft % 60;
+
+      timerDisplay.innerHTML =
+        `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        stopGame();
+      }
+
+    }, 1000);
+
+    function stopGame() {
+      timerDisplay.style.color = "red";
+      timerDisplay.innerHTML = "GAME OVER";
+
+      console.log("The game has stopped.");
+    }
+  </script>
+
+</body>
+</html>
