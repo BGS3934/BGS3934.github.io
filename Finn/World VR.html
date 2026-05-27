@@ -1,0 +1,53 @@
+<html>
+  <head>
+   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+    <a-scene>
+         <a-ocean depth="200" width="200" position="0 -15 0"></a-ocean>
+          <a-assets>
+            <a-asset-item id="ok" src="Terrific Esboo-Sango (3).glb"></a-asset-item>
+             <a-asset-item id="wind" src="Terrific Esboo-Sango.glb"></a-asset-item>
+    <a-asset-item id="tree" src="Terrific Esboo-Sango (4).glb"></a-asset-item>
+     <a-asset-item id="to" src="Stunning Fyyran-Borwo (1).glb"></a-asset-item>
+  </a-assets>
+   <a-entity gltf-model="#ok" position="10 -20 -3" scale="150 100 180" ></a-entity>
+  
+
+
+ <a-entity gltf-model="#wind" position="0 -20 -3" scale="400 400 400" ></a-entity>
+  <a-entity gltf-model="#tree" position="0 -20 -3" scale="100 80 100"></a-entity>
+    <a-entity gltf-model="#tree" position="-2 -20 -3" scale="100 80 100"></a-entity>
+     <a-entity gltf-model="#tree" position="-4 -20 -3" scale="100 80 100"></a-entity>
+     <a-entity gltf-model="#tree" position="-6 -20 -3" scale="100 80 100"></a-entity>
+     <a-entity gltf-model="#tree" position="-8 -20 -3" scale="100 80 100"></a-entity>
+
+      <a-entity  class="clickable" gltf-model="#to" position="-10 -17 5" scale="100 100 100"  
+      event-set__click="_target: #cameraRig; position: -10 -17 5;"
+        animation__1="property: position; to: 6 -20 5; dur: 10000; startEvents: loaded, animationcomplete__4"
+        animation__2="property: rotation; to: 0 180 0; dur: 3000; startEvents: animationcomplete__1"
+        animation__3="property: position; to: -10 -17 5; dur: 10000; easing: linear; startEvents: animationcomplete__2"
+        animation__4="property: rotation; to: 0 0 0; dur: 3000; startEvents: animationcomplete__3"
+    >    
+     </a-entity>
+
+      <a-sky class="clickable" event-set__click="_target: #cameraRig; position: 0 1.6 0;" color="#ECECEC"></a-sky>
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
