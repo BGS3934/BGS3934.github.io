@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+    
+    <a-scene>
+    <a-assets>
+    
+    </a-asset-item id="ground" src="Amazing Krunk-Juttuli 2.glb"></a-asset-item>
+    </a-assest-item id="house1" src="Amazing Krunk-Juttuli.glb"></a-assest-item>
+
+    </a-assets>
+    
+
+        <a-entity gltf-model="#ground" scale="100 100 100" ></a-entity> 
+        <a-entity gltf-model="#house1" scale="50 50 50" position="0 10 0"></a-entity>
+        <a-box src="Tree-housebackground1.png" scale="650 200 150" position="400 0 0" rotation="0 90 0"></a-box>     
+        <a-box src="Tree-housebackground1.png" scale="650 200 150" position="-400 0 0" rotation="0 90 0"></a-box>
+        <a-box src="Tree-housebackground1.png" scale="650 200 150" position="0 0 400" rotation="0 180 0"></a-box>
+        <a-box src="Screenshot 2026-05-20 123006.png" scale="650 200 150" position="0 0 -400" rotation="0 180 0"></a-box>
+        <a-box src="Screenshot 2026-05-26 085703.png" scale="250 250 250" position="-5 150 0" rotation="0 90 0"></a-box>
+         <a-box src="Screenshot 2026-05-26 090412.png" scale="250 250 250" position="-5 -150 0" rotation="0 90 0"></a-box
+        
+
+        <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+      
+
+      <a-sky color="#ECECEC" src="OIP (1).webp"></a-sky>
+    </a-scene>
+  </body>
+</html>
