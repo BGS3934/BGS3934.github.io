@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+  </head>
+  <body>
+    <script>
+      AFRAME.registerComponent('step-animations', {
+        init: function () {
+      
+          let step = 1;
+      
+          this.el.addEventListener('click', () => {
+      
+            this.el.emit('step' + step);
+      
+            step++;
+      
+            if (step > 4) {
+              step = 1;
+            }
+      
+          });
+        }
+      });
+      </script>
+    <a-scene>
+
+      <a-assests>
+        <a-assest-item id="Vines" src="Vines.glb"></a-assest-item>
+        <a-assest-item id="SoccerPitch" src="Bodacious Gogo.glb"></a-assest-item>
+        <a-assest-item id="Soccerfield" src="Soccer Field.glb"></a-assest-item>
+        <a-assest-item id="SimpleSoccerFootball" src="Simple soccer football.glb"></a-assest-item>
+        <a-assest-item id="Roof" src="Smooth Wluff-Juttuli.glb"></a-assest-item>
+      </a-assests>
+     <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+     <a-entity id="cameraRig" 
+     movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+     thumbstick-controls
+     position="0 0 0">
+<a-entity id="head" camera look-controls position="0 1.6 0">
+ <a-entity 
+   cursor="fuse: false; rayOrigin: mouse" 
+   raycaster="objects: .clickable">
+ </a-entity>
+</a-entity>
+<a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+<a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+</a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+
+        
+       
+
+      
+        <!-- Top Edge -->
+        
+        <a-entity gltf-model="#Vines" scale="100 70 100" position="110 -50 80"></a-entity>
+        <a-entity gltf-model="#Vines" scale="100 70 100" position="90 -50 80"></a-entity>
+
+   
+        
+        <a-entity gltf-model="#Vines" scale="100 70 100" position="-90 -50 80"></a-entity>
+        <a-entity gltf-model="#Vines" scale="100 70 100" position="-110 -50 80"></a-entity>
+      
+        
+        <!-- Continue pattern until x = -130 -->
+        
+       
+
+
+<!-- Left Edge -->
+
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 40"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 20"></a-entity>
+
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 -40"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 -60"></a-entity>
+
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 -160"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="-130 -50 -180"></a-entity>
+
+<!-- Bottom Edge -->
+<a-entity gltf-model="#Vines" scale="100 70 100" position="-110 -50 -200" ></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" position="-90 -50 -200" ></a-entity>
+
+
+
+<a-entity gltf-model="#Vines" scale="100 70 100" position="90 -50 -200"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" position="110 -50 -200"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" position="130 -50 -200"></a-entity>
+
+<!-- Right Edge -->
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 -180"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 -160"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 -140"></a-entity>
+
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0"position="130 -50 -60"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 -40"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 40"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 60"></a-entity>
+<a-entity gltf-model="#Vines" scale="100 70 100" rotation="0 90 0" position="130 -50 80"></a-entity>
+
+     
+        <a-box src="Sustainable Stadium (1).png" position="-80 -22 -170" scale="50 60 10"> 
+
+
+        </a-box>
+        
+      
+        
+      <a-entity gltf-model="#Roof" scale="5000 1000 10000"  position="0 0 0" ></a-entity>
+      <a-entity gltf-model="#SoccerPitch" scale="1000 1000 1000"  position="0 -50 0" ></a-entity>
+      <a-entity gltf-model="#Soccerfield" scale="250 100 400"  position="0 -30 0" rotation="0 90 0" ></a-entity>
+      <a-entity gltf-model="#SimpleSoccerFootball" scale="10 10 10"  position="0 -22 0" 
+      class="clickable"
+    
+        step-animations
+    
+        animation__1="
+          property: position;
+          to: -50 -22 -50;
+          dur: 1000;
+          startEvents: step1;"
+    
+        animation__2="
+          property: position;
+          to: 50 -22 -50;
+          dur: 1000;
+          startEvents: step2;"
+    
+        animation__3="
+          property: position;
+          to: 5 -22 -155;
+          dur: 1000;
+          startEvents: step3;"
+    
+         ></a-entity>
+       <!-- camera + cursor -->
+       <a-camera>
+        <a-cursor></a-cursor>
+      </a-camera>
+      <a-sky color="#ECECEC" src="download (1).jpeg"></a-sky>
+      
+    
+      
+    </a-scene>
+  </body>
+</html>

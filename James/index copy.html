@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assests>
+        <a-assest-item id="Wall" src="Wall Corner Column.glb"></a-assest-item>
+      
+      </a-assests>
+
+      <a-entity gltf-model="Wall" scale="1 0.5 1"animation="property : position; to: -50 100 -50; dur: 1000; loop: true; "></a-entity>
+      <a-plane id="Wall" src="Wall Corner Column.glb" position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+       position="0 -50 0" radius="40" src="portrait.jpeg" animation="property : position; to: -100 100 -100; dur: 1000; loop: false; "  ></a-sphere>
+       position="1 0.75 -3" radius="0.5" height="10000000000" color="#FFC65D" animation="property : position; to: -100 100 -100; dur: 1000; loop: false; "></a-cylinder>
+      <a-plane position="-5 -10 -5" rotation="-90 0 0" width="300" height="300" color="white" src="Grass.webp" ></a-plane>
+      <a-sky color="#ECECEC" src="download (1).jpeg"></a-sky>
+       position="0 0 0" rotation="10 20 10" height="100" width="100" color="yellow"></a-triangle>
+       <a-entity gltf-model="Soccer Field.glb" position="0 0 -3" scale="1 1 1" rotation="0 0 0"></a-entity>
+    </a-scene>
+  </body>
+</html>
