@@ -302,52 +302,17 @@
       <!-- Buildings + hanging plants -->
       <a-entity city-builder></a-entity>
 
-      <!-- ===========================================================
-           PLAYER RIG
-           - movement-controls: thumbstick locomotion in VR + WASD on desktop
-           - camera height 0 because the headset adds real-world height
-           - blink-controls on both hands for teleport
-           =========================================================== -->
-      <a-entity id="rig" position="-15 0 0" rotation="0 -90 0"
-                movement-controls="controls: gamepad, keyboard, touch; speed: 0.15; fly: false">
-
-        <a-entity camera look-controls="pointerLockEnabled: false"
-                  position="0 1.6 0"
-                  wasd-controls="enabled: false">
+      <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+        <a-entity id="cameraRig"
+                  movement-controls="constrainToNavMesh: false"
+                  thumbstick-controls
+                  position="0 0 0">
+          <a-entity id="head" camera look-controls position="0 1.6 0">
+              <a-entity
+                cursor="fuse: false; rayOrigin: mouse"
+                raycaster="objects: .clickable">
+              </a-entity>
+          </a-entity>
+          <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+          <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
         </a-entity>
-
-        <!-- Left controller: blink teleport -->
-        <a-entity id="leftHand"
-                  oculus-touch-controls="hand: left"
-                  meta-touch-controls="hand: left"
-                  vive-controls="hand: left"
-                  windows-motion-controls="hand: left"
-                  blink-controls="cameraRig: #rig; teleportOrigin: [camera]; collisionEntities: .teleport-target; button: trigger; curveShootingSpeed: 12">
-        </a-entity>
-
-        <!-- Right controller: blink teleport -->
-        <a-entity id="rightHand"
-                  oculus-touch-controls="hand: right"
-                  meta-touch-controls="hand: right"
-                  vive-controls="hand: right"
-                  windows-motion-controls="hand: right"
-                  blink-controls="cameraRig: #rig; teleportOrigin: [camera]; collisionEntities: .teleport-target; button: trigger; curveShootingSpeed: 12">
-        </a-entity>
-      </a-entity>
-     <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
-      <a-entity id="cameraRig" 
-                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
-                thumbstick-controls
-                position="0 0 0">
-        <a-entity id="head" camera look-controls position="0 1.6 0">
-            <a-entity 
-              cursor="fuse: false; rayOrigin: mouse" 
-              raycaster="objects: .clickable">
-            </a-entity>
-        </a-entity>
-        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
-      </a-entity>
-    </a-scene>
-  </body>
-</html>
