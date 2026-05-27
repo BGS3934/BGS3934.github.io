@@ -5,12 +5,12 @@
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
   <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-  <script src="thumbstick-move.js"></script>
+  <script src="thumbstickmove.js"></script>
 
   <style>
     #timer {
       position: absolute;
-      top: 10px;
+      top: 50px;
       left: 50%;
       transform: translateX(-50%);
       font-family: Arial, sans-serif;
@@ -89,7 +89,7 @@
     <a-entity id="cameraRig"
               movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false"
               thumbstick-controls
-              position="0 0 0">
+              position="0 1 0">
 
       <a-entity id="head" camera look-controls position="0 1.6 0">
 
