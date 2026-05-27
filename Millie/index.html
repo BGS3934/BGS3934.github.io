@@ -10,23 +10,21 @@
     <a-scene>
     <a-assets>
     
-    </a-asset-item id="ground" src="Amazing Krunk-Juttuli 2.glb"></a-asset-item>
-    </a-assest-item id="house1" src="Amazing Krunk-Juttuli.glb"></a-assest-item>
+   
+    <a-asset-item id="house1" src="Amazing Krunk-Juttuli.glb"></a-asset-item>
 
     </a-assets>
-    
 
-        <a-entity gltf-model="#ground" scale="100 100 100" ></a-entity> 
-        <a-entity gltf-model="#house1" scale="50 50 50" position="0 10 0"></a-entity>
+        <a-entity gltf-model="#house1" scale="300 300 300" position="0 -20 -26"></a-entity>
         <a-box src="Tree-housebackground1.png" scale="650 200 150" position="400 0 0" rotation="0 90 0"></a-box>     
         <a-box src="Tree-housebackground1.png" scale="650 200 150" position="-400 0 0" rotation="0 90 0"></a-box>
         <a-box src="Tree-housebackground1.png" scale="650 200 150" position="0 0 400" rotation="0 180 0"></a-box>
         <a-box src="Screenshot 2026-05-20 123006.png" scale="650 200 150" position="0 0 -400" rotation="0 180 0"></a-box>
         <a-box src="Screenshot 2026-05-26 085703.png" scale="250 250 250" position="-5 150 0" rotation="0 90 0"></a-box>
-         <a-box src="Screenshot 2026-05-26 090412.png" scale="250 250 250" position="-5 -150 0" rotation="0 90 0"></a-box
+         <a-box src="Screenshot 2026-05-26 090412.png" scale="250 250 250" position="-5 -150 0" rotation="0 90 0"></a-box>
         
 
-        <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      
       <a-entity id="cameraRig" 
                 movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
                 thumbstick-controls
