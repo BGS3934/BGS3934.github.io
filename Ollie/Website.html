@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+
+    <script>
+      AFRAME.registerComponent('bus-vertical-click', {
+        init: function () {
+          const el = this.el;
+
+          el.addEventListener('click', () => {
+            const pos = el.object3D.position;
+            const originalY = pos.y;
+
+            // DOWN 3m
+            el.setAttribute('animation__down', {
+              property: 'position',
+              to: `${pos.x} ${originalY - 3} ${pos.z}`,
+              dur: 1000,
+              easing: 'easeInOutQuad',
+              startEvents: 'busDown'
+            });
+
+            // UP back to original
+            el.setAttribute('animation__up', {
+              property: 'position',
+              to: `${pos.x} ${originalY} ${pos.z}`,
+              dur: 1000,
+              easing: 'easeInOutQuad',
+              startEvents: 'busUp'
+            });
+
+            el.addEventListener('animationcomplete__down', () => {
+              setTimeout(() => {
+                el.emit('busUp');
+              }, 10000);
+            }, { once: true });
+
+            el.emit('busDown');
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="skyTex" src="sky.jpg">
+      </a-assets>
+      <a-sky src="#skyTex"></a-sky>
+
+      <a-entity id="cameraRig" 
+                movement-controls="constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+          <a-entity 
+            cursor="fuse: false; rayOrigin: mouse" 
+            raycaster="objects: .clickable">
+          </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+      <a-asset-item id="Bus" src="cyberBread.glb"></a-asset-item>
+      <a-asset-item id="City" src="Cartoon_City_Free.glb"></a-asset-item>
+
+      <a-entity gltf-model="#City"
+                scale="0.4 0.4 0.5"
+                position="-2.2 -12 1"
+                rotation="0 0 0">
+      </a-entity>
+
+      <!-- PARENT: route movement, Y fixed at -3 -->
+      <a-entity id="busRoute"
+                scale="0.6 0.6 0.6"
+                position="2.5 -3 -32"
+                rotation="0 -90 0"
+
+                animation__third="property: position; to: 19 -3 -32; dur: 10000000; startEvents: loaded, animationcomplete__11"
+                animation__fouth="property: rotation; to: 0 -180 0; dur: 500; startEvents: animationcomplete__third"
+                animation__5="property: position; to: 19 -3 34.5; dur: 8000; startEvents: animationcomplete__fouth"
+                animation__6="property: rotation; to: 0 -270 0; dur: 500; startEvents: animationcomplete__5"
+                animation__7="property: position; to: -21 -3 34.5; dur: 5000; startEvents: animationcomplete__6"
+                animation__8="property: rotation; to: 0 -1 0; dur: 500; startEvents: animationcomplete__7"
+                animation__9="property: position; to: -21 -3 -32; dur: 8000; startEvents: animationcomplete__8"
+                animation__10="property: rotation; to: 0 -90 0; dur: 500; startEvents: animationcomplete__9"
+                animation__11="property: position; to: 2.5 -3 -32; dur: 5000; startEvents: animationcomplete__10">
+
+        <!-- CHILD: actual bus, vertical click only -->
+        <a-entity gltf-model="#Bus"
+                  class="clickable"
+                  bus-vertical-click
+                  position="0 0 0"
+                  event-set__enter="_event: mouseenter; scale: 0.8 0.8 0.8"
+                  event-set__leave="_event: mouseleave; scale: 0.75 0.75 0.75">
+        </a-entity>
+
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
