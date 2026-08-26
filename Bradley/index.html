@@ -1,0 +1,35 @@
+<html>
+
+  <head>
+
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <a-scene>
+
+      <a-assets>
+
+        <a-asset-item id="city" src="NEW+CİTY.1blend.glb"></a-asset-item>
+
+      </a-assets>
+
+
+
+      <!-- Background color (Sky) -->
+
+      <a-sky color="#87CEEB"></a-sky>
+
+
+
+      <!-- Enlarged City Model (scale adjusted to 5x size) -->
+
+      <a-entity gltf-model="#city" scale="5 5 5" position="0 0 0"></a-entity>
+
+    </a-scene>
+
+  </body>
+
+</html>

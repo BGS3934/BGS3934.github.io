@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+    
+
+
+
+
+</head>
+
+<body>
+
+<a-scene>
+ <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+    <!-- ================================= -->
+    <!-- LIGHTING -->
+    <!-- ================================= -->
+
+    <a-light
+        type="ambient"
+        color="#8da6d4"
+        intensity="0.7">
+    </a-light>
+
+    <a-light
+        type="directional"
+        color="#9bb7ff"
+        intensity="1"
+        position="-50 100 40"
+        cast-shadow="true">
+    </a-light>
+
+
+    <!-- ================================= -->
+    <!-- GROUND -->
+    <!-- ================================= -->
+
+    <a-plane
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="300"
+        height="300"
+        color="#25282d">
+    </a-plane>
+
+
+    <!-- ================================= -->
+    <!-- RIVER -->
+    <!-- ================================= -->
+
+    <a-plane
+        position="0 0.03 -25"
+        rotation="-90 0 0"
+        width="300"
+        height="60"
+        color="#18334d"
+        material="
+            roughness: 0.1;
+            metalness: 0.7;
+            opacity: 0.9;
+        ">
+    </a-plane>
+
+
+    <!-- ================================= -->
+    <!-- CATHEDRAL -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 13 -55"
+        width="75"
+        height="26"
+        depth="38"
+        color="#b6a78d"
+        shadow="cast: true; receive: true">
+    </a-box>
+
+
+    <!-- Cathedral columns -->
+
+    <a-cylinder
+        position="-30 13 -35.5"
+        radius="1.5"
+        height="26"
+        color="#ded0ae">
+    </a-cylinder>
+
+    <a-cylinder
+        position="-15 13 -35.5"
+        radius="1.5"
+        height="26"
+        color="#ded0ae">
+    </a-cylinder>
+
+    <a-cylinder
+        position="0 13 -35.5"
+        radius="1.5"
+        height="26"
+        color="#ded0ae">
+    </a-cylinder>
+
+    <a-cylinder
+        position="15 13 -35.5"
+        radius="1.5"
+        height="26"
+        color="#ded0ae">
+    </a-cylinder>
+
+    <a-cylinder
+        position="30 13 -35.5"
+        radius="1.5"
+        height="26"
+        color="#ded0ae">
+    </a-cylinder>
+
+
+    <!-- ================================= -->
+    <!-- DOME -->
+    <!-- ================================= -->
+
+    <a-sphere
+        position="0 38 -55"
+        radius="25"
+        theta-start="0"
+        theta-length="90"
+        color="#343949">
+    </a-sphere>
+
+    <a-cylinder
+        position="0 27 -55"
+        radius="25"
+        height="4"
+        color="#9e927c">
+    </a-cylinder>
+
+
+    <!-- ================================= -->
+    <!-- CLOCK TOWERS -->
+    <!-- ================================= -->
+
+    <!-- LEFT -->
+
+    <a-box
+        position="-28 28 -55"
+        width="11"
+        height="56"
+        depth="11"
+        color="#a99c84">
+    </a-box>
+
+    <a-cylinder
+        position="-28 56 -49.3"
+        radius="4.5"
+        height="0.4"
+        rotation="90 0 0"
+        color="#ffd34f"
+        light="type: point; intensity: 2; distance: 15; color: #ffd34f">
+    </a-cylinder>
+
+    <a-cone
+        position="-28 66 -55"
+        radius-bottom="9"
+        radius-top="0"
+        height="18"
+        color="#252a36">
+    </a-cone>
+
+
+    <!-- RIGHT -->
+
+    <a-box
+        position="40 28 -55"
+        width="11"
+        height="56"
+        depth="11"
+        color="#a99c84">
+    </a-box>
+
+    <a-cylinder
+        position="40 56 -49.3"
+        radius="4.5"
+        height="0.4"
+        rotation="90 0 0"
+        color="#ffd34f"
+        light="type: point; intensity: 2; distance: 15; color: #ffd34f">
+    </a-cylinder>
+
+    <a-cone
+        position="40 66 -55"
+        radius-bottom="9"
+        radius-top="0"
+        height="18"
+        color="#252a36">
+    </a-cone>
+
+
+    <!-- ================================= -->
+    <!-- CITY BUILDINGS -->
+    <!-- ================================= -->
+
+    <!-- LEFT SIDE -->
+
+    <a-box
+        position="-65 18 -45"
+        width="30"
+        height="36"
+        depth="30"
+        color="#713f36">
+    </a-box>
+
+    <a-box
+        position="-95 27 -35"
+        width="35"
+        height="54"
+        depth="35"
+        color="#5c3733">
+    </a-box>
+
+    <a-box
+        position="-125 23 -30"
+        width="40"
+        height="46"
+        depth="40"
+        color="#6d443b">
+    </a-box>
+
+
+    <!-- RIGHT SIDE -->
+
+    <a-box
+        position="70 23 -45"
+        width="32"
+        height="46"
+        depth="32"
+        color="#77716a">
+    </a-box>
+
+    <a-box
+        position="105 32 -40"
+        width="38"
+        height="64"
+        depth="38"
+        color="#68645e">
+    </a-box>
+
+    <a-box
+        position="140 25 -35"
+        width="45"
+        height="50"
+        depth="45"
+        color="#79746d">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- STREET -->
+    <!-- ================================= -->
+
+    <a-plane
+        position="0 0.05 -5"
+        rotation="-90 0 0"
+        width="300"
+        height="25"
+        color="#202126">
+    </a-plane>
+
+
+    <!-- ================================= -->
+    <!-- STREET LIGHTS -->
+    <!-- ================================= -->
+
+    <a-entity id="streetLights">
+
+        <!-- Light 1 -->
+
+        <a-cylinder
+            position="-120 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="-120 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                decay: 2;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+
+        <!-- Light 2 -->
+
+        <a-cylinder
+            position="-80 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="-80 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+
+        <!-- Light 3 -->
+
+        <a-cylinder
+            position="-40 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="-40 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+
+        <!-- Light 4 -->
+
+        <a-cylinder
+            position="40 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="40 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+
+        <!-- Light 5 -->
+
+        <a-cylinder
+            position="80 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="80 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+
+        <!-- Light 6 -->
+
+        <a-cylinder
+            position="120 4 -5"
+            radius="0.2"
+            height="8"
+            color="#17191c">
+        </a-cylinder>
+
+        <a-sphere
+            position="120 8 -5"
+            radius="0.5"
+            color="#ffd36a"
+            light="
+                type: point;
+                intensity: 3;
+                distance: 25;
+                color: #ffb84d;
+            ">
+        </a-sphere>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- BRIDGE -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 8 -78"
+        width="130"
+        height="5"
+        depth="15"
+        color="#403b38">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- WATER REFLECTIONS -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-80 0.15 -25"
+        width="5"
+        height="0.1"
+        depth="20"
+        color="#ffb84d"
+        opacity="0.35">
+    </a-box>
+
+    <a-box
+        position="-40 0.15 -25"
+        width="5"
+        height="0.1"
+        depth="20"
+        color="#ffb84d"
+        opacity="0.35">
+    </a-box>
+
+    <a-box
+        position="0 0.15 -25"
+        width="6"
+        height="0.1"
+        depth="25"
+        color="#ffb84d"
+        opacity="0.35">
+    </a-box>
+
+    <a-box
+        position="40 0.15 -25"
+        width="5"
+        height="0.1"
+        depth="20"
+        color="#ffb84d"
+        opacity="0.35">
+    </a-box>
+
+    <a-box
+        position="80 0.15 -25"
+        width="5"
+        height="0.1"
+        depth="20"
+        color="#ffb84d"
+        opacity="0.35">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- MOON -->
+    <!-- ================================= -->
+
+    <a-sphere
+        position="80 100 -100"
+        radius="8"
+        color="#fff1ad"
+        light="
+            type: point;
+            intensity: 1;
+            distance: 300;
+            color: #b9caff;
+        ">
+    </a-sphere>
+
+
+
+
+
+</a-scene>
+
+</body>
+</html>
