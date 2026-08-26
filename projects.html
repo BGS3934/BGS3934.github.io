@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year 9 VR Projects</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px;
+      background: #10151d;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(36px, 5vw, 64px);
+      margin: 0 0 12px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #b9c2cf;
+      font-size: clamp(18px, 2vw, 26px);
+      margin: 0 0 32px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .project {
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      border: 3px solid #53677e;
+      border-radius: 22px;
+      background: #202c3a;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: bold;
+      transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .project:hover,
+    .project:focus {
+      background: #30445a;
+      border-color: #9fc7ee;
+      transform: scale(1.03);
+      outline: none;
+    }
+
+    .project:active {
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 900px) {
+      .projects {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 18px;
+      }
+
+      .projects {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .project {
+        min-height: 110px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Year 9 VR Projects</h1>
+  <p class="subtitle">Select a student project</p>
+
+  <main class="projects">
+    <a class="project" href="https://BGS3934.github.io/Abi">Abi</a>
+    <a class="project" href="https://BGS3934.github.io/Bradley">Bradley</a>
+    <a class="project" href="https://BGS3934.github.io/Charlotte">Charlotte</a>
+    <a class="project" href="https://BGS3934.github.io/GraceH">Grace H</a>
+
+    <a class="project" href="https://BGS3934.github.io/GraceL">Grace L</a>
+    <a class="project" href="https://BGS3934.github.io/Isabelle">Isabelle</a>
+    <a class="project" href="https://BGS3934.github.io/Luciana">Luciana</a>
+    <a class="project" href="https://BGS3934.github.io/Madi">Madi</a>
+
+    <a class="project" href="https://BGS3934.github.io/Milla">Milla</a>
+    <a class="project" href="https://BGS3934.github.io/Ollie">Ollie</a>
+    <a class="project" href="https://BGS3934.github.io/Parker">Parker</a>
+    <a class="project" href="https://BGS3934.github.io/William">William</a>
+  </main>
+</body>
+</html>
