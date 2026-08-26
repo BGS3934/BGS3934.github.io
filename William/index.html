@@ -1,0 +1,362 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+       <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+    <script src="countbags.js"></script>
+  
+<script>
+  const counter = new ItemCounter();
+
+  function updateHud() {
+    document.getElementById("hudCounter")
+            .setAttribute("value", "Items: " + counter.getCount());
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll(".clickable");
+
+    items.forEach(item => {
+      item.addEventListener("click", () => {
+        counter.add();
+        updateHud();
+      });
+    });
+  });
+</script>
+
+<script>
+  let timeLeft = 180; // 3 minutes in seconds
+
+  function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    const formatted =
+      (minutes < 10 ? "0" + minutes : minutes) + ":" +
+      (seconds < 10 ? "0" + seconds : seconds);
+
+    document.getElementById("hudTimer")
+            .setAttribute("value", formatted);
+
+    if (timeLeft > 0) {
+      timeLeft--;
+    } else {
+      clearInterval(timer);
+      document.getElementById("hudTimer")
+              .setAttribute("value", "TIME UP!");
+    }
+  }
+
+  const timer = setInterval(updateTimer, 1000);
+</script>
+
+
+  </head>
+
+  <body>
+
+   
+    <a-scene>
+      <a-assets>
+    <a-asset-item id="city" src="city+2.glb">  </a-asset-item>
+    <a-asset-item id="r" src="trah bag grey by Jens Kull - axTuG36RXnN.glb">  </a-asset-item>
+    </a-assets>
+
+<a-entity gltf-model="#city" position="-3.988 -2.8 6.404"> </a-entity>
+<a-entity event-set__click="_event: click; visible: false"></a-entity>
+<a-sky color="#87CEEB"></a-sky>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.517 1.569 -15.243"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-30.380 1.569 -12.812"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-27.011 1.569 -10.441"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-23.644 1.569 -8.219"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-20.255 1.569 -5.031"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-17.118 1.569 -2.614"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-13.744 1.569 -0.291"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-10.412 1.569 2.118"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-7.044 1.569 4.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-3.661 1.569 7.021"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="0.118 1.569 -14.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="3.557 1.569 -12.311"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="6.944 1.569 -9.882"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="10.318 1.569 -7.441"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="13.772 1.569 -5.118"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="17.144 1.569 -2.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="20.557 1.569 -0.311"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="23.944 1.569 2.118"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="27.318 1.569 4.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="30.772 1.569 7.021"></a-entity>
+
+<!-- 20 so far — continuing -->
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.441 1.569 10.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.118 1.569 13.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-25.744 1.569 15.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-22.318 1.569 18.021"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-18.944 1.569 20.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-15.557 1.569 23.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.118 1.569 25.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-8.744 1.569 28.021"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-5.318 1.569 30.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-1.944 1.569 33.144"></a-entity>
+
+<!-- 30 -->
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="2.441 1.569 10.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="5.772 1.569 12.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="9.118 1.569 15.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="12.557 1.569 17.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="15.944 1.569 20.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="19.318 1.569 22.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="22.772 1.569 25.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="26.144 1.569 27.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="29.557 1.569 30.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="32.944 1.569 32.744"></a-entity>
+
+<!-- 40 -->
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 10.441"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.772 1.569 12.918"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="42.144 1.569 15.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="38.557 1.569 18.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="35.118 1.569 20.557"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.441 1.569 -11.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.118 1.569 -9.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-25.744 1.569 -6.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-22.318 1.569 -4.021"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-18.944 1.569 -1.557"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-15.557 1.569 0.918"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.118 1.569 3.441"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-8.744 1.569 5.918"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-5.318 1.569 8.441"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-1.944 1.569 10.918"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="2.441 1.569 13.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="5.772 1.569 15.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="9.118 1.569 18.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="12.557 1.569 20.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="15.944 1.569 23.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="19.318 1.569 25.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="22.772 1.569 28.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="26.144 1.569 30.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="29.557 1.569 33.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="32.944 1.569 31.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 29.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.772 1.569 26.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="42.144 1.569 24.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="38.557 1.569 21.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="35.118 1.569 19.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.517 1.569 17.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-30.380 1.569 15.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-27.011 1.569 12.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-23.644 1.569 10.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-20.255 1.569 7.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-17.118 1.569 5.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-13.744 1.569 2.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-10.412 1.569 0.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-7.044 1.569 -2.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-3.661 1.569 -4.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="0.557 1.569 -7.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="3.944 1.569 -5.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="7.318 1.569 -2.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="10.772 1.569 -0.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="14.144 1.569 2.218"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="17.557 1.569 4.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="20.944 1.569 7.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="24.318 1.569 9.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="27.772 1.569 12.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="31.144 1.569 14.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="34.557 1.569 17.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="37.944 1.569 19.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="41.318 1.569 22.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.744 1.569 24.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 27.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.318 1.569 29.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.944 1.569 27.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-26.557 1.569 24.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-23.144 1.569 22.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-19.772 1.569 19.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-16.318 1.569 17.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.944 1.569 14.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-9.557 1.569 12.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-6.144 1.569 9.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-2.772 1.569 7.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="0.557 1.569 4.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="3.944 1.569 2.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="7.318 1.569 -0.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="10.772 1.569 -2.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="14.144 1.569 -5.144"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="17.557 1.569 -7.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="20.944 1.569 -10.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="24.318 1.569 -12.557"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="27.772 1.569 -15.144"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="31.144 1.569 -12.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="34.557 1.569 -10.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="37.944 1.569 -7.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="41.318 1.569 -5.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.744 1.569 -2.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 -0.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.557 1.569 -13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.144 1.569 -11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-25.772 1.569 -8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-22.318 1.569 -6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-18.944 1.569 -3.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-15.557 1.569 -1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.118 1.569 1.244"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-8.744 1.569 3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-5.318 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-1.944 1.569 8.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="2.441 1.569 11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="5.772 1.569 13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="9.118 1.569 16.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="12.557 1.569 18.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="15.944 1.569 21.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="19.318 1.569 23.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="22.772 1.569 26.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="26.144 1.569 28.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="29.557 1.569 31.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="32.944 1.569 33.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 31.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.772 1.569 28.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="42.144 1.569 26.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="38.557 1.569 23.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="35.118 1.569 21.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.517 1.569 18.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-30.380 1.569 16.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-27.011 1.569 13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-23.644 1.569 11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-20.255 1.569 8.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-17.118 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-13.744 1.569 3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-10.412 1.569 1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-7.044 1.569 -1.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-3.661 1.569 -3.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="0.557 1.569 -6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="3.944 1.569 -8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="7.318 1.569 -11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="10.772 1.569 -13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="14.144 1.569 -11.218"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="17.557 1.569 -8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="20.944 1.569 -6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="24.318 1.569 -3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="27.772 1.569 -1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="31.144 1.569 1.244"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="34.557 1.569 3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="37.944 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="41.318 1.569 8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.744 1.569 11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 13.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.318 1.569 16.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.944 1.569 18.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-26.557 1.569 21.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-23.144 1.569 23.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-19.772 1.569 26.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-16.318 1.569 28.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.944 1.569 31.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-9.557 1.569 33.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-6.144 1.569 31.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-2.772 1.569 28.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="0.557 1.569 26.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="3.944 1.569 23.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="7.318 1.569 21.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="10.772 1.569 18.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="14.144 1.569 16.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="17.557 1.569 13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="20.944 1.569 11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="24.318 1.569 8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="27.772 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="31.144 1.569 3.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="34.557 1.569 1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="37.944 1.569 -1.244"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="41.318 1.569 -3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="39.744 1.569 -6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="36.318 1.569 -8.744"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-32.557 1.569 -11.218"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-29.144 1.569 -13.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-25.772 1.569 -11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-22.318 1.569 -8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-18.944 1.569 -6.318"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-15.557 1.569 -3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-12.118 1.569 -1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-8.744 1.569 1.244"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-5.318 1.569 3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="-1.944 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="2.441 1.569 8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="5.772 1.569 6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="9.118 1.569 3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="12.557 1.569 1.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="15.944 1.569 -1.244"></a-entity>
+
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="19.318 1.569 -3.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="22.772 1.569 -6.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="26.144 1.569 -8.744"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="29.557 1.569 -11.318"></a-entity>
+<a-entity class="clickable" event-set__click="_event: click; visible:false" gltf-model="#r" position="32.944 1.569 -13.744"></a-entity>
+
+
+ <a-entity id="cameraRig" 
+                movement-controls="constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+                
+
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              
+              raycaster="objects: .clickable">
+            </a-entity>
+      <a-text id="hudCounter"
+        value="Items: 0"
+        position="-2.9 1.5 -2"
+        color="black"
+        width="6">
+</a-text>
+<a-text id="hudTimer"
+        value="03:00"
+        position="2.2 1.5 -2"
+        color="black"
+        width="6">
+</a-text>
+
+        </a-entity>
+        
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+
+
+
+      </a-scene>
+  </body>
+</html> 
