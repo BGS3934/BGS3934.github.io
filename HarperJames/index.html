@@ -1,0 +1,156 @@
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script>
+    // Walk on floors, get blocked by walls. Shift = run, Space = jump.
+    //   floors: surfaces you can stand on (town + urban park floor)
+    //   walls:  models that block you (the urban park)
+    AFRAME.registerComponent('ground-follow', {
+      schema: {
+        floors: {type: 'selectorAll'},
+        walls:  {type: 'selectorAll'},
+        eye:    {default: 1.6},   // eye height
+        radius: {default: 0.5},   // how close you can get to a wall
+        step:   {default: 0.7},   // tallest step/curb you can walk up
+        walk:   {default: 40},
+        run:    {default: 90}
+      },
+      init: function () {
+        this.raycaster = new THREE.Raycaster();
+        this.down = new THREE.Vector3(0, -1, 0);
+        this.origin = new THREE.Vector3();
+        this.dir = new THREE.Vector3();
+        this.groundY = null;
+        this.jump = 0;
+        this.vy = 0;
+        this.last = new Map();      // last position of each model (to ride along with it)
+        this.prepared = new Set();
+        this.standingOn = null;
+
+        window.addEventListener('keydown', e => {
+          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            this.el.setAttribute('wasd-controls', 'acceleration', this.data.run);
+          }
+          if (e.code === 'Space' && this.jump === 0) this.vy = 4.5;
+        });
+        window.addEventListener('keyup', e => {
+          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            this.el.setAttribute('wasd-controls', 'acceleration', this.data.walk);
+          }
+        });
+      },
+
+      // Make walls detectable from the inside too
+      prepare: function (el) {
+        if (this.prepared.has(el)) return;
+        el.getObject3D('mesh').traverse(o => {
+          if (!o.material) return;
+          (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => {
+            m.side = THREE.DoubleSide;
+            m.needsUpdate = true;
+          });
+        });
+        this.prepared.add(el);
+      },
+
+      tick: function (time, delta) {
+        const d = this.data;
+        const floors = Array.from(d.floors || []);
+        const walls  = Array.from(d.walls || []);
+        const all = floors.concat(walls);
+        if (!floors.length || !all.every(el => el.getObject3D('mesh'))) return; // still loading
+        walls.forEach(el => this.prepare(el));
+
+        const dt = Math.min(delta, 50) / 1000;
+        const pos = this.el.object3D.position;
+
+        // How far each model moved this frame
+        const moved = new Map();
+        all.forEach(el => {
+          const p = el.object3D.position;
+          const last = this.last.get(el);
+          moved.set(el, last ? p.clone().sub(last) : new THREE.Vector3());
+          this.last.set(el, p.clone());
+        });
+
+        // Ride along if standing on a moving model (e.g. inside the train)
+        if (this.standingOn && moved.has(this.standingOn)) {
+          pos.add(moved.get(this.standingOn));
+        }
+
+        // ---- Floor: cast a ray down and find what you're standing on ----
+        this.raycaster.far = 400;
+        const first = this.groundY === null;
+        this.origin.set(pos.x, first ? 200 : this.groundY + d.step, pos.z);
+        this.raycaster.set(this.origin, this.down);
+        const candidates = first ? [floors[0]] : floors;   // first frame: town only
+        let best = null, bestEl = null;
+        candidates.forEach(el => {
+          const hits = this.raycaster.intersectObject(el.getObject3D('mesh'), true);
+          if (hits.length && (best === null || hits[0].point.y > best)) {
+            best = hits[0].point.y;
+            bestEl = el;
+          }
+        });
+        if (best !== null) {
+          this.groundY = first ? best : this.groundY + (best - this.groundY) * 0.3;
+          this.standingOn = bestEl;
+        }
+        if (this.groundY === null) return;
+
+        // ---- Walls: 8 rays around you push you out of solid things ----
+        this.raycaster.far = d.radius;
+        for (let i = 0; i < 8; i++) {
+          const a = i * Math.PI / 4;
+          this.dir.set(Math.sin(a), 0, Math.cos(a));
+          this.origin.set(pos.x, this.groundY + 0.9, pos.z);
+          this.raycaster.set(this.origin, this.dir);
+          walls.forEach(el => {
+            const hits = this.raycaster.intersectObject(el.getObject3D('mesh'), true);
+            if (hits.length) {
+              const push = d.radius - hits[0].distance;
+              pos.x -= this.dir.x * push;
+              pos.z -= this.dir.z * push;
+            }
+          });
+        }
+
+        // ---- Jump and height ----
+        this.vy -= 12 * dt;
+        this.jump = Math.max(0, this.jump + this.vy * dt);
+        if (this.jump === 0 && this.vy < 0) this.vy = 0;
+        pos.y = this.groundY + d.eye + this.jump;
+      }
+    });
+  </script>
+</head>
+<body>
+  <a-scene>
+    <a-assets>
+      <a-asset-item id="house" src="BigBuilding.glb"></a-asset-item>
+      <a-asset-item id="city" src="City Scene by J-Toastie - xbGN3wvccv.glb"></a-asset-item>
+      <a-asset-item id="urbanpark" src="High Speed.glb"></a-asset-item>
+      <a-asset-item id="trainstation" src="train station.glb"></a-asset-item>
+      <a-asset-item id="traintracks" src="real train tracks.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- The town: you can stand on it (keep this one first) -->
+    <a-entity id="citymodel" class="floor" gltf-model="#city"></a-entity>
+
+    <a-entity gltf-model="#trainstation" position="0 1 10" scale="1 1 1"></a-entity>
+
+    <!-- THE URBAN PARK: solid walls + a floor you can stand on, and it rides with you inside -->
+    <a-entity id="urbanparkmodel" class="floor solid" gltf-model="#urbanpark" position="15 1 10" scale="1 1 1"
+              animation="property: position; from: 15 0 10; to: -12 0 10;
+                         dur: 7200; easing: linear; loop: true"></a-entity>
+
+    <a-entity gltf-model="#traintracks" position="-9.680 -0.053 10.038" rotation="0 90 0" scale="1 1 1"></a-entity>
+
+    <!-- YOU: spawn at x=0, z=0 -->
+    <a-entity id="player" position="0 1.6 0"
+              camera look-controls
+              wasd-controls="acceleration: 40"
+              ground-follow="floors: .floor; walls: .solid"></a-entity>
+  </a-scene>
+</body>
+</html>
