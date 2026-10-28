@@ -1,0 +1,71 @@
+<html>
+<head>
+<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script> 
+<script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+</head>
+
+<body>
+      
+   
+<a-scene>
+   <a-assets>
+    <a-asset-item id="house" src="House.glb"></a-asset-item>
+    <a-asset-item id="boy" src="boy.glb"></a-asset-item>
+    <a-asset-item id="girl" src="girl.glb"></a-asset-item>
+    <a-asset-item id="car" src="CAR Model.glb"></a-asset-item>
+    <a-asset-item id="1" src="Fabulous Krunk.glb"></a-asset-item>
+    <a-asset-item id="2" src="2.glb"></a-asset-item>
+    <a-asset-item id="3" src="3.glb"></a-asset-item>
+    <a-asset-item id="4" src="4.glb"></a-asset-item>
+    <a-asset-item id="5" src="5.glb"></a-asset-item>
+
+
+ </a-assets>
+
+      <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="250 0 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+<a-entity gltf-model="#girl" position="37 -20 -27" rotation="0 90 0" scale="0.5 0.5 0.5"></a-entity>
+<a-entity gltf-model="#boy" position="57 -20 17" rotation="0 90 0" scale="0.5 0.5 0.5"></a-entity>
+<a-entity gltf-model="#car" position="110 -18.5 -400" scale="0.1 0.1 0.1" animation=
+"property: position;
+to: 110 -18.5 400;
+dur: 7000;
+loop:true;"
+></a-entity>
+<a-entity gltf-model="#house" position="20 -20 -145"></a-entity>
+<a-entity gltf-model="#house" position="20 -20 -270"></a-entity>
+<a-entity gltf-model="#house" position="20 -20 -15"></a-entity>
+<a-entity gltf-model="#house" position="20 -20 110"></a-entity>
+<a-entity gltf-model="#house" position="20 -20 240"></a-entity>
+<a-entity gltf-model="#1" position="42.86 26.20 241.20" rotation="0 90 0"></a-entity>
+<a-entity gltf-model="#2" position="42.86 26.20 111.20" rotation="0 90 0"></a-entity>
+<a-entity gltf-model="#3" position="42.86 26.20 -14.20" rotation="0 90 0"></a-entity>
+<a-entity gltf-model="#4" position="42.86 26.20 -144.20" rotation="0 90 0"></a-entity>
+<a-entity gltf-model="#5" position="42.86 26.20 -269.20" rotation="0 90 0"></a-entity>
+
+<a-plane src="grass.jpg" position="0 -20 0" width="1000" height="1000" rotation="270 0 0"></a-plane>
+
+<a-sky src="sky.jpg"></a-sky>
+ 
+<a-plane color="black" rotation="270 0 0" height="1000" width="50" position="100 -19 0"></a-plane>
+
+
+</a-scene>
+
+</body>
+
+</html>

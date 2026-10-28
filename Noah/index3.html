@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+</head>
+
+<body>
+<a-scene>
+    <a-assests>
+<a-assest-item id="police car" src="Police Car.glb"></a-assest-item>
+<a-assest-item id="matt" src="matt.glb"></b-assest-item>
+      <a-assest-item id="girl" src="girl.glb"></b-assest-item>
+    </a-assests>
+
+
+<a-entity gltf-model="#police car" position="26 0 -1" rotation="0 -92 -1" animation="
+property:position;
+to:40 0 -1;
+dir:alternate;
+dur:2000;
+loop:true;
+"></a-entity>
+<a-entity gltf-model="#matt" position="25 0 0" rotation="0 40 0" animation="
+property:position;
+to: 26.75 0 0;
+dir: alternate;
+dur: 2000;
+loop: true;
+"></a-entity>
+<a-entity gltf-model="#girl" position="27 0 0" animation="
+property:rotation;
+to:90 0 0;
+dir:alternate;
+dur:3000;
+loop:true;
+"></a-entity>
+
+<a-sky src="white.jpg"></a-sky>
+<a-sphere src="king.jpg" scale="2 2 2" ></a-sphere>
+</a-scene>
+</body>
+
+</html>
