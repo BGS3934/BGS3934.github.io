@@ -1,17 +1,72 @@
-
 <html>
 <head>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <script src="thumbstick-move.js"></script>
-      <script>
+  <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  <script>
+    // Left thumbstick = move (relative to where you're looking). Right A button = jump.
+    AFRAME.registerComponent('vr-move', {
+      schema: {
+        speed:    {default: 2.5},    // meters per second
+        deadzone: {default: 0.15}
+      },
+      init: function () {
+        this.fwd = new THREE.Vector3();
+        this.right = new THREE.Vector3();
+        this.up = new THREE.Vector3(0, 1, 0);
+        this.jumpHeld = false;
+      },
+      tick: function (time, delta) {
+        const xr = this.el.sceneEl.renderer.xr;
+        const session = xr && xr.getSession && xr.getSession();
+        if (!session) return;                         // not in VR
+        const dt = Math.min(delta, 50) / 1000;
+        let ax = 0, ay = 0, jumpPressed = false;
+
+        for (const src of session.inputSources) {
+          const gp = src.gamepad;
+          if (!gp) continue;
+          if (src.handedness === 'left') {
+            // Quest-style controllers: thumbstick is axes[2], axes[3]
+            ax = gp.axes.length > 3 ? gp.axes[2] : gp.axes[0];
+            ay = gp.axes.length > 3 ? gp.axes[3] : gp.axes[1];
+          }
+          if (src.handedness === 'right' && gp.buttons[4]) {
+            jumpPressed = gp.buttons[4].pressed;      // A button
+          }
+        }
+
+        // jump (once per press)
+        if (jumpPressed && !this.jumpHeld) {
+          const gf = this.el.components['ground-follow'];
+          if (gf) gf.jumpNow();
+        }
+        this.jumpHeld = jumpPressed;
+
+        if (Math.abs(ax) < this.data.deadzone) ax = 0;
+        if (Math.abs(ay) < this.data.deadzone) ay = 0;
+        if (!ax && !ay) return;
+
+        // Direction you're facing, flattened to the ground
+        const cam = this.el.sceneEl.camera;
+        cam.getWorldDirection(this.fwd);
+        this.fwd.y = 0;
+        if (this.fwd.lengthSq() < 0.0001) return;
+        this.fwd.normalize();
+        this.right.crossVectors(this.fwd, this.up).normalize();
+
+        const pos = this.el.object3D.position;
+        pos.x += (this.fwd.x * -ay + this.right.x * ax) * this.data.speed * dt;
+        pos.z += (this.fwd.z * -ay + this.right.z * ax) * this.data.speed * dt;
+      }
+    });
+
     // Lowers (or raises) everything inside it so the ground at x,z sits at height 0.
     AFRAME.registerComponent('drop-to-ground', {
       schema: {
-        target: {type: 'selector'},   // the town model to measure
-        x: {default: 0},              // where to measure (your spawn x)
-        z: {default: 0}               // where to measure (your spawn z)
+        target: {type: 'selector'},
+        x: {default: 0},
+        z: {default: 0}
       },
       init: function () {
         this.done = false;
@@ -20,31 +75,29 @@
       tick: function () {
         if (this.done) return;
         const mesh = this.data.target && this.data.target.getObject3D('mesh');
-        if (!mesh) return;                       // still loading
+        if (!mesh) return;
         this.el.object3D.updateMatrixWorld(true);
         this.ray.set(new THREE.Vector3(this.data.x, 500, this.data.z), new THREE.Vector3(0, -1, 0));
         this.ray.far = 1000;
         const hits = this.ray.intersectObject(mesh, true);
         if (hits.length) {
-          this.el.object3D.position.y -= hits[0].point.y;   // move the ground to y = 0
+          this.el.object3D.position.y -= hits[0].point.y;
           this.el.object3D.updateMatrixWorld(true);
         }
         this.done = true;
       }
     });
 
-    // Walk on floors, get blocked by walls. Shift = run, Space = jump.
-    //   floors: surfaces you can stand on (town + urban park floor)
-    //   walls:  models that block you (the urban park)
+    // Walk on floors, get blocked by walls. Shift = run, Space = jump (keyboard).
     AFRAME.registerComponent('ground-follow', {
       schema: {
         floors: {type: 'selectorAll'},
         walls:  {type: 'selectorAll'},
-        eye:    {default: 0},   // eye height
+        eye:    {default: 0},     // eye height
         radius: {default: 0.5},   // how close you can get to a wall
         step:   {default: 0.7},   // tallest step/curb you can walk up
-        walk:   {default: 40},
-        run:    {default: 90}
+        walk:   {default: 0.3},   // movement-controls speed while walking
+        run:    {default: 0.7}    // movement-controls speed while running (Shift)
       },
       init: function () {
         this.raycaster = new THREE.Raycaster();
@@ -54,24 +107,30 @@
         this.groundY = null;
         this.jump = 0;
         this.vy = 0;
-        this.last = new Map();      // last position of each model (to ride along with it)
+        this.last = new Map();
         this.prepared = new Set();
         this.standingOn = null;
 
-        window.addEventListener('keydown', e => {
-          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-            this.el.setAttribute('wasd-controls', 'acceleration', this.data.run);
+        // Only change speed if the rig already has movement-controls
+        // (the old code added wasd-controls here, which fought your controls)
+        const setSpeed = v => {
+          if (this.el.components['movement-controls']) {
+            this.el.setAttribute('movement-controls', 'speed', v);
           }
-          if (e.code === 'Space' && this.jump === 0) this.vy = 4.5;
+        };
+        window.addEventListener('keydown', e => {
+          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') setSpeed(this.data.run);
+          if (e.code === 'Space') this.jumpNow();
         });
         window.addEventListener('keyup', e => {
-          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-            this.el.setAttribute('wasd-controls', 'acceleration', this.data.walk);
-          }
+          if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') setSpeed(this.data.walk);
         });
       },
 
-      // Make walls detectable from the inside too
+      jumpNow: function () {
+        if (this.jump === 0) this.vy = 4.5;
+      },
+
       prepare: function (el) {
         if (this.prepared.has(el)) return;
         el.getObject3D('mesh').traverse(o => {
@@ -88,14 +147,13 @@
         const d = this.data;
         const floors = Array.from(d.floors || []);
         const walls  = Array.from(d.walls || []);
-        const all = floors.concat(walls);
-        if (!floors.length || !all.every(el => el.getObject3D('mesh'))) return; // still loading
+        const all = floors.concat(walls.filter(w => floors.indexOf(w) === -1));
+        if (!floors.length || !all.every(el => el.getObject3D('mesh'))) return;
         walls.forEach(el => this.prepare(el));
 
         const dt = Math.min(delta, 50) / 1000;
         const pos = this.el.object3D.position;
 
-        // How far each model moved this frame
         const moved = new Map();
         all.forEach(el => {
           const p = el.object3D.position;
@@ -104,17 +162,16 @@
           this.last.set(el, p.clone());
         });
 
-        // Ride along if standing on a moving model (e.g. inside the train)
         if (this.standingOn && moved.has(this.standingOn)) {
           pos.add(moved.get(this.standingOn));
         }
 
-        // ---- Floor: cast a ray down and find what you're standing on ----
+        // ---- Floor ----
         this.raycaster.far = 400;
         const first = this.groundY === null;
         this.origin.set(pos.x, first ? 200 : this.groundY + d.step, pos.z);
         this.raycaster.set(this.origin, this.down);
-        const candidates = first ? [floors[0]] : floors;   // first frame: town only
+        const candidates = first ? [floors[0]] : floors;
         let best = null, bestEl = null;
         candidates.forEach(el => {
           const hits = this.raycaster.intersectObject(el.getObject3D('mesh'), true);
@@ -129,7 +186,7 @@
         }
         if (this.groundY === null) return;
 
-        // ---- Walls: 8 rays around you push you out of solid things ----
+        // ---- Walls ----
         this.raycaster.far = d.radius;
         for (let i = 0; i < 8; i++) {
           const a = i * Math.PI / 4;
@@ -154,8 +211,6 @@
       }
     });
   </script>
- 
-
 </head>
 <body>
   <a-scene>
@@ -166,26 +221,27 @@
       <a-asset-item id="urbanpark" src="High Speed.glb"></a-asset-item>
       <a-asset-item id="trainstation" src="train station.glb"></a-asset-item>
       <a-asset-item id="traintracks" src="real train tracks.glb"></a-asset-item>
-    </a-assets>  
+    </a-assets>
 
-          <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
-      <a-entity id="cameraRig" 
-                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
-                thumbstick-controls
-                position="0 -60 7"
-                ground-follow="floors: .floor; walls: .solid">
-        <a-entity id="head" camera look-controls position="0 0.6 0">
-            <a-entity 
-              cursor="fuse: false; rayOrigin: mouse" 
-              raycaster="objects: .clickable">
-            </a-entity>
+    <!-- Camera rig: keyboard/touch via movement-controls, VR stick via vr-move -->
+    <a-entity id="cameraRig"
+              movement-controls="controls: keyboard, touch; speed: 0.3; constrainToNavMesh: false"
+              vr-move="speed: 2.5"
+              position="0 -60 7"
+              ground-follow="floors: .floor; walls: .solid">
+      <a-entity id="head" camera look-controls position="0 0.6 0">
+        <a-entity
+          cursor="fuse: false; rayOrigin: mouse"
+          raycaster="objects: .clickable">
         </a-entity>
-        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
       </a-entity>
+      <a-entity id="leftHand" hand-controls="hand: left"
+                teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+      <a-entity id="rightHand" hand-controls="hand: right"
+                laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+    </a-entity>
 
-
-    <!-- The town: you can stand on it AND it's solid now (keep this one first) -->
+    <!-- The town: you can stand on it AND it's solid (keep this one first) -->
     <a-entity id="citymodel" class="floor solid" gltf-model="#city"></a-entity>
 
     <a-entity gltf-model="#trainstation" position="0 1 10" scale="1 1 1"></a-entity>
@@ -196,9 +252,6 @@
                          dur: 7200; easing: linear; loop: true"></a-entity>
 
     <a-entity gltf-model="#traintracks" position="-9.680 -0.053 10.038" rotation="0 90 0" scale="1 1 1"></a-entity>
-
-
-
 
   </a-scene>
 </body>
