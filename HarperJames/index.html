@@ -1,7 +1,38 @@
+
 <html>
 <head>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-  <script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+      <script>
+    // Lowers (or raises) everything inside it so the ground at x,z sits at height 0.
+    AFRAME.registerComponent('drop-to-ground', {
+      schema: {
+        target: {type: 'selector'},   // the town model to measure
+        x: {default: 0},              // where to measure (your spawn x)
+        z: {default: 0}               // where to measure (your spawn z)
+      },
+      init: function () {
+        this.done = false;
+        this.ray = new THREE.Raycaster();
+      },
+      tick: function () {
+        if (this.done) return;
+        const mesh = this.data.target && this.data.target.getObject3D('mesh');
+        if (!mesh) return;                       // still loading
+        this.el.object3D.updateMatrixWorld(true);
+        this.ray.set(new THREE.Vector3(this.data.x, 500, this.data.z), new THREE.Vector3(0, -1, 0));
+        this.ray.far = 1000;
+        const hits = this.ray.intersectObject(mesh, true);
+        if (hits.length) {
+          this.el.object3D.position.y -= hits[0].point.y;   // move the ground to y = 0
+          this.el.object3D.updateMatrixWorld(true);
+        }
+        this.done = true;
+      }
+    });
+
     // Walk on floors, get blocked by walls. Shift = run, Space = jump.
     //   floors: surfaces you can stand on (town + urban park floor)
     //   walls:  models that block you (the urban park)
@@ -9,7 +40,7 @@
       schema: {
         floors: {type: 'selectorAll'},
         walls:  {type: 'selectorAll'},
-        eye:    {default: 1.6},   // eye height
+        eye:    {default: 0},   // eye height
         radius: {default: 0.5},   // how close you can get to a wall
         step:   {default: 0.7},   // tallest step/curb you can walk up
         walk:   {default: 40},
@@ -123,19 +154,39 @@
       }
     });
   </script>
+ 
+
 </head>
 <body>
   <a-scene>
+
     <a-assets>
       <a-asset-item id="house" src="BigBuilding.glb"></a-asset-item>
       <a-asset-item id="city" src="City Scene by J-Toastie - xbGN3wvccv.glb"></a-asset-item>
       <a-asset-item id="urbanpark" src="High Speed.glb"></a-asset-item>
       <a-asset-item id="trainstation" src="train station.glb"></a-asset-item>
       <a-asset-item id="traintracks" src="real train tracks.glb"></a-asset-item>
-    </a-assets>
+    </a-assets>  
 
-    <!-- The town: you can stand on it (keep this one first) -->
-    <a-entity id="citymodel" class="floor" gltf-model="#city"></a-entity>
+          <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 -60 7"
+                ground-follow="floors: .floor; walls: .solid">
+        <a-entity id="head" camera look-controls position="0 0.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+
+    <!-- The town: you can stand on it AND it's solid now (keep this one first) -->
+    <a-entity id="citymodel" class="floor solid" gltf-model="#city"></a-entity>
 
     <a-entity gltf-model="#trainstation" position="0 1 10" scale="1 1 1"></a-entity>
 
@@ -146,11 +197,9 @@
 
     <a-entity gltf-model="#traintracks" position="-9.680 -0.053 10.038" rotation="0 90 0" scale="1 1 1"></a-entity>
 
-    <!-- YOU: spawn at x=0, z=0 -->
-    <a-entity id="player" position="0 1.6 0"
-              camera look-controls
-              wasd-controls="acceleration: 40"
-              ground-follow="floors: .floor; walls: .solid"></a-entity>
+
+
+
   </a-scene>
 </body>
 </html>
