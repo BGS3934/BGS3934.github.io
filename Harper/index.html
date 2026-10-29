@@ -4,7 +4,7 @@
       <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
     <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
-  <!-- <script>
+  <script>
     // Lowers (or raises) everything inside it so the ground at x,z sits at height 0.
     AFRAME.registerComponent('drop-to-ground', {
       schema: {
@@ -152,7 +152,7 @@
         pos.y = this.groundY + d.eye + this.jump;
       }
     });
-  </script> -->
+  </script>
 </head>
 <body>
   <a-scene>
@@ -182,7 +182,7 @@
 
 
       <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
-      <a-entity id="cameraRig" 
+      <a-entity id="player" 
                 movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
                 thumbstick-controls
                 position="0 -1 7"
