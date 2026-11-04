@@ -1,0 +1,27 @@
+<html>
+   <head>
+<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+
+   </head>
+   <body>
+     <a-scene>
+       <a-assets>
+       <a-asset-item id="spidey" src="Spider.glb"></a-asset-item>
+       <a-asset-item id="Wave 1" src="WAve kinda.glb"></a-asset-item>
+  
+       </a-assets> 
+    <a-entity gltf-model="Wave 1"></a-entity>   
+    <a-entity gltf-model="#spidey" scale="5 5 5" position="0 5 8"animation ="property:position; to: 0 0 8; dur:4000; property:rotation; to: 0 0 360; dur:4000; loop: true;"> </a-entity>
+    <a-cylinder color=#FFA500 position="0.022 -0.22 -0.165" rotation="90 0 0" scale="1 5 1"></a-cylinder>
+    <a-torus color=#FF00FF> </a-torus>
+    <a-torus-knot color="teal" position="0 0 -1"> </a-torus-knot>
+    <a-cone color="black" position="-0.040 1.532 0"></a-cone>
+    <a-torus-knot color="teal" position="0 0 1"></a-torus-knot>
+    <a-sphere color="black" position="0 3 0" scale="1 5 1"> </a-sphere>
+    <a-sky src="Paxy boy.jpg"></a-sky>
+    </a-scene>
+
+
+   </body> 
+</html>
