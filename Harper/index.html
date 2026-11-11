@@ -162,14 +162,17 @@
       <a-asset-item id="urbanpark" src="High Speed.glb"></a-asset-item>
       <a-asset-item id="trainstation" src="train station.glb"></a-asset-item>
       <a-asset-item id="traintracks" src="real train tracks.glb"></a-asset-item>
+   <a-asset-item id="sign" src="Wooden Sign by iPoly3D - mxyDWLsKer.glb"></a-asset-item>
     </a-assets>
+  
 
     <!-- EVERYTHING in the world lives in this group, so it all gets lowered together -->
     <a-entity id="world" drop-to-ground="target: #citymodel; x: 0; z: 0">
 
       <!-- The town: you can stand on it (keep this one first) -->
       <a-entity id="citymodel" class="floor" gltf-model="#city"></a-entity>
-
+      <a-entity id="Wooden Sign by iPoly3D - mxyDWLsKer.glb" rotation= "0 90 0"class="floor" gltf-model="#sign" position="-10.183 -0.605 1.802"></a-entity>
+       
       <a-entity gltf-model="#trainstation" position="0 1 10" scale="1 1 1"></a-entity>
 
       <!-- THE URBAN PARK: solid walls + a floor you can stand on, and it rides with you inside -->
@@ -198,10 +201,12 @@
       </a-entity>
       
 <a-sky src="sky.jpg"></a-sky>
-
+<a-text position= "-10.139 1.140 2.448"value="HaveItLand" rotation="0 90 0" scale="1.200 4.500 1"></a-text>
 <a-text position="2.361 0.831 7.958" rotation="0 180.000 0"value="Green Have It Station
 This is the 3rd generation of eletric trains and it is a quick efficient method as transport if you do not own an electric car meaning that its not nessersay to own a car"></a-text>
 <a-text position="2.687 0.578 -1.668 "value="Have it!"></a-text>
+<a-text position="-11.410 1.194 -5.989 "rotation="0 90.000 0"value="The city has older style buildings because these are the same buildings as today and devolopers saved on materials and just made the houses electric ultimately having a better effect on the environment"></a-text>
+<a-text position= "-5.414 0.609 2.106"value="All vehicles have been successfully converted to electricity"></a-text>
 
 </a-scene>
 

@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <!--Imports-->
+    <script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene> 
+        <!-- Camera rig and vr stuff -->
+               <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 0 0">
+        
+                <a-entity id="head" camera look-controls position="0 1.6 0">
+                    <a-entity 
+                        cursor="fuse: false; rayOrigin: mouse" 
+                        raycaster="objects: .clickable">
+                    </a-entity>
+                </a-entity>
+                <a-entity id="leftHand" hand-controls="hand: left" hand-tracking-grab-controls="hand: left thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+                <a-entity id="rightHand" hand-controls="hand: right" hand-tracking-grab-controls="hand: right thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+
+                </a-entity>
+
+
+        </a-entity>
+
+         <a-assets>
+
+            <a-asset-item id="Building" src="world.glb"></a-asset-item>
+            <a-asset-item id="Soda_can" src="Crushed Soda Can by Thermo_DynAmics - F9RZE7EnWl.glb"></a-asset-item>
+            <a-asset-item id="Plastic_bottle" src="Bottle (Plastic) by Zoe XR - di8BdLR1M8S.glb"></a-asset-item>
+            <a-asset-item id="Roads" src="Road Bits.glb"></a-asset-item>
+         </a-assets>
+
+         <!-- <a-entity gltf-model="#Roads"></a-entity> -->
+         <a-entity gltf-model="#Building"></a-entity>
+         
+         <!-- Trash -->
+         <a-entity gltf-model="#Soda_can" position="-3.208 0.028 1.863" scale="2 2 2"
+         class="clickable" 
+          event-set__click="_event: click; visible: false"></a-entity>
+         <a-entity gltf-model="#Soda_can" position="3.917 0.033 -5.399" scale="2 2 2"
+         class="clickable" 
+          event-set__click="_event: click; visible: false"></a-entity>
+         <a-entity gltf-model="#Soda_can" position="-4.771 0.068 -19.266" scale="2 2 2"
+         class="clickable" 
+          event-set__click="_event: click; visible: false"></a-entity>
+         <a-entity gltf-model="#Soda_can" position="0.000 0.020 49.107" scale="2 2 2"
+         class="clickable" 
+          event-set__click="_event: click; visible: false"></a-entity>
+         <a-entity gltf-model="#Soda_can" position="-16.780 0.053 4.605" scale="2 2 2"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+        <a-entity gltf-model="#Soda_can" position="-19.680 0.027 12.182" scale="2 2 2"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+        <a-entity gltf-model="#Soda_can" position="-57.769 0.028 -11.040" scale="2 2 2"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+        <a-entity gltf-model="#Soda_can" position="-69.619 0.028 3.034" scale="2 2 2"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-3.951 0.124 21.182" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+         <a-entity gltf-model="#Plastic_bottle" position="-40.211 0.124 -11.418" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+         <a-entity gltf-model="#Plastic_bottle" position="-29.666 0.124 49.304" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+         <a-entity gltf-model="#Plastic_bottle" position="-82.183 0.124 33.630" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+         <a-entity gltf-model="#Plastic_bottle" position="-19.883 0.124 -19.109" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+         <a-entity gltf-model="#Plastic_bottle" position="-32.112 0.124 -11.048" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-94.338 0.124 21.182" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-61.475 0.124 21.182" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-21.429 0.124 48.948" scale="0.05 0.05 0.05"
+        rotation="84.501 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-4.699 0.124 32.144" scale="0.05 0.05 0.05"
+        rotation="84.511 -67.895 -179.966"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+
+        <a-entity gltf-model="#Plastic_bottle" position="-22.136 0.124 21.182" scale="0.05 0.05 0.05"
+        rotation="84.511 180.023 180.023"
+         class="clickable" 
+         event-set__click="_event: click; visible: false"></a-entity>
+         <!-- <a-entity gltf-model="#Soda_can"></a-entity>
+         <a-entity gltf-model="#Soda_can"></a-entity> -->
+
+         <!-- text -->
+        <a-entity text="value: Clean up all the trash!;" position="1.5 2 -3" scale="5 5 5"></a-entity>
+
+
+    </a-scene>
+</body>
+
+</html>
