@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef3e9">
+  <title>Evergreen | A walkable sustainable city</title>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script>
+    AFRAME.registerComponent('starfield', {
+      schema: { enabled: { default: true } },
+
+      init() {
+        if (!this.data.enabled) return;
+        const starCount = 240;
+        const positions = new Float32Array(starCount * 3);
+        for (let index = 0; index < starCount; index++) {
+          const angle = Math.random() * Math.PI * 2;
+          const distance = 85 + Math.random() * 12;
+          positions[index * 3] = Math.cos(angle) * distance;
+          positions[index * 3 + 1] = 18 + Math.random() * 58;
+          positions[index * 3 + 2] = Math.sin(angle) * distance;
+        }
+
+        const geometry = new AFRAME.THREE.BufferGeometry();
+        geometry.setAttribute('position', new AFRAME.THREE.BufferAttribute(positions, 3));
+        const material = new AFRAME.THREE.PointsMaterial({
+          color: '#e5efff',
+          size: 1.4,
+          sizeAttenuation: false,
+          transparent: true,
+          opacity: 0.9
+        });
+        this.points = new AFRAME.THREE.Points(geometry, material);
+        this.el.object3D.add(this.points);
+      },
+
+      remove() {
+        if (!this.points) return;
+        this.points.geometry.dispose();
+        this.points.material.dispose();
+      }
+    });
+
+    AFRAME.registerComponent('city-collision', {
+      init() {
+        this.radius = 0.4;
+        this.playerHeight = 1.65;
+        this.colliders = [];
+        this.lastSafePosition = this.el.object3D.position.clone();
+        this.handleSceneLoaded = () => this.refreshColliders();
+
+        if (this.el.sceneEl.hasLoaded) {
+          this.handleSceneLoaded();
+        } else {
+          this.el.sceneEl.addEventListener('loaded', this.handleSceneLoaded);
+        }
+      },
+
+      refreshColliders() {
+        this.colliders = [];
+        this.el.sceneEl.querySelectorAll('a-box, a-sphere, a-cylinder').forEach(shape => {
+          if (shape.closest('[data-traffic-car], [data-litter]')) return;
+          const object = shape.object3D;
+          if (!object) return;
+          object.updateMatrixWorld(true);
+          const bounds = new AFRAME.THREE.Box3().setFromObject(object);
+          if (bounds.max.y < 0.35 || bounds.min.y > this.playerHeight) return;
+          if (bounds.max.x - bounds.min.x > 55 || bounds.max.z - bounds.min.z > 55) return;
+          this.colliders.push(bounds);
+        });
+        this.lastSafePosition.copy(this.el.object3D.position);
+      },
+
+      isBlocked(position) {
+        const blockedByStaticObject = this.colliders.some(bounds =>
+          bounds.max.y >= 0.35 &&
+          bounds.min.y < position.y + this.playerHeight &&
+          position.x > bounds.min.x - this.radius &&
+          position.x < bounds.max.x + this.radius &&
+          position.z > bounds.min.z - this.radius &&
+          position.z < bounds.max.z + this.radius
+        );
+        if (blockedByStaticObject) return true;
+
+        return [...this.el.sceneEl.querySelectorAll('[data-traffic-car]')].some(car => {
+          car.object3D.updateWorldMatrix(true, false);
+          const carPosition = car.object3D.getWorldPosition(new AFRAME.THREE.Vector3());
+          return position.y < 1.8 &&
+            Math.abs(position.x - carPosition.x) < 1.3 &&
+            Math.abs(position.z - carPosition.z) < 2.2;
+        });
+      },
+
+      tick() {
+        if (!this.colliders.length) return;
+        const position = this.el.object3D.position;
+        const intended = position.clone();
+        position.z = this.lastSafePosition.z;
+        if (this.isBlocked(position)) position.x = this.lastSafePosition.x;
+        position.z = intended.z;
+        if (this.isBlocked(position)) position.z = this.lastSafePosition.z;
+        if (this.isBlocked(position)) position.copy(this.lastSafePosition);
+        this.lastSafePosition.copy(position);
+      },
+
+      remove() {
+        this.el.sceneEl.removeEventListener('loaded', this.handleSceneLoaded);
+      }
+    });
+
+    AFRAME.registerComponent('city-movement', {
+      init() {
+        this.keys = new Set();
+        this.sticks = { left: { x: 0, y: 0 }, right: { x: 0, y: 0 } };
+        this.canSnapTurn = true;
+        this.controllers = [...this.el.sceneEl.querySelectorAll('[data-vr-hand]')];
+        this.handleKeyDown = event => this.keys.add(event.code);
+        this.handleKeyUp = event => this.keys.delete(event.code);
+        this.handleBlur = () => this.keys.clear();
+        this.handleThumbstick = event => {
+          const hand = event.currentTarget.dataset.vrHand;
+          if (hand && this.sticks[hand]) {
+            this.sticks[hand] = { x: event.detail.x, y: event.detail.y };
+          }
+        };
+        window.addEventListener('keydown', this.handleKeyDown);
+        window.addEventListener('keyup', this.handleKeyUp);
+        window.addEventListener('blur', this.handleBlur);
+        this.controllers.forEach(controller => {
+          controller.addEventListener('thumbstickmoved', this.handleThumbstick);
+          controller.addEventListener('trackpadmoved', this.handleThumbstick);
+        });
+      },
+
+      tick(time, delta) {
+        const leftStick = this.sticks.left;
+        const rightStick = this.sticks.right;
+        let forwardInput = Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')) -
+          Number(this.keys.has('KeyS') || this.keys.has('ArrowDown'));
+        let strafeInput = Number(this.keys.has('KeyD') || this.keys.has('ArrowRight')) -
+          Number(this.keys.has('KeyA') || this.keys.has('ArrowLeft'));
+
+        if (Math.hypot(leftStick.x, leftStick.y) > 0.15) {
+          forwardInput = -leftStick.y;
+          strafeInput = leftStick.x;
+        } else if (Math.abs(rightStick.y) > 0.15) {
+          forwardInput = -rightStick.y;
+          strafeInput = 0;
+        }
+
+        if (Math.abs(rightStick.x) < 0.3) this.canSnapTurn = true;
+        if (this.canSnapTurn && Math.abs(rightStick.x) > 0.7) {
+          this.el.object3D.rotation.y -= Math.sign(rightStick.x) * Math.PI / 6;
+          this.canSnapTurn = false;
+        }
+
+        const inputLength = Math.hypot(forwardInput, strafeInput);
+        if (inputLength < 0.01) return;
+        forwardInput /= Math.max(1, inputLength);
+        strafeInput /= Math.max(1, inputLength);
+
+        const camera = this.el.querySelector('[camera]');
+        if (!camera) return;
+        const cameraObject = camera.getObject3D('camera') || camera.object3D;
+        const forward = cameraObject.getWorldDirection(new AFRAME.THREE.Vector3());
+        forward.y = 0;
+        forward.normalize();
+        const right = new AFRAME.THREE.Vector3(-forward.z, 0, forward.x);
+        const speed = 5 * Math.min(delta, 100) / 1000;
+        this.el.object3D.position.x += (forward.x * forwardInput + right.x * strafeInput) * speed;
+        this.el.object3D.position.z += (forward.z * forwardInput + right.z * strafeInput) * speed;
+      },
+
+      remove() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+        window.removeEventListener('keyup', this.handleKeyUp);
+        window.removeEventListener('blur', this.handleBlur);
+        this.controllers.forEach(controller => {
+          controller.removeEventListener('thumbstickmoved', this.handleThumbstick);
+          controller.removeEventListener('trackpadmoved', this.handleThumbstick);
+        });
+      }
+    });
+
+    AFRAME.registerComponent('city-vr-pickup', {
+      schema: { player: { type: 'selector' } },
+
+      init() {
+        this.handleTrigger = () => {
+          const raycaster = this.el.components.raycaster;
+          const collector = this.data.player?.components['litter-cleanup'];
+          if (!raycaster || !collector) return;
+          for (const target of raycaster.intersectedEls || []) {
+            const action = target.closest('[data-vr-action]')?.dataset.vrAction;
+            if (action) {
+              collector.handleVRAction(action);
+              break;
+            }
+            const litter = target.closest('[data-litter]');
+            if (litter && collector.collectLitter(litter)) break;
+          }
+        };
+        this.el.addEventListener('triggerdown', this.handleTrigger);
+      },
+
+      remove() {
+        this.el.removeEventListener('triggerdown', this.handleTrigger);
+      }
+    });
+
+    AFRAME.registerComponent('city-traffic', {
+      init() {
+        this.cars = [];
+        this.maxCars = 6;
+        this.nextSpawn = 900;
+        this.carColors = ['#d4e5e0', '#6e9a80', '#d2bd79', '#88a9b5', '#d47661', '#bbc4d0'];
+      },
+
+      tick(time, delta) {
+        for (const car of this.cars) {
+          car.object3D.position.z += car.userData.direction * car.userData.speed * Math.min(delta, 100) / 1000;
+        }
+
+        const finishedCars = this.cars.filter(car => Math.abs(car.object3D.position.z) > 42);
+        if (finishedCars.length) {
+          for (const car of finishedCars) {
+            car.parentElement.removeChild(car);
+            this.cars.splice(this.cars.indexOf(car), 1);
+          }
+          const collision = document.querySelector('[city-collision]')?.components['city-collision'];
+          if (collision) collision.refreshColliders();
+        }
+
+        if (time >= this.nextSpawn && this.cars.length < this.maxCars) {
+          this.spawnCar();
+          this.nextSpawn = time + 2200 + Math.random() * 3300;
+        }
+      },
+
+      spawnCar() {
+        const lane = [-3.8, -1.3, 1.3, 3.8][Math.floor(Math.random() * 4)];
+        const direction = lane < 0 ? 1 : -1;
+        const car = document.createElement('a-entity');
+        car.dataset.trafficCar = 'true';
+        car.userData = { direction, speed: 5 + Math.random() * 2.5 };
+        car.setAttribute('position', `${lane} 0 ${direction > 0 ? -42 : 42}`);
+
+        const addBox = (position, width, height, depth, color) => {
+          const box = document.createElement('a-box');
+          box.setAttribute('position', position);
+          box.setAttribute('width', width);
+          box.setAttribute('height', height);
+          box.setAttribute('depth', depth);
+          box.setAttribute('color', color);
+          car.appendChild(box);
+        };
+
+        addBox('0 0.68 0', 1.8, 0.62, 3.5, this.carColors[Math.floor(Math.random() * this.carColors.length)]);
+        addBox('0 1.18 0.05', 1.48, 0.55, 1.85, '#294751');
+        addBox('0 1.2 1.0', 1.28, 0.34, 0.06, '#9bbec0');
+        addBox('0 1.2 -0.9', 1.28, 0.34, 0.06, '#78989e');
+        addBox('-0.76 1.2 0.05', 0.06, 0.34, 1.48, '#78989e');
+        addBox('0.76 1.2 0.05', 0.06, 0.34, 1.48, '#78989e');
+
+        for (const x of [-0.86, 0.86]) {
+          for (const z of [-1.12, 1.12]) {
+            const wheel = document.createElement('a-cylinder');
+            wheel.setAttribute('position', `${x} 0.38 ${z}`);
+            wheel.setAttribute('rotation', '0 0 90');
+            wheel.setAttribute('radius', '0.34');
+            wheel.setAttribute('height', '0.18');
+            wheel.setAttribute('color', '#20272a');
+            car.appendChild(wheel);
+          }
+        }
+
+        const frontZ = direction > 0 ? 1.79 : -1.79;
+        const rearZ = -frontZ;
+        addBox(`0 0.68 ${frontZ * 0.98}`, 0.72, 0.2, 0.05, '#26363d');
+        addBox(`0 0.4 ${frontZ * 0.99}`, 1.72, 0.12, 0.12, '#aeb8b6');
+        addBox(`0 0.4 ${rearZ * 0.99}`, 1.72, 0.12, 0.12, '#aeb8b6');
+        for (const x of [-0.57, 0.57]) {
+          const headlight = document.createElement('a-sphere');
+          headlight.setAttribute('position', `${x} 0.82 ${frontZ}`);
+          headlight.setAttribute('radius', '0.13');
+          headlight.setAttribute('color', '#ffe8a6');
+          headlight.setAttribute('material', 'emissive: #ffce63; emissiveIntensity: 0.8');
+          car.appendChild(headlight);
+
+          const taillight = document.createElement('a-box');
+          taillight.setAttribute('position', `${x} 0.82 ${rearZ}`);
+          taillight.setAttribute('width', '0.24');
+          taillight.setAttribute('height', '0.18');
+          taillight.setAttribute('depth', '0.06');
+          taillight.setAttribute('color', '#df5448');
+          car.appendChild(taillight);
+        }
+
+        document.querySelector('#city-world').appendChild(car);
+        this.cars.push(car);
+        const collision = document.querySelector('[city-collision]')?.components['city-collision'];
+        if (collision) collision.refreshColliders();
+      }
+    });
+
+    AFRAME.registerComponent('litter-cleanup', {
+      init() {
+        this.score = 0;
+        this.secondsLeft = 120;
+        this.hasFinished = false;
+        this.isExited = false;
+        this.scoreValue = document.querySelector('#score-value');
+        this.timerValue = document.querySelector('#timer-value');
+        this.timerDisplay = document.querySelector('.game-timer');
+        this.gameOverScreen = document.querySelector('#game-over');
+        this.finalScoreValue = document.querySelector('#final-score');
+        this.highScoreValue = document.querySelector('#high-score');
+        this.vrScoreValue = document.querySelector('#vr-score');
+        this.vrTimerValue = document.querySelector('#vr-timer');
+        this.vrFinalScoreValue = document.querySelector('#vr-final-score');
+        this.vrGameOver = document.querySelector('#vr-game-over');
+        this.newRoundButton = document.querySelector('#new-round');
+        this.exitButton = document.querySelector('#exit-game');
+        this.handleNewRound = () => window.location.reload();
+        this.handleExit = () => {
+          this.isExited = true;
+          this.gameOverScreen.classList.remove('is-visible');
+          this.gameOverScreen.setAttribute('aria-hidden', 'true');
+        };
+        this.newRoundButton.addEventListener('click', this.handleNewRound);
+        this.exitButton.addEventListener('click', this.handleExit);
+        this.renderTimer();
+        this.timerInterval = window.setInterval(() => {
+          if (this.secondsLeft <= 0) {
+            window.clearInterval(this.timerInterval);
+            this.finishGame();
+            return;
+          }
+          this.secondsLeft--;
+          this.renderTimer();
+        }, 1000);
+      },
+
+      renderTimer() {
+        const minutes = Math.floor(this.secondsLeft / 60).toString().padStart(2, '0');
+        const seconds = (this.secondsLeft % 60).toString().padStart(2, '0');
+        const timeLabel = `${minutes}:${seconds}`;
+        this.timerValue.textContent = timeLabel;
+        this.vrTimerValue.setAttribute('value', `TIME ${timeLabel}`);
+        if (this.secondsLeft === 0) {
+          this.timerDisplay.classList.add('is-finished');
+          this.finishGame();
+        }
+      },
+
+      finishGame() {
+        if (this.hasFinished) return;
+        this.hasFinished = true;
+        window.clearInterval(this.timerInterval);
+        this.finalScoreValue.textContent = this.score;
+
+        let bestScore = 0;
+        try {
+          bestScore = Number(localStorage.getItem('evergreen-city-high-score')) || 0;
+        } catch {}
+        bestScore = Math.max(bestScore, this.score);
+        try {
+          localStorage.setItem('evergreen-city-high-score', bestScore);
+        } catch {}
+
+        this.highScoreValue.textContent = bestScore;
+        this.vrFinalScoreValue.setAttribute('value', `SCORE ${this.score}   BEST ${bestScore}`);
+        this.gameOverScreen.classList.add('is-visible');
+        this.gameOverScreen.setAttribute('aria-hidden', 'false');
+        this.vrGameOver.setAttribute('visible', true);
+        this.newRoundButton.focus();
+      },
+
+      handleVRAction(action) {
+        if (action === 'restart') {
+          this.handleNewRound();
+        } else if (action === 'exit') {
+          this.isExited = true;
+          this.vrGameOver.setAttribute('visible', false);
+          this.gameOverScreen.classList.remove('is-visible');
+          this.gameOverScreen.setAttribute('aria-hidden', 'true');
+        }
+      },
+
+      tick() {
+        if (this.secondsLeft <= 0 || this.isExited) return;
+        const player = this.el.object3D.position;
+        const litter = [...this.el.sceneEl.querySelectorAll('[data-litter]')].find(item => {
+          item.object3D.updateWorldMatrix(true, false);
+          const position = item.object3D.getWorldPosition(new AFRAME.THREE.Vector3());
+          const x = position.x - player.x;
+          const z = position.z - player.z;
+          return x * x + z * z < 1.7 * 1.7;
+        });
+        if (litter) this.collectLitter(litter);
+      },
+
+      collectLitter(litter) {
+        if (!litter?.isConnected || this.secondsLeft <= 0 || this.isExited) return false;
+        litter.parentElement.removeChild(litter);
+        this.score++;
+        this.scoreValue.textContent = this.score;
+        this.vrScoreValue.setAttribute('value', `SCORE ${this.score}`);
+        this.scoreValue.classList.remove('score-pop');
+        void this.scoreValue.offsetWidth;
+        this.scoreValue.classList.add('score-pop');
+        return true;
+      },
+
+      remove() {
+        window.clearInterval(this.timerInterval);
+        this.newRoundButton.removeEventListener('click', this.handleNewRound);
+        this.exitButton.removeEventListener('click', this.handleExit);
+      }
+    });
+
+    AFRAME.registerComponent('project-info-trigger', {
+      init() {
+        this.kiosk = document.querySelector('#project-kiosk');
+        this.panel = document.querySelector('.project-panel');
+        this.content = this.panel.querySelector('.panel-content');
+        this.directionHint = document.querySelector('.project-direction');
+        this.directionArrow = document.querySelector('#project-direction-arrow');
+        this.isOpen = false;
+      },
+
+      tick(time, delta) {
+        this.kiosk.object3D.updateWorldMatrix(true, false);
+        const kioskPosition = this.kiosk.object3D.getWorldPosition(new AFRAME.THREE.Vector3());
+        const playerPosition = this.el.object3D.position;
+        const x = kioskPosition.x - playerPosition.x;
+        const z = kioskPosition.z - playerPosition.z;
+        const isNear = x * x + z * z <= 6.25 * 6.25;
+        const camera = this.el.querySelector('[camera]');
+        const cameraObject = camera.getObject3D('camera') || camera.object3D;
+        const forward = cameraObject.getWorldDirection(new AFRAME.THREE.Vector3());
+        const yaw = Math.atan2(-forward.x, -forward.z);
+        const bearing = Math.atan2(x, -z);
+        const relativeBearing = bearing + yaw;
+        const arrowAngle = Math.atan2(Math.sin(relativeBearing), Math.cos(relativeBearing));
+        this.directionArrow.style.transform = `rotate(${arrowAngle}rad)`;
+        this.directionHint.classList.toggle('is-hidden', isNear);
+
+        if (isNear) {
+          if (!this.isOpen) this.content.scrollTop = 0;
+          this.panel.classList.add('is-visible');
+          const maxScroll = this.content.scrollHeight - this.content.clientHeight;
+          this.content.scrollTop = Math.min(maxScroll, this.content.scrollTop + Math.min(delta, 100) * 0.018);
+        } else if (this.isOpen) {
+          this.panel.classList.remove('is-visible');
+          this.content.scrollTop = 0;
+        }
+
+        this.panel.setAttribute('aria-hidden', String(!isNear));
+        this.isOpen = isNear;
+      }
+    });
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+    :root {
+      color-scheme: light;
+      --ink: #19332c;
+      --muted: #64746a;
+      --leaf: #39794c;
+      --lime: #c9e56b;
+      --paper: #f7f8f2;
+      --line: #dce4d8;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #dce9d3;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    a-scene { position: fixed; inset: 0; z-index: 0; }
+
+    .game-score, .game-timer {
+      position: fixed;
+      z-index: 4;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,.82);
+      border-radius: 7px;
+      background: rgba(14,29,39,.88);
+      box-shadow: 0 8px 24px rgba(0,0,0,.32);
+      backdrop-filter: blur(12px);
+      color: #edf4ef;
+    }
+
+    .game-score { left: 18px; }
+    .score-label, .timer-label { color: #a7b9ba; font-size: 10px; font-weight: 700; letter-spacing: 0; }
+    .score-value { color: #c9e56b; font: 800 24px 'Manrope', sans-serif; }
+    .score-unit { color: #a7b9ba; font-size: 11px; }
+    .game-timer { left: 50%; transform: translateX(-50%); gap: 10px; }
+    .timer-value { font: 800 19px 'Manrope', sans-serif; font-variant-numeric: tabular-nums; }
+    .game-timer.is-finished { border-color: #d9806b; color: #983b2d; }
+    .game-timer.is-finished .timer-value { color: #ff9a7e; }
+    .score-value.score-pop { animation: score-pop 260ms ease-out; }
+    @keyframes score-pop { 50% { transform: scale(1.3); } }
+
+    .project-direction {
+      position: fixed;
+      z-index: 4;
+      top: 18px;
+      right: 18px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: min(250px, calc(100vw - 24px));
+      padding: 9px 12px;
+      border: 1px solid rgba(255,255,255,.82);
+      border-radius: 7px;
+      background: rgba(14,29,39,.88);
+      box-shadow: 0 8px 24px rgba(0,0,0,.32);
+      backdrop-filter: blur(12px);
+      color: #edf4ef;
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+    .project-direction.is-hidden { visibility: hidden; opacity: 0; pointer-events: none; }
+    .direction-arrow { position: relative; flex: 0 0 30px; width: 30px; height: 30px; transform-origin: center; transition: transform 90ms linear; }
+    .direction-arrow::before { position: absolute; top: 1px; left: 8px; width: 0; height: 0; border-right: 7px solid transparent; border-bottom: 12px solid #c9e56b; border-left: 7px solid transparent; content: ''; }
+    .direction-arrow::after { position: absolute; top: 11px; left: 12px; width: 6px; height: 15px; border-radius: 3px; background: #c9e56b; content: ''; }
+    .project-direction-copy { display: grid; gap: 3px; min-width: 0; }
+    .project-direction-title { color: #c9e56b; font-size: 9px; font-weight: 700; }
+    .project-direction-subtitle { color: #dce7e1; font-size: 11px; }
+
+    .game-over {
+      position: fixed;
+      z-index: 8;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(3, 10, 15, .76);
+      backdrop-filter: blur(8px);
+    }
+
+    .game-over.is-visible { display: flex; }
+    .game-over-card {
+      width: min(420px, 100%);
+      padding: 28px;
+      border: 1px solid rgba(201,229,107,.35);
+      border-radius: 8px;
+      background: #10232d;
+      color: #eef4ed;
+      box-shadow: 0 24px 80px rgba(0,0,0,.4);
+    }
+    .game-over-kicker { color: #c9e56b; font-size: 10px; font-weight: 700; }
+    .game-over-card h2 { margin: 8px 0 6px; font: 800 28px 'Manrope', sans-serif; letter-spacing: 0; }
+    .game-over-copy { margin: 0; color: #afc0bb; font-size: 13px; line-height: 1.5; }
+    .game-over-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+    .game-over-stat { padding: 14px 0; border-top: 1px solid rgba(221,235,225,.2); }
+    .game-over-stat span { display: block; color: #a7b9ba; font-size: 10px; font-weight: 700; }
+    .game-over-stat strong { display: block; margin-top: 5px; color: #c9e56b; font: 800 30px 'Manrope', sans-serif; }
+    .game-over-actions { display: grid; gap: 9px; }
+    .game-over-actions button { min-height: 44px; border: 1px solid transparent; border-radius: 5px; font: 700 13px 'Manrope', sans-serif; cursor: pointer; }
+    .new-round-button { background: #c9e56b; color: #172a2d; }
+    .exit-game-button { border-color: rgba(221,235,225,.3) !important; background: transparent; color: #e6eee8; }
+    .game-over-actions button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+    .project-panel {
+      position: fixed;
+      z-index: 3;
+      top: 18px;
+      right: 18px;
+      bottom: 76px;
+      display: flex;
+      width: min(310px, calc(100vw - 36px));
+      flex-direction: column;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 8px;
+      background: rgba(247,248,242,.97);
+      box-shadow: 0 12px 36px rgba(10,22,32,.28);
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 240ms ease, transform 240ms ease, visibility 240ms;
+    }
+
+    .project-panel.is-visible { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    .panel-heading { padding: 17px 17px 13px; border-bottom: 1px solid var(--line); }
+    .eyebrow { color: var(--leaf); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; }
+    h1 { margin: 6px 0 5px; font: 800 22px 'Manrope', sans-serif; letter-spacing: 0; }
+    .intro { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .panel-content { padding: 3px 17px 18px; overflow-y: auto; scrollbar-color: #b7c8af transparent; }
+    .panel-content section { padding: 13px 0 11px; border-bottom: 1px solid var(--line); }
+    .panel-content h2 { margin: 0 0 7px; font: 700 13px 'Manrope', sans-serif; letter-spacing: 0; }
+    .panel-content p, .panel-content li { color: #526359; font-size: 11px; line-height: 1.5; }
+    .panel-content p { margin: 5px 0; }
+    .panel-content ul { margin: 6px 0 0; padding-left: 17px; }
+    .panel-content li + li { margin-top: 2px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { padding: 5px 8px; border-radius: 4px; background: #e7efdf; color: #345b3e; font-size: 10px; font-weight: 700; }
+    code { padding: 2px 4px; border-radius: 3px; background: #e8eee3; color: #315d3b; font-size: 10px; }
+    .conclusion { border-bottom: 0 !important; }
+
+    .controls {
+      position: fixed;
+      z-index: 3;
+      bottom: 16px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 13px;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 7px;
+      background: rgba(247,248,242,.94);
+      color: #4b5e50;
+      box-shadow: 0 6px 20px rgba(10,22,32,.24);
+      font-size: 11px;
+    }
+
+    .key { display: inline-grid; min-width: 22px; height: 22px; margin-right: 3px; place-items: center; border: 1px solid #d5ded1; border-radius: 4px; background: #fff; color: var(--ink); font-size: 10px; font-weight: 700; }
+    .control-group { white-space: nowrap; }
+    .divider { width: 1px; height: 20px; background: var(--line); }
+
+    @media (max-width: 650px) {
+      .game-score, .game-timer { top: 10px; padding: 7px 9px; gap: 7px; }
+      .game-score { left: 10px; }
+      .score-value { font-size: 20px; }
+      .game-timer { left: 50%; }
+      .project-direction { top: 54px; right: 10px; width: min(220px, calc(100vw - 20px)); padding: 7px 9px; }
+      .project-panel { top: 58px; right: 10px; bottom: 68px; width: min(280px, calc(100vw - 20px)); }
+      .panel-heading { padding: 13px 14px 10px; }
+      .panel-content { padding: 2px 14px 16px; }
+      .controls { bottom: 9px; left: 10px; gap: 7px; padding: 7px 9px; font-size: 10px; }
+      .control-group:last-child, .divider { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="game-score" aria-label="Litter collected">
+    <span class="score-label">SCORE</span>
+    <strong class="score-value" id="score-value">0</strong>
+    <span class="score-unit">pts</span>
+  </div>
+  <div class="game-timer" role="timer" aria-label="Time remaining">
+    <span class="timer-label">TIME</span>
+    <strong class="timer-value" id="timer-value">02:00</strong>
+  </div>
+  <aside class="project-direction" role="status" aria-label="Directions to find project info">
+    <span id="project-direction-arrow" class="direction-arrow" aria-hidden="true"></span>
+    <span class="project-direction-copy">
+      <span class="project-direction-title">DIRECTIONS TO PROJECT INFO</span>
+      <span class="project-direction-subtitle">Follow the arrow to the stand</span>
+    </span>
+  </aside>
+  <section id="game-over" class="game-over" role="dialog" aria-modal="true" aria-labelledby="game-over-title" aria-hidden="true">
+    <div class="game-over-card">
+      <div class="game-over-kicker">ROUND COMPLETE</div>
+      <h2 id="game-over-title">GAME OVER</h2>
+      <p class="game-over-copy">Time is up. See how many pieces of rubbish you collected.</p>
+      <div class="game-over-scores">
+        <div class="game-over-stat"><span>YOUR SCORE</span><strong id="final-score">0</strong></div>
+        <div class="game-over-stat"><span>HIGH SCORE</span><strong id="high-score">0</strong></div>
+      </div>
+      <div class="game-over-actions">
+        <button id="new-round" class="new-round-button" type="button">Start a new round</button>
+        <button id="exit-game" class="exit-game-button" type="button">Exit to the city</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="project-panel" aria-label="Sustainable city project poster">
+    <div class="panel-heading">
+      <div class="eyebrow">My VR city project</div>
+      <h1>A greener way forward</h1>
+      <p class="intro">Explore a small city designed to reduce pollution, use clean energy and make room for nature.</p>
+      <div class="tag-row"><span class="tag">CLEAN ENERGY</span><span class="tag">HEALTHY STREETS</span><span class="tag">MORE NATURE</span></div>
+    </div>
+    <div class="panel-content">
+      <section>
+        <h2>01 &nbsp; The sustainability issue</h2>
+        <p>Cities are growing and need cleaner ways to use energy and travel. Without change, pollution and temperatures rise, nature is damaged and people can become less healthy.</p>
+      </section>
+      <section>
+        <h2>02 &nbsp; Solutions around the city</h2>
+        <ul><li>Solar panels and wind turbines make clean energy.</li><li>Electric buses move people with less air pollution.</li><li>Recycling centres keep useful materials out of landfill.</li><li>Parks add green space and help improve air quality.</li></ul>
+      </section>
+      <section>
+        <h2>03 &nbsp; Who benefits?</h2>
+        <p>Citizens, local businesses, animals, the environment and future generations all benefit from cleaner air, less waste, better health and more green spaces.</p>
+      </section>
+      <section>
+        <h2>04 &nbsp; Planning and design</h2>
+        <p>I brainstormed the layout and made the city smaller to improve performance. I chose renewable energy and green spaces because they support sustainability.</p>
+      </section>
+      <section>
+        <h2>05 &nbsp; Development progress</h2>
+        <p>I planned the layout, added buildings and sustainable features, then tested the world. I adjusted misplaced objects and reduced object numbers when the world became slow.</p>
+        <p><strong>Skills improved:</strong> coding, problem solving, creativity and VR design.</p>
+      </section>
+      <section>
+        <h2>06 &nbsp; Code snippets</h2>
+        <p><code>if (energy &lt; 50) { warning = true; }</code> shows a warning when energy is low.</p>
+        <p><code>score = score + 10;</code> adds points to the score.</p>
+      </section>
+      <section>
+        <h2>07 &nbsp; Project constraints</h2>
+        <p>Limited time, coding skills, software and device performance meant I removed advanced systems and very detailed buildings.</p>
+      </section>
+      <section>
+        <h2>08 &nbsp; Features for next time</h2>
+        <p>Smart homes, a weather system, interactive buildings and electric trains would make the city more sustainable and realistic. I could not add them because of time and difficulty.</p>
+      </section>
+      <section>
+        <h2>09 &nbsp; Layout and visual design</h2>
+        <p>Clear headings, easy-to-read sections, project screenshots and sustainability colours keep the design organised.</p>
+      </section>
+      <section>
+        <h2>10 &nbsp; Accuracy and clarity</h2>
+        <p>The writing uses my own words, explains technical terms, checks spelling and keeps ideas neat and organised.</p>
+      </section>
+      <section class="conclusion">
+        <h2>Conclusion</h2>
+        <p>My VR city uses clean energy, green spaces and eco-friendly transport to reduce pollution and help create a healthier, more sustainable future for people, nature and Earth.</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="controls" aria-label="Movement controls">
+    <div class="control-group"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> move</div>
+    <span class="divider"></span>
+    <div class="control-group">Drag to look around</div>
+    <span class="divider"></span>
+    <div class="control-group">VR: left stick move, right stick turn, trigger collect</div>
+  </div>
+
+  <a-scene renderer="colorManagement: true; antialias: true" background="color: #07111d" shadow="type: pcfsoft" embedded="false" vr-mode-ui="enabled: true" webxr="optionalFeatures: local-floor, bounded-floor, hand-tracking" city-traffic>
+    <a-sky color="#f4a16f"></a-sky>
+    <a-sphere position="-32 13 -58" radius="7" material="shader: standard; color: #ffe5ad; emissive: #ffad68; emissiveIntensity: 0.65; toneMapped: false"></a-sphere>
+    <a-entity starfield="enabled: false"></a-entity>
+    <a-plane rotation="-90 0 0" width="120" height="120" color="#23332e" shadow="receive: true"></a-plane>
+    <a-entity light="type: ambient; color: #ffe0ca; intensity: 0.95"></a-entity>
+    <a-entity light="type: directional; color: #ffc18a; intensity: 0.48" position="-8 14 6"></a-entity>
+    <a-entity id="city-world" scale="1 1 1">
+
+    <!-- Main avenue -->
+    <a-box position="0 0.045 0" width="14" height="0.09" depth="80" color="#42484b"></a-box>
+    <a-box position="-8.2 0.025 0" width="2.2" height="0.05" depth="80" color="#69726d"></a-box>
+    <a-box position="8.2 0.025 0" width="2.2" height="0.05" depth="80" color="#69726d"></a-box>
+    <a-box position="-5.5 0.098 0" width="1.15" height="0.02" depth="80" color="#568a84"></a-box>
+    <a-box position="5.5 0.098 0" width="1.15" height="0.02" depth="80" color="#568a84"></a-box>
+    <a-box position="-6.2 0.105 0" width="0.12" height="0.025" depth="80" color="#e4e6d9"></a-box>
+    <a-box position="6.2 0.105 0" width="0.12" height="0.025" depth="80" color="#e4e6d9"></a-box>
+    <a-box position="-0.18 0.105 0" width="0.14" height="0.025" depth="80" color="#f0d969"></a-box>
+    <a-box position="0.18 0.105 0" width="0.14" height="0.025" depth="80" color="#f0d969"></a-box>
+    <a-entity id="project-kiosk" position="9.6 0 21" rotation="0 -90 0">
+      <a-box position="0 0.12 0" width="0.95" height="0.24" depth="0.75" color="#405b55"></a-box>
+      <a-box position="0 1.05 0" width="0.18" height="1.65" depth="0.18" color="#56746b"></a-box>
+      <a-box position="0 2.24 0" width="2.65" height="1.1" depth="0.16" color="#152d36"></a-box>
+      <a-box position="0 2.24 0.1" width="2.42" height="0.9" depth="0.04" color="#38635d"></a-box>
+      <a-box position="-1.4 3.25 0" width="2.7" height="1.18" depth="0.16" color="#d2a84e"></a-box>
+      <a-text value="MY CITY" align="center" width="3.2" color="#172b31" position="-1.4 3.43 0.12" scale="1.3 1.3 1.3" side="double"></a-text>
+      <a-text value="PROJECT INFO" align="center" width="3.2" color="#172b31" position="-1.4 3.03 0.12" scale="1.2 1.2 1.2" side="double"></a-text>
+      <a-entity position="-1.4 3.35 0.52" light="type: point; color: #d7ed76; intensity: 1.5; distance: 8; decay: 2"></a-entity>
+      <a-box position="1.4 3.25 0" width="2.7" height="1.18" depth="0.16" color="#173b3c"></a-box>
+      <a-text value="HOW TO SCORE" align="center" width="3.2" color="#e0ece3" position="1.4 3.57 0.12" scale="0.9 0.9 0.9" side="double"></a-text>
+      <a-text value="PICK UP RUBBISH" align="center" width="3.2" color="#e0ece3" position="1.4 3.22 0.12" scale="0.9 0.9 0.9" side="double"></a-text>
+      <a-text value="+1 POINT" align="center" width="3.2" color="#c9e56b" position="1.4 2.88 0.12" scale="0.95 0.95 0.95" side="double"></a-text>
+      <a-text value="SUSTAINABLE VR CITY" align="center" width="3" color="#e0ece3" position="0 2.38 0.13" scale="0.27 0.27 0.27" side="double"></a-text>
+      <a-text value="WALK CLOSER TO READ THE PROJECT" align="center" width="3" color="#c9e56b" position="0 2.08 0.13" scale="0.16 0.16 0.16" side="double"></a-text>
+      <a-text value="LEFT STICK: MOVE   RIGHT STICK: TURN   TRIGGER: COLLECT" align="center" width="4.8" color="#e0ece3" position="0 1.8 0.13" scale="0.14 0.14 0.14" side="double"></a-text>
+    </a-entity>
+    <!-- Compact homes and workplaces -->
+    <a-box position="-16 2 -10" width="6" height="4" depth="5" color="#e5d7b6" shadow="cast: true"></a-box>
+    <a-box position="-16 4.5 -10" width="6.4" height="1" depth="5.4" color="#477e67"></a-box>
+    <a-box position="-16 2.1 -7.43" width="4.8" height="1.8" depth="0.08" color="#8fc5ba"></a-box>
+    <a-box position="-16 2 -17" width="6" height="4" depth="5" color="#d9e3ce" shadow="cast: true"></a-box>
+    <a-box position="-16 4.5 -17" width="6.4" height="1" depth="5.4" color="#477e67"></a-box>
+    <a-box position="-16 2.1 -14.43" width="4.8" height="1.8" depth="0.08" color="#8fc5ba"></a-box>
+    <a-box position="16 3 11" width="7" height="6" depth="7" color="#d9e3ce" shadow="cast: true"></a-box>
+    <a-box position="16 6.2 11" width="7.4" height="0.7" depth="7.4" color="#477e67"></a-box>
+    <a-box position="16 3 7.43" width="5.6" height="2.4" depth="0.08" color="#8fc5ba"></a-box>
+    <a-box position="18.5 0.2 11" width="3.4" height="0.2" depth="3.4" rotation="0 0 0" color="#253f36"></a-box>
+    <a-box position="18.5 0.34 11" width="2.8" height="0.08" depth="2.8" color="#244f83"></a-box>
+    <a-box position="-16 0.2 -10" width="3.8" height="0.2" depth="2.8" color="#253f36"></a-box>
+    <a-box position="-16 0.34 -10" width="3.1" height="0.08" depth="2.1" color="#244f83"></a-box>
+    <a-box position="-16 0.2 -17" width="3.8" height="0.2" depth="2.8" color="#253f36"></a-box>
+    <a-box position="-16 0.34 -17" width="3.1" height="0.08" depth="2.1" color="#244f83"></a-box>
+
+    <!-- Park: planted trees, benches and a pond -->
+    <a-box position="14 0.08 -13" width="13" height="0.12" depth="12" color="#6e9a5d"></a-box>
+    <a-circle position="14 0.16 -13" rotation="-90 0 0" radius="2.3" color="#79b9bd"></a-circle>
+    <a-entity position="10 0 -10"><a-cylinder position="0 1.2 0" radius="0.22" height="2.4" color="#74583e"></a-cylinder><a-sphere position="0 3 0" radius="1.5" color="#438552"></a-sphere></a-entity>
+    <a-entity position="18 0 -11"><a-cylinder position="0 1.2 0" radius="0.22" height="2.4" color="#74583e"></a-cylinder><a-sphere position="0 3 0" radius="1.6" color="#518e57"></a-sphere></a-entity>
+    <a-entity position="10 0 -16"><a-cylinder position="0 1.2 0" radius="0.22" height="2.4" color="#74583e"></a-cylinder><a-sphere position="0 3 0" radius="1.5" color="#518e57"></a-sphere></a-entity>
+    <a-box position="14 0.55 -6.5" width="2.4" height="0.16" depth="0.65" color="#946844"></a-box>
+    <a-box position="14 0.86 -6.8" width="2.4" height="0.65" depth="0.14" color="#946844"></a-box>
+
+    <!-- Electric bus and its charging stop -->
+    <a-box position="-12 0.95 -2" width="6" height="1.8" depth="2.1" color="#e9f1d7" shadow="cast: true"></a-box>
+    <a-box position="-12 1.38 -0.91" width="4.8" height="0.75" depth="0.06" color="#73b9b1"></a-box>
+    <a-box position="-12 0.4 -2" width="2.3" height="0.28" depth="2.24" color="#3f8053"></a-box>
+    <a-cylinder position="-13.8 0.37 -0.92" rotation="90 0 0" radius="0.43" height="0.2" color="#263731"></a-cylinder>
+    <a-cylinder position="-10.2 0.37 -0.92" rotation="90 0 0" radius="0.43" height="0.2" color="#263731"></a-cylinder>
+    <a-cylinder position="-13.8 0.37 -0.79" rotation="90 0 0" radius="0.2" height="0.21" color="#d7dbcf"></a-cylinder>
+    <a-cylinder position="-10.2 0.37 -0.79" rotation="90 0 0" radius="0.2" height="0.21" color="#d7dbcf"></a-cylinder>
+    <a-box position="-15.8 1.4 0.2" width="0.12" height="2.8" depth="0.12" color="#425e4b"></a-box>
+    <a-box position="-15.8 2.8 0.2" width="2.2" height="0.9" depth="0.1" color="#f0d969"></a-box>
+
+    <!-- Rooftop solar array -->
+    <a-box position="-16 5.13 -10" width="4.5" height="0.08" depth="2.7" rotation="-12 0 0" color="#355f77"></a-box>
+    <a-box position="-16 5.15 -17" width="4.5" height="0.08" depth="2.7" rotation="-12 0 0" color="#355f77"></a-box>
+
+    <!-- Wind turbines with gently turning blades -->
+    <a-cylinder position="21 4 -14" radius="0.12" height="8" color="#eef2df"></a-cylinder>
+    <a-entity position="21 7.9 -14" animation="property: rotation; to: 0 0 360; dur: 9000; loop: true; easing: linear">
+      <a-box position="0 1.5 0" width="0.16" height="3.2" depth="0.14" color="#f6f5e8"></a-box>
+      <a-box position="1.35 -0.8 0" rotation="0 0 120" width="0.16" height="3.2" depth="0.14" color="#f6f5e8"></a-box>
+      <a-box position="-1.35 -0.8 0" rotation="0 0 -120" width="0.16" height="3.2" depth="0.14" color="#f6f5e8"></a-box>
+      <a-sphere radius="0.28" color="#d5e0d1"></a-sphere>
+    </a-entity>
+    <a-cylinder position="25 3 -18" radius="0.1" height="6" color="#eef2df"></a-cylinder>
+    <a-entity position="25 5.9 -18" animation="property: rotation; to: 0 0 -360; dur: 11000; loop: true; easing: linear">
+      <a-box position="0 1.15 0" width="0.14" height="2.5" depth="0.12" color="#f6f5e8"></a-box>
+      <a-box position="1.05 -0.6 0" rotation="0 0 120" width="0.14" height="2.5" depth="0.12" color="#f6f5e8"></a-box>
+      <a-box position="-1.05 -0.6 0" rotation="0 0 -120" width="0.14" height="2.5" depth="0.12" color="#f6f5e8"></a-box>
+      <a-sphere radius="0.23" color="#d5e0d1"></a-sphere>
+    </a-entity>
+
+    <!-- Recycling centre -->
+    <a-box position="-22 1.5 7" width="6" height="3" depth="5" color="#d7e3cf" shadow="cast: true"></a-box>
+    <a-box position="-22 3.3 7" width="6.3" height="0.7" depth="5.3" color="#6b9971"></a-box>
+    <a-box position="-22 1.35 4.43" width="3.5" height="1.7" depth="0.08" color="#83b7a9"></a-box>
+    <a-box position="-20 0.6 3.3" width="0.9" height="1.1" depth="0.9" color="#4a8f69"></a-box>
+    <a-box position="-22 0.6 3.3" width="0.9" height="1.1" depth="0.9" color="#e3be53"></a-box>
+    <a-box position="-24 0.6 3.3" width="0.9" height="1.1" depth="0.9" color="#75a9b5"></a-box>
+
+    <!-- Street trees and soft landscape detail -->
+    <a-entity position="-10.5 0 8"><a-cylinder position="0 1 0" radius="0.18" height="2" color="#74583e"></a-cylinder><a-sphere position="0 2.45 0" radius="1.2" color="#4c8c53"></a-sphere></a-entity>
+    <a-entity position="10.5 0 -9"><a-cylinder position="0 1 0" radius="0.18" height="2" color="#74583e"></a-cylinder><a-sphere position="0 2.45 0" radius="1.2" color="#5c995a"></a-sphere></a-entity>
+    <a-entity position="-10.5 0 16"><a-cylinder position="0 1 0" radius="0.18" height="2" color="#74583e"></a-cylinder><a-sphere position="0 2.45 0" radius="1.2" color="#5c995a"></a-sphere></a-entity>
+    <a-entity position="10.5 0 17"><a-cylinder position="0 1 0" radius="0.18" height="2" color="#74583e"></a-cylinder><a-sphere position="0 2.45 0" radius="1.2" color="#4c8c53"></a-sphere></a-entity>
+    <a-entity position="-22 0 19"><a-cylinder position="0 1 0" radius="0.18" height="2" color="#74583e"></a-cylinder><a-sphere position="0 2.45 0" radius="1.2" color="#4c8c53"></a-sphere></a-entity>
+
+    </a-entity>
+    <a-entity id="player-rig" city-movement city-collision litter-cleanup project-info-trigger position="0 0 22">
+      <a-entity camera look-controls position="0 1.65 0" rotation="0 0 0" near="0.1" far="180">
+        <a-text id="vr-score" value="SCORE 0" align="left" width="2.4" color="#c9e56b" position="-0.85 0.62 -2"></a-text>
+        <a-text id="vr-timer" value="TIME 02:00" align="right" width="2.4" color="#edf4ef" position="0.85 0.62 -2"></a-text>
+        <a-entity id="vr-game-over" visible="false" position="0 0 -1.7">
+          <a-plane width="1.8" height="1.35" color="#10232d" material="shader: flat; opacity: 0.96"></a-plane>
+          <a-text value="ROUND COMPLETE" align="center" width="2.4" color="#c9e56b" position="0 0.43 0.02"></a-text>
+          <a-text value="Time is up!" align="center" width="2.4" color="#edf4ef" position="0 0.19 0.02"></a-text>
+          <a-text id="vr-final-score" value="SCORE 0   BEST 0" align="center" width="2.4" color="#edf4ef" position="0 0.02 0.02"></a-text>
+          <a-box data-vr-action="restart" position="0 -0.2 0.03" width="1.35" height="0.28" depth="0.05" color="#c9e56b"></a-box>
+          <a-text value="START NEW ROUND" align="center" width="1.7" color="#172a2d" position="0 -0.2 0.061"></a-text>
+          <a-box data-vr-action="exit" position="0 -0.56 0.03" width="1.35" height="0.28" depth="0.05" color="#31505a"></a-box>
+          <a-text value="EXIT TO CITY" align="center" width="1.7" color="#edf4ef" position="0 -0.56 0.061"></a-text>
+        </a-entity>
+      </a-entity>
+      <a-entity data-vr-hand="left" laser-controls="hand: left" raycaster="objects: [data-litter] *, [data-vr-action]; far: 10; interval: 100" city-vr-pickup="player: #player-rig"></a-entity>
+      <a-entity data-vr-hand="right" laser-controls="hand: right" raycaster="objects: [data-litter] *, [data-vr-action]; far: 10; interval: 100" city-vr-pickup="player: #player-rig"></a-entity>
+    </a-entity>
+  </a-scene>
+  <script>
+    const cityScene = document.querySelector('#city-world');
+    const makeFieldBox = (parent, position, width, height, depth, color, rotation = '0 0 0') => {
+      const box = document.createElement('a-box');
+      box.setAttribute('position', position);
+      box.setAttribute('width', width);
+      box.setAttribute('height', height);
+      box.setAttribute('depth', depth);
+      box.setAttribute('rotation', rotation);
+      box.setAttribute('color', color);
+      parent.appendChild(box);
+      return box;
+    };
+
+    makeFieldBox(cityScene, '0 0.035 -63', 42, 0.07, 36, '#557b45');
+    makeFieldBox(cityScene, '0 0.105 -44.5', 3.2, 0.06, 12, '#a99572');
+
+    for (const x of [-14, -10, -6, 6, 10, 14]) {
+      for (const z of [-56, -61, -66, -71]) {
+        const panel = document.createElement('a-entity');
+        panel.setAttribute('position', `${x} 0 ${z}`);
+        cityScene.appendChild(panel);
+        for (const supportX of [-0.95, 0.95]) {
+          const support = document.createElement('a-cylinder');
+          support.setAttribute('position', `${supportX} 0.43 0`);
+          support.setAttribute('radius', '0.055');
+          support.setAttribute('height', '0.86');
+          support.setAttribute('color', '#52665a');
+          panel.appendChild(support);
+        }
+        makeFieldBox(panel, '0 0.88 0', 3.25, 0.1, 2.25, '#344b53', '-14 0 0');
+        makeFieldBox(panel, '0 0.945 0', 3.05, 0.055, 2.05, '#285d80', '-14 0 0');
+        for (const xLine of [-0.75, 0, 0.75]) {
+          makeFieldBox(panel, `${xLine} 1.01 0`, 0.025, 0.012, 2, '#78a4b2', '-14 0 0');
+        }
+        for (const zLine of [-0.5, 0.5]) {
+          makeFieldBox(panel, `0 1.01 ${zLine}`, 3, 0.012, 0.025, '#78a4b2', '-14 0 0');
+        }
+      }
+    }
+
+    for (const x of [-3.5, 3.5]) {
+      const bench = document.createElement('a-entity');
+      bench.setAttribute('position', `${x} 0 -50`);
+      cityScene.appendChild(bench);
+      makeFieldBox(bench, '0 0.52 0', 2, 0.12, 0.62, '#956b45');
+      makeFieldBox(bench, '0 0.98 0.24', 2, 0.78, 0.12, '#956b45');
+      for (const legX of [-0.72, 0.72]) {
+        makeFieldBox(bench, `${legX} 0.27 0`, 0.12, 0.5, 0.48, '#46574c');
+      }
+    }
+
+    for (const x of [-18, 18]) {
+      for (const z of [-55, -65, -76]) {
+        const tree = document.createElement('a-entity');
+        tree.setAttribute('position', `${x} 0 ${z}`);
+        cityScene.appendChild(tree);
+        const trunk = document.createElement('a-cylinder');
+        trunk.setAttribute('position', '0 1.35 0');
+        trunk.setAttribute('radius', '0.24');
+        trunk.setAttribute('height', '2.7');
+        trunk.setAttribute('color', '#74583e');
+        tree.appendChild(trunk);
+        const crown = document.createElement('a-sphere');
+        crown.setAttribute('position', '0 3.2 0');
+        crown.setAttribute('radius', '1.65');
+        crown.setAttribute('color', z % 2 ? '#4e8a4c' : '#5a9952');
+        tree.appendChild(crown);
+      }
+    }
+
+    for (const x of [-17, -13, -3, 3, 13, 17]) {
+      for (const z of [-59, -68, -77]) {
+        const plant = document.createElement('a-entity');
+        plant.setAttribute('position', `${x} 0 ${z}`);
+        cityScene.appendChild(plant);
+        const leaves = document.createElement('a-sphere');
+        leaves.setAttribute('position', '0 0.35 0');
+        leaves.setAttribute('radius', '0.42');
+        leaves.setAttribute('scale', '1 0.8 1');
+        leaves.setAttribute('color', (x + z) % 2 ? '#78a653' : '#91ae58');
+        plant.appendChild(leaves);
+        const flower = document.createElement('a-sphere');
+        flower.setAttribute('position', '0.16 0.63 0.08');
+        flower.setAttribute('radius', '0.11');
+        flower.setAttribute('color', '#f0d978');
+        plant.appendChild(flower);
+      }
+    }
+
+    const solarLabel = document.createElement('a-text');
+    solarLabel.setAttribute('value', 'COMMUNITY SOLAR GARDEN');
+    solarLabel.setAttribute('align', 'center');
+    solarLabel.setAttribute('width', '8');
+    solarLabel.setAttribute('color', '#f2e7c4');
+    solarLabel.setAttribute('position', '0 2.6 -53');
+    solarLabel.setAttribute('side', 'double');
+    cityScene.appendChild(solarLabel);
+
+    const addStreetBox = (position, width, height, depth, color) => {
+      const streetBox = document.createElement('a-box');
+      streetBox.setAttribute('position', position);
+      streetBox.setAttribute('width', width);
+      streetBox.setAttribute('height', height);
+      streetBox.setAttribute('depth', depth);
+      streetBox.setAttribute('color', color);
+      cityScene.appendChild(streetBox);
+    };
+
+    const crossStreetPositions = [-35, -29, -23, -5, 25, 31, 37];
+    for (const z of crossStreetPositions) {
+      addStreetBox(`0 0.045 ${z}`, 80, 0.09, 2.4, '#323c42');
+
+      for (let x = -36; x <= 36; x += 8) {
+        if (Math.abs(x) < 8) continue;
+        addStreetBox(`${x} 0.105 ${z}`, 1.7, 0.025, 0.1, '#d7dfd9');
+      }
+
+      for (let offset = -1.25; offset <= 1.25; offset += 0.5) {
+        addStreetBox(`0 0.102 ${z + offset}`, 12, 0.014, 0.22, '#eceee6');
+      }
+    }
+
+    for (const x of [-39, -28.5, 28.5, 39]) {
+      const alleyWidth = Math.abs(x) > 25 ? 2.4 : 2.2;
+      addStreetBox(`${x} 0.045 0`, alleyWidth, 0.09, 80, '#384247');
+      for (const z of crossStreetPositions) {
+        for (let offset = -1; offset <= 1; offset += 0.5) {
+          addStreetBox(`${x + offset} 0.102 ${z}`, 0.22, 0.014, alleyWidth - 0.3, '#eceee6');
+        }
+      }
+    }
+
+    const towerRows = [-38, -32, -26, -20, -14, -8, -2, 4, 10, 16, 22, 28, 34, 40];
+    const towerColumns = [-34, -23, -18, -13, 13, 18, 23, 34];
+    const towerColors = ['#d4ddd1', '#c8d6d1', '#e1dcc8', '#bdcec3', '#d8dfe0', '#c6d9cd'];
+    let towerIndex = 0;
+
+    for (const z of towerRows) {
+      for (const x of towerColumns) {
+        if ((x === 13 && z >= -20 && z <= -8) ||
+          (x === 18 && z === 10) ||
+          (x === -18 && [-20, -14, -8, 4, 10].includes(z)) ||
+          (x === 23 && z >= -20 && z <= -8) ||
+          (x === -23 && (z === 4 || z === 10 || z === 16 || z === 22)) ||
+          (x === -13 && z === -2)) {
+          continue;
+        }
+
+        const height = 15 + (towerIndex * 11) % 24;
+        const width = 4.8 + (towerIndex % 4) * 0.4;
+        const depth = 3 + (towerIndex % 3) * 0.15;
+        const tower = document.createElement('a-entity');
+        tower.setAttribute('position', `${x} 0 ${z}`);
+
+        const body = document.createElement('a-box');
+        body.setAttribute('geometry', { primitive: 'box', width, height, depth });
+        body.setAttribute('position', `0 ${height / 2} 0`);
+        body.setAttribute('material', { color: towerColors[towerIndex % towerColors.length], roughness: 0.8 });
+        tower.appendChild(body);
+
+        const facadeCanvas = document.createElement('canvas');
+        facadeCanvas.width = 256;
+        facadeCanvas.height = 512;
+        const facadeContext = facadeCanvas.getContext('2d');
+        facadeContext.fillStyle = '#152c37';
+        facadeContext.fillRect(0, 0, facadeCanvas.width, facadeCanvas.height);
+        const windowColumns = 5;
+        const windowRows = 14;
+        const windowWidth = 34;
+        const windowHeight = 24;
+        for (let row = 0; row < windowRows; row++) {
+          for (let column = 0; column < windowColumns; column++) {
+            const x = 14 + column * 48;
+            const y = 12 + row * 35;
+            const isLit = Math.random() > 0.76;
+            facadeContext.fillStyle = isLit
+              ? ['#e7c98d', '#a8c9ca', '#d8a876'][Math.floor(Math.random() * 3)]
+              : '#315563';
+            facadeContext.fillRect(x, y, windowWidth, windowHeight);
+            facadeContext.fillStyle = 'rgba(190, 218, 218, 0.55)';
+            facadeContext.fillRect(x, y + windowHeight, windowWidth, 2);
+          }
+        }
+
+        const facadeTexture = new AFRAME.THREE.CanvasTexture(facadeCanvas);
+        if (AFRAME.THREE.SRGBColorSpace) facadeTexture.colorSpace = AFRAME.THREE.SRGBColorSpace;
+        const facadeMaterial = new AFRAME.THREE.MeshStandardMaterial({
+          map: facadeTexture,
+          roughness: 0.38,
+          metalness: 0.34,
+          emissive: '#273642',
+          emissiveIntensity: 0.5,
+          side: AFRAME.THREE.DoubleSide
+        });
+        const facadeGeometry = new AFRAME.THREE.PlaneGeometry(width * 0.78, height * 0.86);
+        const frontFacade = new AFRAME.THREE.Mesh(facadeGeometry, facadeMaterial);
+        frontFacade.position.set(0, height / 2, depth / 2 + 0.04);
+        tower.object3D.add(frontFacade);
+
+        const sideFacade = new AFRAME.THREE.Mesh(facadeGeometry, facadeMaterial);
+        sideFacade.position.set(x < 0 ? width / 2 + 0.04 : -width / 2 - 0.04, height / 2, 0);
+        sideFacade.rotation.y = x < 0 ? Math.PI / 2 : -Math.PI / 2;
+        tower.object3D.add(sideFacade);
+
+        const floorCount = Math.ceil(height / 3.5);
+        for (let mullion = -1; mullion <= 1; mullion++) {
+          const vertical = document.createElement('a-box');
+          vertical.setAttribute('geometry', { primitive: 'box', width: 0.1, height: height * 0.86, depth: 0.08 });
+          vertical.setAttribute('position', `${mullion * width * 0.2} ${height / 2} ${depth / 2 + 0.07}`);
+          vertical.setAttribute('material', { color: '#b7cbc2', roughness: 0.6 });
+          tower.appendChild(vertical);
+        }
+
+        for (let floor = 1; floor <= floorCount; floor++) {
+          const band = document.createElement('a-box');
+          band.setAttribute('geometry', { primitive: 'box', width: width * 0.86, height: 0.12, depth: 0.08 });
+          band.setAttribute('position', `0 ${height * floor / (floorCount + 1)} ${depth / 2 + 0.07}`);
+          band.setAttribute('material', { color: '#c7dfd1', roughness: 0.6 });
+          tower.appendChild(band);
+        }
+
+        const canopy = document.createElement('a-box');
+        canopy.setAttribute('geometry', { primitive: 'box', width: width + 0.45, height: 0.2, depth: 0.42 });
+        canopy.setAttribute('position', `0 3 ${depth / 2 + 0.15}`);
+        canopy.setAttribute('material', { color: towerIndex % 2 ? '#579d99' : '#c78f63', roughness: 0.55 });
+        tower.appendChild(canopy);
+
+        for (const side of [-1, 1]) {
+          const shopWindow = document.createElement('a-box');
+          shopWindow.setAttribute('geometry', { primitive: 'box', width: 0.88, height: 1.25, depth: 0.06 });
+          shopWindow.setAttribute('position', `${side * width * 0.27} 1.35 ${depth / 2 + 0.13}`);
+          shopWindow.setAttribute('material', {
+            color: '#b5c9c4',
+            emissive: towerIndex % 2 ? '#8b5936' : '#385f70',
+            emissiveIntensity: 0.48,
+            roughness: 0.3
+          });
+          tower.appendChild(shopWindow);
+        }
+
+        const entry = document.createElement('a-box');
+        entry.setAttribute('geometry', { primitive: 'box', width: 0.75, height: 1.8, depth: 0.08 });
+        entry.setAttribute('position', `0 1.05 ${depth / 2 + 0.1}`);
+        entry.setAttribute('material', { color: '#a7ccca', metalness: 0.25, roughness: 0.25 });
+        tower.appendChild(entry);
+
+        const roof = document.createElement('a-box');
+        roof.setAttribute('geometry', { primitive: 'box', width: width + 0.25, height: 0.18, depth: depth + 0.25 });
+        roof.setAttribute('position', `0 ${height + 0.08} 0`);
+        roof.setAttribute('material', { color: '#628d66', roughness: 0.9 });
+        tower.appendChild(roof);
+
+        if (towerIndex % 3 === 0) {
+          const rooftopUnit = document.createElement('a-box');
+          rooftopUnit.setAttribute('geometry', { primitive: 'box', width: 1.5, height: 0.8, depth: 1.2 });
+          rooftopUnit.setAttribute('position', `${width * 0.22} ${height + 0.55} 0`);
+          rooftopUnit.setAttribute('material', { color: '#71858a', roughness: 0.72 });
+          tower.appendChild(rooftopUnit);
+        }
+
+        if (towerIndex % 4 === 0) {
+          for (const panelOffset of [-0.8, 0.8]) {
+            const solarPanel = document.createElement('a-box');
+            solarPanel.setAttribute('geometry', { primitive: 'box', width: 1.2, height: 0.05, depth: 1.5 });
+            solarPanel.setAttribute('position', `${panelOffset} ${height + 0.2} 0`);
+            solarPanel.setAttribute('rotation', '-8 0 0');
+            solarPanel.setAttribute('material', { color: '#284e6a', metalness: 0.35, roughness: 0.28 });
+            tower.appendChild(solarPanel);
+          }
+        }
+
+        cityScene.appendChild(tower);
+        towerIndex++;
+      }
+    }
+
+    const litterSpots = [
+      [-4.3, 17], [-1.2, 13], [4.4, 8], [0.8, 3], [-3.4, -5], [4.1, -11],
+      [-1, -17], [3.6, -24], [-4.4, -31], [1.2, 34], [-8.2, 24], [-8.2, 6],
+      [-8.2, -16], [-8.2, -30], [8.2, 24], [8.2, 7], [8.2, -17], [8.2, -30],
+      [12, -8], [13, -16]
+    ];
+
+    litterSpots.forEach(([x, z], index) => {
+      const litter = document.createElement('a-entity');
+      litter.dataset.litter = 'true';
+      litter.setAttribute('position', `${x} 0 ${z}`);
+
+      if (index % 3 === 0) {
+        const bottle = document.createElement('a-cylinder');
+        bottle.setAttribute('position', '0 0.18 0');
+        bottle.setAttribute('radius', '0.11');
+        bottle.setAttribute('height', '0.34');
+        bottle.setAttribute('color', '#49a79a');
+        litter.appendChild(bottle);
+
+        const neck = document.createElement('a-cylinder');
+        neck.setAttribute('position', '0 0.39 0');
+        neck.setAttribute('radius', '0.05');
+        neck.setAttribute('height', '0.1');
+        neck.setAttribute('color', '#82c7b5');
+        litter.appendChild(neck);
+      } else if (index % 3 === 1) {
+        const can = document.createElement('a-cylinder');
+        can.setAttribute('position', '0 0.14 0');
+        can.setAttribute('radius', '0.13');
+        can.setAttribute('height', '0.28');
+        can.setAttribute('color', '#c68554');
+        litter.appendChild(can);
+      } else {
+        const paper = document.createElement('a-box');
+        paper.setAttribute('position', '0 0.04 0');
+        paper.setAttribute('rotation', `0 ${index * 23} ${index % 2 ? 8 : -8}`);
+        paper.setAttribute('width', '0.38');
+        paper.setAttribute('height', '0.06');
+        paper.setAttribute('depth', '0.28');
+        paper.setAttribute('color', '#d2c9a8');
+        litter.appendChild(paper);
+      }
+
+      const arrow = document.createElement('a-entity');
+      arrow.setAttribute('position', '0 1.05 0');
+      arrow.setAttribute('animation', 'property: position; from: 0 0.95 0; to: 0 1.18 0; dir: alternate; dur: 800; loop: true; easing: easeInOutSine');
+      const arrowHead = document.createElement('a-cone');
+      arrowHead.setAttribute('rotation', '180 0 0');
+      arrowHead.setAttribute('radius-bottom', '0.13');
+      arrowHead.setAttribute('radius-top', '0.01');
+      arrowHead.setAttribute('height', '0.28');
+      arrowHead.setAttribute('color', '#c9e56b');
+      arrowHead.setAttribute('material', 'emissive: #9ebd45; emissiveIntensity: 0.4');
+      arrow.appendChild(arrowHead);
+      litter.appendChild(arrow);
+      cityScene.appendChild(litter);
+    });
+
+    for (let z = -38; z <= 38; z += 5.5) {
+      if (Math.abs(z) < 6) continue;
+      for (const x of [-2.6, 2.6]) {
+        const laneDash = document.createElement('a-box');
+        laneDash.setAttribute('position', `${x} 0.108 ${z}`);
+        laneDash.setAttribute('width', '0.1');
+        laneDash.setAttribute('height', '0.025');
+        laneDash.setAttribute('depth', '2.7');
+        laneDash.setAttribute('color', '#f4f1e4');
+        cityScene.appendChild(laneDash);
+      }
+    }
+
+    for (const side of [-1, 1]) {
+      for (const z of [-30, -10, 10, 30]) {
+        const lamp = document.createElement('a-entity');
+        lamp.setAttribute('position', `${side * 7.55} 0 ${z}`);
+
+        const pole = document.createElement('a-cylinder');
+        pole.setAttribute('position', '0 2.9 0');
+        pole.setAttribute('radius', '0.1');
+        pole.setAttribute('height', '5.8');
+        pole.setAttribute('color', '#35434a');
+        lamp.appendChild(pole);
+
+        const arm = document.createElement('a-box');
+        arm.setAttribute('position', `${-side * 0.72} 5.7 0`);
+        arm.setAttribute('width', '1.55');
+        arm.setAttribute('height', '0.11');
+        arm.setAttribute('depth', '0.12');
+        arm.setAttribute('color', '#35434a');
+        lamp.appendChild(arm);
+
+        const shade = document.createElement('a-box');
+        shade.setAttribute('position', `${-side * 1.25} 5.57 0`);
+        shade.setAttribute('width', '0.5');
+        shade.setAttribute('height', '0.15');
+        shade.setAttribute('depth', '0.42');
+        shade.setAttribute('color', '#35434a');
+        lamp.appendChild(shade);
+
+        const bulb = document.createElement('a-sphere');
+        bulb.setAttribute('position', `${-side * 1.25} 5.47 0`);
+        bulb.setAttribute('radius', '0.16');
+        bulb.setAttribute('material', 'color: #ffe1a3; emissive: #ffbf5b; emissiveIntensity: 1');
+        lamp.appendChild(bulb);
+
+        const light = document.createElement('a-entity');
+        light.setAttribute('position', `${-side * 1.25} 5.4 0`);
+        light.setAttribute('light', 'type: point; color: #ffd28a; intensity: 1.1; distance: 18; decay: 2');
+        lamp.appendChild(light);
+        cityScene.appendChild(lamp);
+      }
+    }
+
+  </script>
+</body>
+</html>
