@@ -1,0 +1,327 @@
+<html>
+<head>
+<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+ <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="thumbstick-move.js"></script>
+</head>
+
+<body>
+<a-scene>
+<a-assets>  
+
+    <a-asset-item id="frog" src="Frog (2).glb"> 
+</a-asset-item>
+
+ <a-asset-item id="compost1" src="compost (1).glb"> 
+</a-asset-item>
+
+
+    <a-asset-item id="house1" src="Funky Amberis.glb"> 
+</a-asset-item>
+
+  <a-asset-item id="house2" src="Epic Fyyran.glb"> 
+</a-asset-item>
+
+<a-asset-item id="house3" src="itsahouse (4).glb"> 
+</a-asset-item>
+
+<a-asset-item id="house4" src= "Brown Building by J-Toastie - fGKIlWGDNH.glb"> 
+</a-asset-item>
+
+<a-asset-item id="house5" src= "Building Red by J-Toastie - lbNz2dClar.glb"> 
+</a-asset-item>
+
+<a-asset-item id="house6" src= "Large Building by Kenney - JgGLJH2iXj.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="car" src= "DeLorean DMC-12 by David Sirera - 1uZKezeldGG.glb"> 
+</a-asset-item>
+
+<a-asset-item id="pizza corner" src= "Pizza Corner by J-Toastie - 78W2Ab2Uvt.glb"> 
+</a-asset-item>
+
+<a-asset-item id="green building" src= "Building Green.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road1" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road2" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road3" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road4" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road5" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road6" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road7" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road8" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road9" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road10" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road11" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road12" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="road13" src= "Road Piece Straight by Zaw Imagineering - 4LR8xtk9TbO.glb"> 
+</a-asset-item>
+
+<a-asset-item id="bike" src= "Bicycle by Poly by Google - 19VoUuA2pcN.glb"> 
+</a-asset-item>
+
+<a-asset-item id="building1" src= "Building by Kay Lousberg - T3oyvK6VEU.glb"> 
+</a-asset-item>
+
+<a-asset-item id="building2" src= "Building by Kay Lousberg - otRsYa6pan.glb"> 
+</a-asset-item>
+
+<a-asset-item id="tree1" src= "Copy of tree tree tree.glb"> 
+</a-asset-item>
+
+<a-asset-item id="building3" src= "Building by Kay Lousberg - qOhhGLftam.glb"> 
+</a-asset-item>
+
+<a-asset-item id="building4" src= "Copy of Apartment Building.glb"> 
+</a-asset-item>
+
+<a-asset-item id="forest" src= "Copy of Copy of Design a Park Challenge (1).glb"> 
+</a-asset-item>
+
+<a-asset-item id="forest1" src= "Copy of Copy of Design a Park Challenge (1).glb"> 
+</a-asset-item>
+
+<a-asset-item id="forest2" src= "Copy of Copy of Design a Park Challenge (2).glb"> 
+</a-asset-item>
+
+<a-asset-item id="turbine" src= "Wind turbine by Poly by Google - 8Tke6WIyZtg.glb"> 
+</a-asset-item>
+
+<a-asset-item id="turbine1" src= "Wind turbine by Poly by Google - 8Tke6WIyZtg.glb"> 
+</a-asset-item>
+
+<a-asset-item id="turbine2" src= "Wind turbine by Poly by Google - 8Tke6WIyZtg.glb"> 
+</a-asset-item>
+
+<a-asset-item id="turbine3" src= "Wind turbine by Poly by Google - 8Tke6WIyZtg.glb"> 
+</a-asset-item>
+
+<a-asset-item id="sp" src= "soalr panelsss.glb"> 
+</a-asset-item>
+
+<a-asset-item id="sp1" src= "soalr panelsss.glb"> 
+</a-asset-item>
+
+<a-asset-item id="sp2" src= "soalr panelsss.glb"> 
+</a-asset-item>
+
+<a-asset-item id="bin" src= "Bins by Dilan Shah - 75lHRN19gMY.glb"> 
+</a-asset-item>
+
+
+
+
+</a-assets>
+
+
+
+
+<a-entity gltf-model="#house4" position="-8 -10 11"  scale="2 2 2" > 
+</a-entity>
+
+<a-entity gltf-model="#house5" position="-3 -10 11"  scale="2 2 2" > 
+</a-entity>
+
+<a-entity gltf-model="#house6" position="1 -10 11"  scale="4 4 4" 
+rotation="0 -180 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road" position="1 -10 17"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road5" position="-6 -10 17"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road6" position="-14 -10 3"  scale="4 4 4" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road7" position="-14 -10 13" scale="4 4 4" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road8" position="-10 -10 17"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road9" position="13 -10 17"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road10" position="2 -10 0"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road11" position="-6 -10 0"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road12" position="-8 -10 0"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road13" position="12 -10 0"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road1" position="6 -10 17"  scale="4 4 4" 
+rotation="0 90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road2" position="8 -10 12"  scale="4 4 4" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road3" position="8 -10 6"  scale="4 4 4" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#road4" position="8 -10 3"  scale="4 4 4" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#car" position="-12 -9 17"  scale="0.5 0.5 0.5" 
+rotation="0 90 0"
+animation="
+property:position;
+to: 15 -9 17;
+dur: 8000;
+loop: true;"> 
+</a-entity>>  
+</a-entity>
+
+
+<a-entity gltf-model="#pizza corner" position="4 -10 11"  scale="2 2 2" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#green building" position="13 -10 11"  scale="2 2 2" 
+rotation="0 0 0" > 
+</a-entity>
+
+<a-entity gltf-model="#bike" position="6 -10 11"  scale="0.5 0.5 0.5" 
+rotation="0 -90 0" > 
+</a-entity>
+
+<a-entity gltf-model="#building1" position="2 -10 8"  scale="3 3 3" 
+rotation="0 -180 0" > 
+</a-entity>
+
+<a-entity gltf-model="#building2" position="-4 -10 8"  scale="3 3 3" 
+rotation="0 -180 0" > 
+</a-entity>
+
+<a-entity gltf-model="#building3" position="14 -10 8"  scale="3 3 3" 
+rotation="0 -180 0" > 
+</a-entity>
+
+<a-entity gltf-model="#tree1" position="-18 -10 7"  scale="0.06 0.06 0.06" 
+rotation="0 -180 0" > 
+</a-entity>
+
+<a-entity gltf-model="#building4" position="-9 -10 7"  scale="0.1 0.1 0.1" 
+rotation="0 -180 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#bin" position="-11 -9 7"  scale="1 1 1" 
+rotation="0 90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#forest" position="8 -10 -10"  scale="0.07 0.07 0.07" 
+rotation="0 -90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#forest1" position="6 -10 -10"  scale="0.07 0.07 0.07" 
+rotation="0 -90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#forest2" position="3 -10 -10"  scale="0.07 0.07 0.07" 
+rotation="0 -90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#turbine" position="-14 -10 -10"  scale="0.4 0.4 0.4" 
+rotation="0 0 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#turbine1" position="-14 -10 -19"  scale="0.4 0.4 0.4" 
+rotation="0 0 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#turbine2" position="-14 -10 -16"  scale="0.4 0.4 0.4" 
+rotation="0 0 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#turbine3" position="-14 -10 -13"  scale="0.4 0.4 0.4" 
+rotation="0 0 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#sp" position="8 -10 -10"  scale="0.05 0.05 0.05" 
+rotation="0 -90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#sp1" position="8 -10 -7"  scale="0.05 0.05 0.05" 
+rotation="0 -90 0" > 
+</a-entity> 
+
+<a-entity gltf-model="#sp2" position="8 -10 -4"  scale="0.05 0.05 0.05" 
+rotation="0 -90 0" > 
+</a-entity>
+
+
+
+
+
+
+<a-plane color="#43A34D" position="0 -10 0" rotation="-90 0 0" width="40" height="40"> </a-plane>
+<a-sky src="images.jpeg"> </a-sky>
+
+
+    <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
+      <a-entity id="cameraRig" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                thumbstick-controls
+                position="0 -8 0">
+        <a-entity id="head" camera look-controls position="0 1.6 0">
+            <a-entity 
+              cursor="fuse: false; rayOrigin: mouse" 
+              raycaster="objects: .clickable">
+            </a-entity>
+        </a-entity>
+        <a-entity id="leftHand" hand-controls="hand: left" thumbstick-move teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger"></a-entity>
+        <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      </a-entity>
+
+</a-scene>
+</body>
+</html>

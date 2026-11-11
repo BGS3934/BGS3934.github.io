@@ -3,12 +3,14 @@
 <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script> 
 <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <script src="https://bgs3934.github.io/thumbstick-move.js "></script>
+    <script src="thumbstick-move.js"></script>
 </head>
+
+
 
 <body>
       
-   
+  
 <a-scene>
    <a-assets>
     <a-asset-item id="house" src="House.glb"></a-asset-item>
@@ -20,13 +22,15 @@
     <a-asset-item id="3" src="3.glb"></a-asset-item>
     <a-asset-item id="4" src="4.glb"></a-asset-item>
     <a-asset-item id="5" src="5.glb"></a-asset-item>
+    <a-asset-item id="couch" src="Couch Medium.glb"></a-asset-item>
+
 
 
  </a-assets>
-
+ <a-entity sound="src:url(https://youtu.be/cvfVy_I5PrQ?list=RDcvfVy_I5PrQ); autoplay: true; volume: 0.5; positional: false"></a-entity>s
       <!-- Camera rig wrapper (This is an assembly of hands and head controls to allow both VR and keyboard / mouse control) -->
       <a-entity id="cameraRig" 
-                movement-controls="controls: keyboard, gamepad, touch; speed: 0.3; constrainToNavMesh: false" 
+                movement-controls="controls: keyboard, gamepad, touch; speed: 5; constrainToNavMesh: false" 
                 thumbstick-controls
                 position="250 0 0">
         <a-entity id="head" camera look-controls position="0 1.6 0">            <a-entity 
@@ -38,14 +42,76 @@
         <a-entity id="rightHand" hand-controls="hand: right" thumbstick-jump laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
       </a-entity>
 
-<a-entity gltf-model="#girl" position="37 -20 -27" rotation="0 90 0" scale="0.5 0.5 0.5"></a-entity>
-<a-entity gltf-model="#boy" position="57 -20 17" rotation="0 90 0" scale="0.5 0.5 0.5"></a-entity>
+<a-entity gltf-model="#girl" position="37 -20 -27" rotation="0 90 0" scale="0.5 0.5 0.5" 
+class="clickable"
+event-set__enter="_target: #TextCharlotte; _event: mouseenter; visible:true;"
+event-set__leave="_target: #textCharlotte; _event: mouseleave; visible:false;"
+></a-entity>
+<a-entity gltf-model="#boy" position="57 -20 17" rotation="0 90 0" scale="0.5 0.5 0.5"
+class="clickable"
+event-set__enter="_target: #TextJerry; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextJerry; _event: mouseleave; visible:false;"
+></a-entity>
+
+
+ <a-entity gltf-model="#girl" position="37 -20 -168" rotation="0 90 0" scale="0.5 0.5 0.5" 
+class="clickable"
+event-set__enter="_target: #TextMary; _event: mouseenter; visible:true;"
+event-set__leave="_target: #textMary; _event: mouseleave; visible:false;"
+></a-entity> 
+<a-entity gltf-model="#boy" position="57 -20 -240" rotation="0 90 0" scale="0.5 0.5 0.5"
+class="clickable"
+event-set__enter="_target: #TextJoseph; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextJoseph; _event: mouseleave; visible:false;"
+></a-entity>
+<a-entity gltf-model="#girl" position="37 -20 90" rotation="0 90 0" scale="0.5 0.5 0.5" 
+class="clickable"
+event-set__enter="_target: #TextCrystal; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextCrystal; _event: mouseleave; visible:false;"
+></a-entity>
+<a-entity gltf-model="#boy" position="57 -20 -110" rotation="0 90 0" scale="0.5 0.5 0.5"
+class="clickable"
+event-set__enter="_target: #TextMark; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextMark; _event: mouseleave; visible:false;"
+></a-entity>
+<a-entity gltf-model="#girl" position="37 -20 228" rotation="0 90 0" scale="0.5 0.5 0.5" 
+class="clickable"
+event-set__enter="_target: #TextJustine; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextJustine; _event: mouseleave; visible:false;"
+></a-entity>
+<a-entity gltf-model="#boy" position="57 -20 140" rotation="0 90 0" scale="0.5 0.5 0.5"
+class="clickable"
+event-set__enter="_target: #TextWill; _event: mouseenter; visible:true;"
+event-set__leave="_target: #TextWill; _event: mouseleave; visible:false;"
+></a-entity>
+
+
 <a-entity gltf-model="#car" position="110 -18.5 -400" scale="0.1 0.1 0.1" animation=
 "property: position;
 to: 110 -18.5 400;
 dur: 7000;
 loop:true;"
 ></a-entity>
+
+<a-entity gltf-model="#boy" position="0 -15 0" scale="0.5 0.5 0.5" rotation="0 90 0"
+class="clickable"
+event-set__enter="_target: #finaltext; _event: mouseenter; visible:true;"
+event-set__leave="_target: #finaltext; _event: mouseleave; visible:false;"
+></a-entity>
+
+
+<a-text id="TextCharlotte" value="Hi. I am Charlotte. I need to live alone in an even numbered house" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 -27" width="5" color="black"></a-text>
+<a-text id="TextJerry" value="Hi. I am Jerry. I need to live with one another person in a house numbered higher than 3" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 17" width="5" color="black"></a-text>
+<a-text id="TextMary" value="Hi. I am Mary. I need to live with one other in an odd numbered house. But not Jerry, I hate Jerry" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 -167" width="5" color="black"></a-text>
+<a-text id="TextJoseph" value="Hi. I am Joseph. I need to live with more than one person in a house numbered 4" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 -237" width="5" color="black"></a-text>
+<a-text id="TextCrystal" value="Hi. I am Crystal. I need to live with my son Will in an odd numbered house. Not number 3" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 90" width="5" color="black"></a-text>
+<a-text id="TextMark" value="Hi. I am Mark. I need to live with one other person in an even numbered house" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 -110" width="5" color="black"></a-text>
+<a-text id="TextJustine" value="Hi. I am Justine. I need to live with one other in an even numbered house" scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 228" width="5" color="black"></a-text>
+<a-text id="TextWill" value="Hi. I am Will. I need to live with my mum. She says I'm not allowed to have more of an opinion then that." scale="20 20 20" rotation="0 90 0" visible="false" position="55 10 140" width="5" color="black"></a-text>
+<a-text id="title" value="Housing Crisis" scale="400 400 400" rotation="0 90 0" color="black" position="0 150 280"></a-text>
+<a-text id="finaltext" value="speak to Noah in the real world to enter your answer" color="black" scale="20 20 20" rotation="0 90 0" visible="false" position="0 25 35"></a-text>
+
+
 <a-entity gltf-model="#house" position="20 -20 -145"></a-entity>
 <a-entity gltf-model="#house" position="20 -20 -270"></a-entity>
 <a-entity gltf-model="#house" position="20 -20 -15"></a-entity>
@@ -63,6 +129,7 @@ loop:true;"
  
 <a-plane color="black" rotation="270 0 0" height="1000" width="50" position="100 -19 0"></a-plane>
 
+<a-entity gltf-model="#couch" position="0 -20 0" rotation="0 90 0" scale="9 9 9"></a-entity>
 
 </a-scene>
 
