@@ -1,0 +1,30 @@
+
+
+
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+<a-assets>
+    <asset-item id="city" src="City Scene Sketch by Alex Safayan - a6RY29WPu2y.glb"></asset-item>
+<a-asset-item id="building" src="Large Building by Kenney - ppwtREejXg.glb"></a-asset-item>
+<a-asset-item id="big" src="City Scene by J-Toastie - xbGN3wvccv.glb"></a-asset-item>
+<a-asset-item id="tree" src="Tree.glb"></a-asset-item>
+ <img id="skyTex" src="s1ky.jpg">
+
+</a-assets>
+
+<a-sky id="skyTex"></a-sky>
+    <a-plane id="#groundPlane" scale="2,1,1" position="0.75,0.1,18" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+<a-entity gltf-model="#big" position="0,0,-60" scale="1,1,1"></a-entity> 
+<a-entity gltf-model="#tree" position="5,0,9 scale="0.5,0.5,0.5" rotation="0 0 0" ></a-entity>
+<a-entity gltf-model="#tree" position="-11,1,-12" scale="0.5,0.5,0.5" rotation="0 0 0"></a-entity>
+<a-entity gltf-model="#tree" position="-15,1,-15" scale="0.5,0.5,0.5" rotation="0 0 0" ></a-entity>
+
+
+
+</a-scene>
+  </body>
+</html>
